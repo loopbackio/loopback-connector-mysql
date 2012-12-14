@@ -2,12 +2,12 @@ juggling = require('jugglingdb')
 Schema = juggling.Schema
 Text = Schema.Text
 
-DBNAME = process.env.DBNAME || 'myapp_test'
-DBUSER = process.env.DBUSER || 'root'
+DBNAME = 'myapp_test'
+DBUSER = 'root'
 DBPASS = ''
-DBENGINE = process.env.DBENGINE || 'mysql'
+DBENGINE = 'mysql'
 
-schema = new Schema DBENGINE, database: '', username: DBUSER, password: DBPASS
+schema = new Schema __dirname + '/..', database: '', username: DBUSER, password: DBPASS
 schema.log = (q) -> console.log q
 
 query = (sql, cb) ->
