@@ -4,13 +4,14 @@
   "description": "MySQL adapter for JugglingDB",
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/mysql.js test/migration.coffee"
+    "test": "nodeunit test/*"
   },
   "dependencies": {
     "jugglingdb": "= 0.2.x",
     "mysql": ">= 2.0.0-alpha3"
   },
   "devDependencies": {
+    "coffee-script": "latest",
     "nodeunit": "latest"
   },
   "repository": {
