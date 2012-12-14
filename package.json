@@ -1,0 +1,23 @@
+{
+  "name": "jugglingdb-mysql",
+  "version": "0.0.1",
+  "description": "MySQL adapter for JugglingDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit test/mysql.js test/migration.coffee"
+  },
+  "dependencies": {
+    "jugglingdb": "= 0.2.x",
+    "mysql": ">= 2.0.0-alpha3"
+  },
+  "devDependencies": {
+    "nodeunit": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1602/jugglingdb-mysql.git"
+  },
+  "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
+  "license": "MIT"
+}
+
