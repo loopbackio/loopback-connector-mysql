@@ -1,6 +1,6 @@
 ## JugglingDB-MySQL [![Build Status](https://travis-ci.org/1602/jugglingdb-mysql.png)](https://travis-ci.org/1602/jugglingdb-mysql)
 
-PostgreSQL adapter for JugglingDB.
+MySQL adapter for JugglingDB.
 
 ## Usage
 
