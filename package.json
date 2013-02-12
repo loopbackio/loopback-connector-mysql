@@ -1,13 +1,13 @@
 {
   "name": "jugglingdb-mysql",
-  "version": "0.0.1-2",
+  "version": "0.0.1-3",
   "description": "MySQL adapter for JugglingDB",
   "main": "index.js",
   "scripts": {
     "test": "nodeunit test/*"
   },
   "dependencies": {
-    "jugglingdb": "= 0.2.x",
+    "jugglingdb": "latest",
     "mysql": ">= 2.0.0-alpha3"
   },
   "devDependencies": {
