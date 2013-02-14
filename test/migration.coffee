@@ -42,12 +42,12 @@ getFields = (model, cb) ->
 
 getIndexes = (model, cb) ->
     query 'SHOW INDEXES FROM ' + model, (err, res) ->
-        console.log(arguments)
         if err
             console.log err
             cb err
         else
             indexes = {}
+            # Note: this will only show the first key of compound keys
             res.forEach (index) ->
               indexes[index.Key_name] = index if parseInt(index.Seq_in_index, 10) == 1
             cb err, indexes
@@ -71,7 +71,7 @@ it 'should run migration', (test) ->
                         Field: 'email'
                         Type: 'varchar(255)'
                         Null: 'NO'
-                        Key: ''
+                        Key: 'MUL'
                         Default: null
                         Extra: ''
                     name:
@@ -116,7 +116,51 @@ it 'should run migration', (test) ->
                         Key: ''
                         Default: null
                         Extra: ''
-
+            # Once gain, getIdexes truncates multi-key indexes to the first member. Hence index1 is correct.
+            getIndexes 'User', (err, fields) ->
+                test.deepEqual fields,
+                    PRIMARY: 
+                        Table: 'User'
+                        Non_unique: 0
+                        Key_name: 'PRIMARY'
+                        Seq_in_index: 1
+                        Column_name: 'id'
+                        Collation: 'A'
+                        Cardinality: 0
+                        Sub_part: null
+                        Packed: null
+                        Null: ''
+                        Index_type: 'BTREE'
+                        Comment: ''
+                        Index_comment: ''
+                    email: 
+                        Table: 'User'
+                        Non_unique: 1
+                        Key_name: 'email'
+                        Seq_in_index: 1
+                        Column_name: 'email'
+                        Collation: 'A'
+                        Cardinality: 0
+                        Sub_part: null
+                        Packed: null
+                        Null: ''
+                        Index_type: 'BTREE'
+                        Comment: ''
+                        Index_comment: ''
+                    index1: 
+                        Table: 'User'
+                        Non_unique: 1
+                        Key_name: 'index1'
+                        Seq_in_index: 1
+                        Column_name: 'email'
+                        Collation: 'A'
+                        Cardinality: 0
+                        Sub_part: null
+                        Packed: null
+                        Null: ''
+                        Index_type: 'BTREE'
+                        Comment: ''
+                        Index_comment: ''
                 test.done()
 
 it 'should autoupgrade', (test) ->
