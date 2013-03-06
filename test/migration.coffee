@@ -24,7 +24,6 @@ User = schema.define 'User',
 ,   indexes:
       index1:
         columns: 'email, createdByAdmin'
-    table: 'user'
 
 withBlankDatabase = (cb) ->
     db = schema.settings.database = DBNAME

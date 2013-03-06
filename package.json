@@ -19,5 +19,9 @@
     "url": "https://github.com/1602/jugglingdb-mysql.git"
   },
   "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
+  "maintainers": [
+     { "name": "dgsan", "url": "https://github.com/dgsan" }
+     { "name": "Anatoliy Chakkaev", "url": "https://github.com/1602" }
+  ],
   "license": "MIT"
 }
