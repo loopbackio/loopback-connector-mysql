@@ -120,7 +120,7 @@ it 'should run migration', (test) ->
             getIndexes 'User', (err, fields) ->
                 test.deepEqual fields,
                     PRIMARY:
-                        Table: 'user'
+                        Table: 'User'
                         Non_unique: 0
                         Key_name: 'PRIMARY'
                         Seq_in_index: 1
@@ -134,7 +134,7 @@ it 'should run migration', (test) ->
                         Comment: ''
                         Index_comment: ''
                     email:
-                        Table: 'user'
+                        Table: 'User'
                         Non_unique: 1
                         Key_name: 'email'
                         Seq_in_index: 1
@@ -148,7 +148,7 @@ it 'should run migration', (test) ->
                         Comment: ''
                         Index_comment: ''
                     index1:
-                        Table: 'user'
+                        Table: 'User'
                         Non_unique: 1
                         Key_name: 'index1'
                         Seq_in_index: 1
