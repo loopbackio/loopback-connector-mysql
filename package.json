@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "coffee-script": "latest",
-    "nodeunit": "latest"
+    "should": "~1.2.2",
+    "mocha": "~1.8.2"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,14 @@
   },
   "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
   "maintainers": [
-     { "name": "dgsan", "url": "https://github.com/dgsan" },
-     { "name": "Anatoliy Chakkaev", "url": "https://github.com/1602" }
+    {
+      "name": "dgsan",
+      "url": "https://github.com/dgsan"
+    },
+    {
+      "name": "Anatoliy Chakkaev",
+      "url": "https://github.com/1602"
+    }
   ],
   "license": "MIT"
 }
