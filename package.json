@@ -4,7 +4,7 @@
   "description": "MySQL adapter for JugglingDB",
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit test/*"
+    "test": "make test"
   },
   "dependencies": {
     "jugglingdb": "latest",
