@@ -1,6 +1,6 @@
 {
   "name": "jugglingdb-mysql",
-  "version": "0.0.1-4",
+  "version": "0.0.1-5",
   "description": "MySQL adapter for JugglingDB",
   "main": "index.js",
   "scripts": {
