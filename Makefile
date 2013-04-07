@@ -1,7 +1,7 @@
 ## TESTS
 
 TESTER = ./node_modules/.bin/mocha
-OPTS = --growl
+OPTS = --growl --globals getSchema
 TESTS = test/*.test.js
 
 test:
