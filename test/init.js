@@ -1,3 +1,5 @@
+module.exports = require('should');
+
 var Schema = require('jugglingdb').Schema;
 
 global.getSchema = function() {
