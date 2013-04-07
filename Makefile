@@ -1,7 +1,7 @@
 ## TESTS
 
 TESTER = ./node_modules/.bin/mocha
-OPTS = --require ./test/init.js
+OPTS = --growl
 TESTS = test/*.test.js
 
 test:
