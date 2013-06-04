@@ -364,7 +364,7 @@ getFields = function (model, cb) {
         if (err) {
             cb(err);
         } else {
-            fields = {};
+            var fields = {};
             res.forEach(function(field){
                 fields[field.Field] = field;
             });
