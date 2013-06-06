@@ -294,6 +294,35 @@ describe('migrations', function() {
         });
     });
     
+    it('should allow numbers with decimals', function(done) {
+        NumberData.create({number: 1.1234567, tinyInt: 123456, mediumInt: -1234567, floater: 123456789.1234567 }, function(err, obj) {
+            assert.ok(!err);
+            assert.ok(obj);
+            NumberData.find(obj.id, function(err, found) {
+                assert.equal(found.number, 1.123);
+                assert.equal(found.tinyInt, 127);
+                assert.equal(found.mediumInt, 0);
+                assert.equal(found.floater, 99999999.999999);
+                done();
+            });
+        });
+    });
+    
+    it('should allow both kinds of date columns', function(done) {
+        DateData.create({   
+            dateTime: new Date('Aug 9 1996 07:47:33 GMT'), 
+            timestamp: new Date('Sep 22 2007 17:12:22 GMT')
+        }, function(err, obj){
+            assert.ok(!err);
+            assert.ok(obj);
+            DateData.find(obj.id, function(err, found){
+                assert.equal(found.dateTime.toGMTString(), 'Fri, 09 Aug 1996 07:47:33 GMT');
+                assert.equal(found.timestamp.toGMTString(), 'Sat, 22 Sep 2007 17:12:22 GMT');
+                done();
+            });
+        });
+    });
+    
     it('should disconnect when done', function(done) {
         db.disconnect();
         done()
