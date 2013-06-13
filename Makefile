@@ -1,7 +1,7 @@
 ## TESTS
 
 TESTER = ./node_modules/.bin/mocha
-OPTS = --growl --globals getSchema getConfig --timeout 15000
+OPTS = --growl --globals getSchema --timeout 15000
 TESTS = test/*.test.js
 
 test:
