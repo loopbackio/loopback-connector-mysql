@@ -2,11 +2,23 @@ module.exports = require('should');
 
 var Schema = require('jugglingdb').Schema;
 
-global.getSchema = function() {
-    var db = new Schema(require('../'), {
+global.getConfig = function(options) {
+    
+    var dbConf = {
         database: 'myapp_test',
         username: 'root'
-    });
-    // db.log = function (a) { console.log(a); };
+    };
+    
+    if (options) {
+        for (var el in options) {
+            dbConf[el] = options[el]
+        }
+    }
+
+    return dbConf;
+}
+
+global.getSchema = function(options) {
+    var db = new Schema(require('../'), getConfig(options));
     return db;
 };

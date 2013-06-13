@@ -2,7 +2,7 @@ var should = require('./init.js');
 var assert = require('assert');
 var Schema = require('jugglingdb').Schema;
 
-var db, UserData, StringData, NumberData, DateData;
+var db, UserData, StringData, NumberData, DateData; 
 
 describe('migrations', function() {
      
@@ -331,6 +331,9 @@ describe('migrations', function() {
 });
 
 function setup(done) {
+
+    require('./init.js');
+    
     db = getSchema();    
     
     UserData = db.define('UserData', {
@@ -380,8 +383,13 @@ var blankDatabase = function (db, cb) {
     var cs = db.settings.charset;
     var co = db.settings.collation;
     query('DROP DATABASE IF EXISTS ' + dbn, function(err) {
-        var q = 'CREATE DATABASE ' + dbn + ' CHARACTER SET ' + cs + ' COLLATE ' + co;
-        // console.log(q);
+        var q = 'CREATE DATABASE ' + dbn;
+        if(cs){
+            q += ' CHARACTER SET ' + cs;
+        }
+        if(co){
+            q += ' COLLATE ' + co;
+        }
         query(q, function(err) {
             query('USE '+ dbn, cb);
         });
