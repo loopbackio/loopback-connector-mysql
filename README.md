@@ -28,6 +28,7 @@ To use it you need `jugglingdb@0.2.x`.
             username: 'root'
         });
     ```
+    You can optionally pass a few additional parameters supported by `node-mysql`, most particularly `password` and `collation`. `Collation` currently defaults to `utf8mb4_general_ci`. The `collation` value will also be used to derive the connection charset.
 
 ## Running tests
 
@@ -37,41 +38,60 @@ To use it you need `jugglingdb@0.2.x`.
 
 The jugglingdb MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many jugglingdb types.
 
-The following type-dataType combinations are supported (incomplete):
-* Number
-  * integer types
+The following type-dataType combinations are supported:
+* <h4> Number </h4>
+  * <h5> integer </h5>
      * tinyint
      * smallint
      * mediumint
      * int
      * bigint
-     * use the 'limit' option to alter the display width
-     * example:
-       `{ count : { type: Number, dataType: 'smallInt' }}`
-  * floating point types
+     
+     Use the `limit` option to alter the display width.
+
+     Example:
+      `{ count : { type: Number, dataType: 'smallInt' }}`
+
+  * <h5> floating point types </h5>
      * float
      * double
-     * use the `precision` and `scale` options to specify custom precision. Default is (16,8).
-     * example:
+     
+     Use the `precision` and `scale` options to specify custom precision. Default is (16,8).
+
+     Example:
       `{ average : { type: Number, dataType: 'float', precision: 20, scale: 4 }}`
-  * fixed-point exact value types
+
+  * <h5> fixed-point exact value types </h5>
      * decimal
      * numeric
-     * use the `precision` and `scale` options to specify custom precision. Default is (9,2).
-     * these aren't likely to function as true fixed-point.
-     * example:
+
+     Use the `precision` and `scale` options to specify custom precision. Default is (9,2).
+     
+     These aren't likely to function as true fixed-point.
+     
+     Example:
       `{ stdDev : { type: Number, dataType: 'decimal', precision: 12, scale: 8 }}`
-* String / Schema.Text / Schema.JSON
+
+* <h4> String / Schema.Text / Schema.JSON </h4>
   * varchar
   * char
   * text
   * mediumtext
   * tinytext
   * longtext
-* Date
+  
+  Example:
+   `{ userName : { type: String, dataType: 'char', limit: 24 }}`
+
+  Example:
+   `{ biography : { type: String, dataType: 'longtext' }}`
+
+* <h4> Date </h4>
   * datetime
   * timestamp
-    
+  
+  Example:
+   `{ startTime : { type: Date, dataType: 'timestamp' }}`
 
 ## MIT License
 
