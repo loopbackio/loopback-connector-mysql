@@ -14,6 +14,17 @@ describe('MySQL specific datatypes', function() {
         });
     });
     
+    it('An enum should parse itself', function(done) {
+        assert.equal(ANIMAL_ENUM.CAT, ANIMAL_ENUM('cat'));
+        assert.equal(ANIMAL_ENUM.CAT, ANIMAL_ENUM('CAT'));
+        assert.equal(ANIMAL_ENUM.CAT, ANIMAL_ENUM(2));
+        assert.equal(ANIMAL_ENUM.CAT, 'cat');
+        assert.equal(ANIMAL_ENUM(null), null);
+        assert.equal(ANIMAL_ENUM(''), '');
+        assert.equal(ANIMAL_ENUM(0), '');
+        done();
+    });
+    
     it('should create a model instance with Enums', function(done) {
        var em = EnumModel.create({animal: ANIMAL_ENUM.CAT, condition: 'sleepy', mood: 'happy'}, function(err, obj) {
             assert.ok(!err);
@@ -57,7 +68,7 @@ function setup(done) {
     EnumModel = db.define('EnumModel', {
         animal: { type: ANIMAL_ENUM, null: false },
         condition: { type: db.EnumFactory('hungry', 'sleepy', 'thirsty') },
-        mood: { type: new db.Enum('angry', 'happy', 'sad') }
+        mood: { type: db.EnumFactory('angry', 'happy', 'sad') }
     });
 
     blankDatabase(db, done);
