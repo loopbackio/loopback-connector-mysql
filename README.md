@@ -93,6 +93,20 @@ The following type-dataType combinations are supported:
   Example:
    `{ startTime : { type: Date, dataType: 'timestamp' }}`
 
+* <h4> Enum </h4>
+  Create an Enum using Enum factory:
+
+```javascript
+    var MOOD = schema.EnumFactory('glad', 'sad', 'mad');
+    MOOD.SAD;    // 'sad'
+    MOOD(2);     // 'sad'
+    MOOD('SAD'); // 'sad'
+    MOOD('sad'); // 'sad'
+```
+  
+  * `{ mood: { type: MOOD } }`
+  * `{ choice: { type: schema.EnumFactory('yes', 'no', 'maybe'), null: false }`
+
 ## MIT License
 
 ```text
