@@ -94,6 +94,7 @@ The following type-dataType combinations are supported:
    `{ startTime : { type: Date, dataType: 'timestamp' }}`
 
 * <h4> Enum </h4>
+  Enums are special.
   Create an Enum using Enum factory:
 
 ```javascript
@@ -104,8 +105,9 @@ The following type-dataType combinations are supported:
     MOOD('sad'); // 'sad'
 ```
   
-  * `{ mood: { type: MOOD } }`
-  * `{ choice: { type: schema.EnumFactory('yes', 'no', 'maybe'), null: false }`
+  * `{ mood: { type: MOOD }}`
+  * `{ choice: { type: schema.EnumFactory('yes', 'no', 'maybe'), null: false }}`
+
 
 ## MIT License
 
