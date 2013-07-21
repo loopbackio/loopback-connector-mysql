@@ -1,24 +1,15 @@
 module.exports = require('should');
 
-var Schema = require('jugglingdb').Schema;
+var Schema = require('loopback-data').Schema;
 
-global.getConfig = function(options) {
-    
-    var dbConf = {
+global.getSchema = function() {
+    var db = new Schema(require('../'), {
+        host: '127.0.0.1',
+        port: 3306,
         database: 'myapp_test',
-        username: 'root'
-    };
-    
-    if (options) {
-        for (var el in options) {
-            dbConf[el] = options[el]
-        }
-    }
-
-    return dbConf;
-}
-
-global.getSchema = function(options) {
-    var db = new Schema(require('../'), getConfig(options));
+        username: 'strongloop',
+        password: 'password'
+    });
+    // db.log = function (a) { console.log(a); };
     return db;
 };

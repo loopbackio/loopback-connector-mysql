@@ -1,13 +1,13 @@
 {
-  "name": "jugglingdb-mysql",
-  "version": "0.0.1-6",
-  "description": "MySQL adapter for JugglingDB",
+  "name": "loopback-connector-mysql",
+  "version": "0.0.1",
+  "description": "MySQL adapter for Loopback Data",
   "main": "index.js",
   "scripts": {
     "test": "make test"
   },
   "dependencies": {
-    "jugglingdb": ">= 0.2.0",
+    "loopback-data": "git+ssh://git@github.com:strongloop/loopback-data.git",
     "mysql": ">= 2.0.0-alpha3"
   },
   "devDependencies": {
@@ -18,10 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/1602/jugglingdb-mysql.git"
+    "url": "https://github.com/raymondfeng/jugglingdb-mysql.git"
   },
   "author": "Anatoliy Chakkaev <mail@anatoliy.in>",
   "maintainers": [
+    {
+          "name": "Raymond Feng",
+          "url": "https://github.com/raymondfeng"
+    },
     {
       "name": "dgsan",
       "url": "https://github.com/dgsan"
