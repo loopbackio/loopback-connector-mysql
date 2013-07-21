@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "loopback-data": "git+ssh://git@github.com:strongloop/loopback-data.git",
-    "mysql": ">= 2.0.0-alpha3"
+    "mysql": ">= 2.0.0-alpha8",
+    "async": "latest"
   },
   "devDependencies": {
     "coffee-script": "latest",
