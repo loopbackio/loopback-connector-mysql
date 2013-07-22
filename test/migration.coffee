@@ -1,10 +1,10 @@
-juggling = require('jugglingdb')
+juggling = require('loopback-data')
 Schema = juggling.Schema
 Text = Schema.Text
 
 DBNAME = 'myapp_test'
-DBUSER = 'root'
-DBPASS = ''
+DBUSER = 'strongloop'
+DBPASS = 'password'
 DBENGINE = 'mysql'
 
 schema = new Schema __dirname + '/..', database: '', username: DBUSER, password: DBPASS

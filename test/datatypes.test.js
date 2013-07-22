@@ -1,6 +1,6 @@
 var should = require('./init.js');
 var assert = require('assert');
-var Schema = require('jugglingdb').Schema;
+var Schema = require('loopback-data').Schema;
 
 var db, settings, adapter, EnumModel, ANIMAL_ENUM;
 
@@ -41,7 +41,7 @@ describe('MySQL specific datatypes', function() {
     it('should fail spectacularly with invalid enum values', function(done) {
        var em = EnumModel.create({animal: 'horse', condition: 'sleepy', mood: 'happy'}, function(err, obj) {
             assert.ok(!err);
-            EnumModel.find(obj.id, function(err, found){
+            EnumModel.findById(obj.id, function(err, found){
                 assert.ok(!err);
                 assert.equal(found.animal, ''); // MySQL fun.
                 assert.equal(found.animal, 0);
