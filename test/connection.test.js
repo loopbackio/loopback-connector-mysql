@@ -1,6 +1,6 @@
 var should = require('./init.js');
 var assert = require('assert');
-var Schema = require('jugglingdb').Schema;
+var Schema = require('loopback-data').Schema;
 
 var db, settings, adapter, DummyModel, odb;
 
@@ -11,17 +11,17 @@ describe('migrations', function() {
     before(function() {
         require('./init.js');
         
-        odb = getSchema({collation: 'utf8mb4_general_ci'});
+        odb = getSchema({collation: 'utf8_general_ci'});
         db = odb;
     });
     
     
-    it('should use utf8mb4 charset', function(done) {
+    it('should use utf8 charset', function(done) {
         
-        var test_set = /utf8mb4/;
-        var test_collo = /utf8mb4_general_ci/;
-        var test_set_str = 'utf8mb4';
-        var test_set_collo = 'utf8mb4_general_ci';
+        var test_set = /utf8/;
+        var test_collo = /utf8_general_ci/;
+        var test_set_str = 'utf8';
+        var test_set_collo = 'utf8_general_ci';
         charsetTest(test_set, test_collo, test_set_str, test_set_collo, done);
 
     });

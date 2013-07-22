@@ -1,10 +1,10 @@
-## JugglingDB-MySQL [![Build Status](https://travis-ci.org/jugglingdb/mysql-adapter.png)](https://travis-ci.org/jugglingdb/mysql-adapter)
+## Loopback MySQL Connector
 
-MySQL adapter for JugglingDB.
+MySQL connector for Loopback Data.
 
 ## Usage
 
-To use it you need `jugglingdb@0.2.x`.
+To use it you need `loopback-data`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,8 +12,8 @@ To use it you need `jugglingdb@0.2.x`.
     {
       ...
       "dependencies": {
-        "jugglingdb": "0.2.x",
-        "jugglingdb-mysql": "latest"
+        "loopback-data": "latest",
+        "loopback-connector-mysql": "latest"
       },
       ...
     }
@@ -22,13 +22,13 @@ To use it you need `jugglingdb@0.2.x`.
 2. Use:
 
     ```javascript
-        var Schema = require('jugglingdb').Schema;
+        var Schema = require('loopback-data').Schema;
         var schema = new Schema('mysql', {
             database: 'myapp_test',
             username: 'root'
         });
     ```
-    You can optionally pass a few additional parameters supported by `node-mysql`, most particularly `password` and `collation`. `Collation` currently defaults to `utf8mb4_general_ci`. The `collation` value will also be used to derive the connection charset.
+    You can optionally pass a few additional parameters supported by `node-mysql`, most particularly `password` and `collation`. `Collation` currently defaults to `utf8_general_ci`. The `collation` value will also be used to derive the connection charset.
 
 ## Running tests
 
@@ -36,7 +36,7 @@ To use it you need `jugglingdb@0.2.x`.
     
 ## Using the `dataType` field/column option with MySQL
 
-The jugglingdb MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many jugglingdb types.
+The loopback-data MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many loopback-data types.
 
 The following type-dataType combinations are supported:
 * <h4> Number </h4>

@@ -1,6 +1,6 @@
 var should = require('./init.js');
 var assert = require('assert');
-var Schema = require('jugglingdb').Schema;
+var Schema = require('loopback-data').Schema;
 
 var db, UserData, StringData, NumberData, DateData; 
 
@@ -72,8 +72,9 @@ describe('migrations', function() {
     });
     
     it('UserData should have correct indexes', function(done) {
-        // Note: getIdexes truncates multi-key indexes to the first member. Hence index1 is correct.
+        // Note: getIndexes truncates multi-key indexes to the first member. Hence index1 is correct.
         getIndexes('UserData', function(err, fields) {
+            // console.log('....', fields);
             assert.deepEqual(fields, { PRIMARY: 
                { Table: 'UserData',
                  Non_unique: 0,
@@ -86,8 +87,7 @@ describe('migrations', function() {
                  Packed: null,
                  Null: '',
                  Index_type: 'BTREE',
-                 Comment: '',
-                 Index_comment: '' },
+                 Comment: '' },
               email: 
                { Table: 'UserData',
                  Non_unique: 1,
@@ -95,13 +95,12 @@ describe('migrations', function() {
                  Seq_in_index: 1,
                  Column_name: 'email',
                  Collation: 'A',
-                 Cardinality: 0,
-                 Sub_part: 191,
+                 Cardinality: null,
+                 Sub_part: null,
                  Packed: null,
                  Null: '',
                  Index_type: 'BTREE',
-                 Comment: '',
-                 Index_comment: '' },
+                 Comment: '' },
               index0: 
                { Table: 'UserData',
                  Non_unique: 1,
@@ -109,13 +108,12 @@ describe('migrations', function() {
                  Seq_in_index: 1,
                  Column_name: 'email',
                  Collation: 'A',
-                 Cardinality: 0,
-                 Sub_part: 191,
+                 Cardinality: null,
+                 Sub_part: null,
                  Packed: null,
                  Null: '',
                  Index_type: 'BTREE',
-                 Comment: '',
-                 Index_comment: '' } 
+                 Comment: '' }
             });
             done();
         });
@@ -298,7 +296,7 @@ describe('migrations', function() {
         NumberData.create({number: 1.1234567, tinyInt: 123456, mediumInt: -1234567, floater: 123456789.1234567 }, function(err, obj) {
             assert.ok(!err);
             assert.ok(obj);
-            NumberData.find(obj.id, function(err, found) {
+            NumberData.findById(obj.id, function(err, found) {
                 assert.equal(found.number, 1.123);
                 assert.equal(found.tinyInt, 127);
                 assert.equal(found.mediumInt, 0);
@@ -315,7 +313,7 @@ describe('migrations', function() {
         }, function(err, obj){
             assert.ok(!err);
             assert.ok(obj);
-            DateData.find(obj.id, function(err, found){
+            DateData.findById(obj.id, function(err, found){
                 assert.equal(found.dateTime.toGMTString(), 'Fri, 09 Aug 1996 07:47:33 GMT');
                 assert.equal(found.timestamp.toGMTString(), 'Sat, 22 Sep 2007 17:12:22 GMT');
                 done();
