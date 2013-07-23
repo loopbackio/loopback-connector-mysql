@@ -7,13 +7,13 @@ DBUSER = 'strongloop'
 DBPASS = 'password'
 DBENGINE = 'mysql'
 
-schema = new Schema __dirname + '/..', database: '', username: DBUSER, password: DBPASS
-schema.log = (q) -> console.log q
+dataSource = new Schema __dirname + '/..', database: '', username: DBUSER, password: DBPASS
+dataSource.log = (q) -> console.log q
 
 query = (sql, cb) ->
-    schema.adapter.query sql, cb
+    dataSource.adapter.query sql, cb
 
-User = schema.define 'User',
+User = dataSource.define 'User',
     email: { type: String, null: false, index: true }
     name: String
     bio: Text
@@ -26,7 +26,7 @@ User = schema.define 'User',
         columns: 'email, createdByAdmin'
 
 withBlankDatabase = (cb) ->
-    db = schema.settings.database = DBNAME
+    db = dataSource.settings.database = DBNAME
     query 'DROP DATABASE IF EXISTS ' + db, (err) ->
         query 'CREATE DATABASE ' + db, (err) ->
             query 'USE '+ db, cb
@@ -57,7 +57,7 @@ it = (name, testCases) ->
 
 it 'should run migration', (test) ->
     withBlankDatabase (err) ->
-        schema.automigrate ->
+        dataSource.automigrate ->
             getFields 'User', (err, fields) ->
                 test.deepEqual fields,
                     id:
@@ -176,7 +176,7 @@ it 'should autoupgrade', (test) ->
             User.defineProperty 'name', type: String, limit: 50
             User.defineProperty 'newProperty', type: Number
             User.defineProperty 'pendingPeriod', false
-            schema.autoupdate (err) ->
+            dataSource.autoupdate (err) ->
                 getFields 'User', (err, fields) ->
                     # change nullable for email
                     test.equal fields.email.Null, 'YES', 'Email is not null'
@@ -194,18 +194,18 @@ it 'should autoupgrade', (test) ->
                         test.ok yep
                         test.done()
 
-it 'should check actuality of schema', (test) ->
+it 'should check actuality of dataSource', (test) ->
     # drop column
-    User.schema.isActual (err, ok) ->
-        test.ok ok, 'schema is actual'
+    User.dataSource.isActual (err, ok) ->
+        test.ok ok, 'dataSource is actual'
         User.defineProperty 'email', false
-        User.schema.isActual (err, ok) ->
-            test.ok not ok, 'schema is not actual'
+        User.dataSource.isActual (err, ok) ->
+            test.ok not ok, 'dataSource is not actual'
             test.done()
 
 it 'should add single-column index', (test) ->
     User.defineProperty 'email', type: String, index: { kind: 'FULLTEXT', type: 'HASH'}
-    User.schema.autoupdate (err) ->
+    User.dataSource.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
             test.ok ixs.email && ixs.email.Column_name == 'email'
@@ -215,9 +215,9 @@ it 'should add single-column index', (test) ->
 
 it 'should change type of single-column index', (test) ->
     User.defineProperty 'email', type: String, index: { type: 'BTREE' }
-    User.schema.isActual (err, ok) ->
-        test.ok ok, 'schema is actual'
-        User.schema.autoupdate (err) ->
+    User.dataSource.isActual (err, ok) ->
+        test.ok ok, 'dataSource is actual'
+        User.dataSource.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
             test.ok ixs.email && ixs.email.Column_name == 'email'
@@ -226,17 +226,17 @@ it 'should change type of single-column index', (test) ->
 
 it 'should remove single-column index', (test) ->
     User.defineProperty 'email', type: String, index: false
-    User.schema.autoupdate (err) ->
+    User.dataSource.autoupdate (err) ->
         return console.log(err) if err
         getIndexes 'User', (err, ixs) ->
             test.ok !ixs.email
             test.done()
 
 it 'should update multi-column index when order of columns changed', (test) ->
-    User.schema.adapter._models.User.settings.indexes.index1.columns = 'createdByAdmin, email'
-    User.schema.isActual (err, ok) ->
-        test.ok not ok, 'schema is not actual'
-        User.schema.autoupdate (err) ->
+    User.dataSource.adapter._models.User.settings.indexes.index1.columns = 'createdByAdmin, email'
+    User.dataSource.isActual (err, ok) ->
+        test.ok not ok, 'dataSource is not actual'
+        User.dataSource.autoupdate (err) ->
             return console.log(err) if err
             getIndexes 'User', (err, ixs) ->
                 test.equals ixs.index1.Column_name, 'createdByAdmin'
@@ -245,12 +245,12 @@ it 'should update multi-column index when order of columns changed', (test) ->
 
 it 'test', (test) ->
     User.defineProperty 'email', type: String, index: true
-    User.schema.autoupdate (err) ->
-        User.schema.autoupdate (err) ->
-            User.schema.autoupdate (err) ->
+    User.dataSource.autoupdate (err) ->
+        User.dataSource.autoupdate (err) ->
+            User.dataSource.autoupdate (err) ->
                 test.done()
 
 it 'should disconnect when done', (test) ->
-    schema.disconnect()
+    dataSource.disconnect()
     test.done()
 

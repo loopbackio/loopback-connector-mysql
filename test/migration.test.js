@@ -279,14 +279,14 @@ describe('migrations', function() {
         });
     });
 
-    it('should check actuality of schema', function(done) {
+    it('should check actuality of dataSource', function(done) {
         // 'drop column'
-        UserData.schema.isActual(function(err, ok) {
-            assert.ok(ok, 'schema is not actual (should be)');
+        UserData.dataSource.isActual(function(err, ok) {
+            assert.ok(ok, 'dataSource is not actual (should be)');
             UserData.defineProperty('essay', {type: Schema.Text});
             // UserData.defineProperty('email', false); Can't undefine currently.
-            UserData.schema.isActual(function(err, ok) {
-                assert.ok(!ok, 'schema is actual (shouldn\t be)');
+            UserData.dataSource.isActual(function(err, ok) {
+                assert.ok(!ok, 'dataSource is actual (shouldn\t be)');
                 done()
             });
         });
