@@ -1,4 +1,4 @@
-juggling = require('loopback-data')
+juggling = require('loopback-datasource-juggler')
 Schema = juggling.Schema
 Text = Schema.Text
 

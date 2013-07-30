@@ -1,6 +1,6 @@
 var should = require('./init.js');
 var assert = require('assert');
-var Schema = require('loopback-data').Schema;
+var Schema = require('loopback-datasource-juggler').Schema;
 
 var db, settings, adapter, DummyModel, odb;
 

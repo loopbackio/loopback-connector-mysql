@@ -4,7 +4,7 @@ MySQL connector for Loopback Data.
 
 ## Usage
 
-To use it you need `loopback-data`.
+To use it you need `loopback-datasource-juggler`.
 
 1. Setup dependencies in `package.json`:
 
@@ -12,7 +12,7 @@ To use it you need `loopback-data`.
     {
       ...
       "dependencies": {
-        "loopback-data": "latest",
+        "loopback-datasource-juggler": "latest",
         "loopback-connector-mysql": "latest"
       },
       ...
@@ -22,7 +22,7 @@ To use it you need `loopback-data`.
 2. Use:
 
     ```javascript
-        var Schema = require('loopback-data').Schema;
+        var Schema = require('loopback-datasource-juggler').Schema;
         var schema = new Schema('mysql', {
             database: 'myapp_test',
             username: 'root'
@@ -36,7 +36,7 @@ To use it you need `loopback-data`.
     
 ## Using the `dataType` field/column option with MySQL
 
-The loopback-data MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many loopback-data types.
+The loopback-datasource-juggler MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many loopback-datasource-juggler types.
 
 The following type-dataType combinations are supported:
 * <h4> Number </h4>
