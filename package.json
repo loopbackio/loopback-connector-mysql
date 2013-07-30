@@ -7,7 +7,7 @@
     "test": "make test"
   },
   "dependencies": {
-    "loopback-data": "git+ssh://git@github.com:strongloop/loopback-data.git",
+    "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
     "mysql": ">= 2.0.0-alpha8",
     "async": "latest"
   },
