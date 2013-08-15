@@ -19,8 +19,7 @@
   "devDependencies": {
     "coffee-script": "latest",
     "should": "~1.2.2",
-    "mocha": "~1.8.2",
-    "semicov": "*"
+    "mocha": "~1.8.2"
   },
   "repository": {
     "type": "git",
