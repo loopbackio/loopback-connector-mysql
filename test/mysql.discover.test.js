@@ -32,7 +32,7 @@ describe('discoverModels', function() {
         } else {
           var views = false;
           models.forEach(function(m) {
-            console.dir(m);
+            // console.dir(m);
             if (m.type === 'view') {
               views = true;
             }
@@ -57,7 +57,7 @@ describe('discoverModels', function() {
         } else {
           var views = false;
           models.forEach(function(m) {
-            console.dir(m);
+            // console.dir(m);
             if (m.type === 'view') {
               views = true;
             }
@@ -84,7 +84,7 @@ describe('Discover models including other users', function() {
       } else {
         var others = false;
         models.forEach(function(m) {
-          console.dir(m);
+          // console.dir(m);
           if (m.owner !== 'STRONGLOOP') {
             others = true;
           }
@@ -105,7 +105,7 @@ describe('Discover model properties', function() {
           done(err);
         } else {
           models.forEach(function(m) {
-            console.dir(m);
+            // console.dir(m);
             assert(m.tableName === 'PRODUCT');
           });
           done(null, models);
@@ -124,7 +124,7 @@ describe('Discover model primary keys', function () {
                 done(err);
             } else {
                 models.forEach(function (m) {
-                    console.dir(m);
+                    // console.dir(m);
                     assert(m.tableName === 'PRODUCT');
                 });
                 done(null, models);
@@ -139,7 +139,7 @@ describe('Discover model primary keys', function () {
                 done(err);
             } else {
                 models.forEach(function (m) {
-                    console.dir(m);
+                    // console.dir(m);
                     assert(m.tableName === 'PRODUCT');
                 });
                 done(null, models);
@@ -156,7 +156,7 @@ describe('Discover model foreign keys', function () {
                 done(err);
             } else {
                 models.forEach(function (m) {
-                    console.dir(m);
+                    // console.dir(m);
                     assert(m.fkTableName === 'INVENTORY');
                 });
                 done(null, models);
@@ -170,7 +170,7 @@ describe('Discover model foreign keys', function () {
                 done(err);
             } else {
                 models.forEach(function (m) {
-                    console.dir(m);
+                    // console.dir(m);
                     assert(m.fkTableName === 'INVENTORY');
                 });
                 done(null, models);
@@ -182,7 +182,7 @@ describe('Discover model foreign keys', function () {
 describe('Discover ADL schema from a table', function () {
     it('should return an ADL schema for INVENTORY', function (done) {
         db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema) {
-            console.log('%j', schema);
+            // console.log('%j', schema);
             assert(schema.name === 'Inventory');
             assert(schema.options.mysql.schema === 'STRONGLOOP');
             assert(schema.options.mysql.table === 'INVENTORY');
