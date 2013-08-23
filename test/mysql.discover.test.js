@@ -6,11 +6,8 @@ var DataSource = require('loopback-datasource-juggler').DataSource;
 var db;
 
 before(function() {
-    var config = require('rc')('loopback');
-    config = (config.dev && config.dev.mysql) || {};
-
+    var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
     db = new DataSource(require('../'), config);
-
 });
 
 describe('discoverModels', function() {

@@ -2,8 +2,7 @@ module.exports = require('should');
 
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var config = require('rc')('loopback');
-config = (config.test && config.test.mysql) || {};
+var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 
 global.getConfig = function(options) {
 
@@ -17,14 +16,14 @@ global.getConfig = function(options) {
 
     if (options) {
         for (var el in options) {
-            dbConf[el] = options[el]
+            dbConf[el] = options[el];
         }
     }
 
     return dbConf;
-}
+};
 
-global.getSchema = function(options) {
+global.getDataSource = global.getSchema = function(options) {
     var db = new DataSource(require('../'), getConfig(options));
     return db;
 };
