@@ -1,17 +1,14 @@
-var should = require('./init.js');
+require('./init.js');
 var assert = require('assert');
-var Schema = require('loopback-datasource-juggler').Schema;
 
-var db, settings, adapter, DummyModel, odb;
+var db, DummyModel, odb;
 
 describe('migrations', function() {
-     
-    
-    
+
     before(function() {
         require('./init.js');
         
-        odb = getSchema({collation: 'utf8_general_ci'});
+        odb = getDataSource({collation: 'utf8_general_ci'});
         db = odb;
     });
     

@@ -3,8 +3,7 @@ config = (config.test && config.test.mysql) || {};
 
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var config = require('rc')('loopback');
-config = (config.dev && config.dev.mysql) || {};
+var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
 
 var ds = new DataSource(require('../'), config);
 
