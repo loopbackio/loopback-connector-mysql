@@ -2,20 +2,12 @@ process.env.NODE_ENV = 'test';
 require('should');
 
 var assert = require('assert');
-
-var Schema = require('loopback-datasource-juggler').Schema;
+var DataSource = require('loopback-datasource-juggler').DataSource;
 var db;
 
 before(function() {
-
-  db = new Schema(require('../'), {
-      host: '127.0.0.1',
-      port: 3306,
-      database: 'STRONGLOOP',
-      username: 'strongloop',
-      password: 'password'
-  });
-
+    var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
+    db = new DataSource(require('../'), config);
 });
 
 describe('discoverModels', function() {
