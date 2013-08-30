@@ -1,8 +1,7 @@
-var should = require('./init.js');
+require('./init.js');
 var assert = require('assert');
-var Schema = require('loopback-datasource-juggler').Schema;
 
-var db, settings, adapter, EnumModel, ANIMAL_ENUM;
+var db, EnumModel, ANIMAL_ENUM;
 
 describe('MySQL specific datatypes', function() {
      

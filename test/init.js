@@ -1,28 +1,30 @@
 module.exports = require('should');
 
-var Schema = require('loopback-datasource-juggler').Schema;
+var DataSource = require('loopback-datasource-juggler').DataSource;
+
+var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 
 global.getConfig = function(options) {
 
     var dbConf = {
-        host: '166.78.158.45',
-        port: 3306,
+        host: config.host || 'localhost',
+        port: config.port || 3306,
         database: 'myapp_test',
-        username: 'strongloop',
-        password: 'str0ng100pjs'
+        username: config.username,
+        password: config.password
     };
 
     if (options) {
         for (var el in options) {
-            dbConf[el] = options[el]
+            dbConf[el] = options[el];
         }
     }
 
     return dbConf;
-}
+};
 
-global.getSchema = function(options) {
-    var db = new Schema(require('../'), getConfig(options));
+global.getDataSource = global.getSchema = function(options) {
+    var db = new DataSource(require('../'), getConfig(options));
     return db;
 };
 

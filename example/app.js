@@ -1,13 +1,11 @@
+var config = require('rc')('loopback');
+config = (config.test && config.test.mysql) || {};
+
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
-var ds = new DataSource(require('../'), {
-    host: '166.78.158.45',
-    port: 3306,
-    database: 'test',
-    username: 'strongloop',
-    password: 'str0ng100pjs',
-    debug: false
-});
+var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
+
+var ds = new DataSource(require('../'), config);
 
 function show(err, models) {
     if (err) {
@@ -40,7 +38,6 @@ ds.discoverAndBuildModels('User', {owner: 'test', visited: {}, associations: tru
     for (var m in models) {
         models[m].all(show);
     }
-    ;
 
 });
 
