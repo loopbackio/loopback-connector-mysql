@@ -1,6 +1,6 @@
 ## Loopback MySQL Connector
 
-MySQL connector for Loopback Data.
+MySQL connector for LoopBack Data Source Juggler.
 
 ## Usage
 
@@ -22,13 +22,16 @@ To use it you need `loopback-datasource-juggler`.
 2. Use:
 
     ```javascript
-        var Schema = require('loopback-datasource-juggler').Schema;
-        var schema = new Schema('mysql', {
+        var DataSource = require('loopback-datasource-juggler').DataSource;
+        var dataSource = new DataSource('mysql', {
             database: 'myapp_test',
             username: 'root'
         });
     ```
-    You can optionally pass a few additional parameters supported by `node-mysql`, most particularly `password` and `collation`. `Collation` currently defaults to `utf8_general_ci`. The `collation` value will also be used to derive the connection charset.
+    You can optionally pass a few additional parameters supported by `node-mysql`,
+    most particularly `password` and `collation`. `Collation` currently defaults
+    to `utf8_general_ci`. The `collation` value will also be used to derive the
+    connection charset.
 
 ## Running tests
 
@@ -36,7 +39,9 @@ To use it you need `loopback-datasource-juggler`.
     
 ## Using the `dataType` field/column option with MySQL
 
-The loopback-datasource-juggler MySQL adapter now supports using the `dataType`  column/property attribute to specify what MySQL column type is used for many loopback-datasource-juggler types.
+The loopback-datasource-juggler MySQL adapter now supports using the `dataType`
+column/property attribute to specify what MySQL column type is used for many
+loopback-datasource-juggler types.
 
 The following type-dataType combinations are supported:
 * <h4> Number </h4>
@@ -72,7 +77,7 @@ The following type-dataType combinations are supported:
      Example:
       `{ stdDev : { type: Number, dataType: 'decimal', precision: 12, scale: 8 }}`
 
-* <h4> String / Schema.Text / Schema.JSON </h4>
+* <h4> String / DataSource.Text / DataSource.JSON </h4>
   * varchar
   * char
   * text
@@ -98,7 +103,7 @@ The following type-dataType combinations are supported:
   Create an Enum using Enum factory:
 
 ```javascript
-    var MOOD = schema.EnumFactory('glad', 'sad', 'mad');
+    var MOOD = dataSource.EnumFactory('glad', 'sad', 'mad');
     MOOD.SAD;    // 'sad'
     MOOD(2);     // 'sad'
     MOOD('SAD'); // 'sad'
@@ -106,10 +111,15 @@ The following type-dataType combinations are supported:
 ```
   
   * `{ mood: { type: MOOD }}`
-  * `{ choice: { type: schema.EnumFactory('yes', 'no', 'maybe'), null: false }}`
+  * `{ choice: { type: dataSource.EnumFactory('yes', 'no', 'maybe'), null: false }}`
 
 
-## MIT License
+## License
+
+Please see LICENSE.
+
+The project was initially forked from [mysql-adapter](https://github.com/jugglingdb/mysql-adapter)
+which carries the following copyright and permission notices:
 
 ```text
 Copyright (C) 2012 by Anatoliy Chakkaev
