@@ -1,0 +1,10 @@
+{
+"content": [
+    "README.md",
+    {"title": "LoopBack MySQL Connector API", "depth": 2},
+    "lib/mysql.js",
+    "lib/discovery.js"
+  ],
+  "codeSectionDepth": 3
+}
+
