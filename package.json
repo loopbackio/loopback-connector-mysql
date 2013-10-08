@@ -11,8 +11,8 @@
     "coverage": "mocha -r blanket -R html-cov > coverage_loopback-connector-mysql.html"
   },
   "dependencies": {
-    "loopback-datasource-juggler": "git+ssh://git@github.com:strongloop/loopback-datasource-juggler.git",
-    "mysql": ">=2.0.0-alpha9",
+    "loopback-datasource-juggler": "~1.0.0",
+    "mysql": "~2.0.0-alpha9",
     "async": "~0.2.9"
   },
   "devDependencies": {
