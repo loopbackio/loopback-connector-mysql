@@ -1,6 +1,3 @@
-var config = require('rc')('loopback');
-config = (config.test && config.test.mysql) || {};
-
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
@@ -23,17 +20,17 @@ function show(err, models) {
 
 ds.discoverModelDefinitions({views: true, limit: 20}, show);
 
-ds.discoverModelProperties('User', show);
+ds.discoverModelProperties('customer', show);
 
-ds.discoverModelProperties('Post', {owner: 'test'}, show);
+ds.discoverModelProperties('location', {owner: 'strongloop'}, show);
 
-ds.discoverPrimaryKeys('User', show);
-// ds.discoverForeignKeys('User',  show);
+ds.discoverPrimaryKeys('customer', show);
+ds.discoverForeignKeys('inventory',  show);
 
-// ds.discoverExportedForeignKeys('User',  show);
+ds.discoverExportedForeignKeys('location',  show);
 
 
-ds.discoverAndBuildModels('User', {owner: 'test', visited: {}, associations: true}, function (err, models) {
+ds.discoverAndBuildModels('weapon', {owner: 'strongloop', visited: {}, associations: true}, function (err, models) {
 
     for (var m in models) {
         models[m].all(show);
