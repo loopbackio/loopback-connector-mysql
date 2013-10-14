@@ -171,8 +171,8 @@ describe('Discover model foreign keys', function () {
     });
 });
 
-describe('Discover ADL schema from a table', function () {
-    it('should return an ADL schema for INVENTORY', function (done) {
+describe('Discover LDL schema from a table', function () {
+    it('should return an LDL schema for INVENTORY', function (done) {
         db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema) {
             // console.log('%j', schema);
             assert(schema.name === 'Inventory');
