@@ -1,6 +1,6 @@
 ## loopback-connector-mysql
 
-MySQL connector for [LoopBack Data Source Juggler](http://docs.strongloop.com/loopback-datasource-juggler/).
+`loopback-connector-mysql` is the MySQL connector module for [loopback-datasource-juggler](http://docs.strongloop.com/loopback-datasource-juggler/).
 
 ## Usage
 
@@ -24,6 +24,8 @@ To use it you need `loopback-datasource-juggler`.
     ```javascript
         var DataSource = require('loopback-datasource-juggler').DataSource;
         var dataSource = new DataSource('mysql', {
+            host: 'localhost',
+            port: 3306,
             database: 'mydb',
             username: 'myuser',
             password: 'mypass'
@@ -34,11 +36,50 @@ To use it you need `loopback-datasource-juggler`.
     to `utf8_general_ci`. The `collation` value will also be used to derive the
     connection charset.
 
-    
+
+## Data type mappings
+
+`loopback-connector-mysql` uses the following rules to map between JSON types and MySQL data types.
+
+### JSON to MySQL types
+
+- String/JSON: VARCHAR
+- Text: TEXT
+- Number: INT
+- Date: DATETIME
+- BOOLEAN: TINYINT(1)
+- Point/GeoPoint: POINT
+- Enum: ENUM
+
+### MySQL to JSON types
+
+- CHAR: String
+- CHAR(1): Boolean
+- VARCHAR/TINYTEXT/MEDIUMTEXT/LONGTEXT/TEXT/ENUM/SET: String
+- TINYBLOB/MEDIUMBLOB/LONGBLOB/BLOB/BINARY/VARBINARY/BIT: Binary
+- TINYINT/SMALLINT/INT/MEDIUMINT/YEAR/FLOAT/DOUBLE/NUMERIC/DECIMAL: Number
+- DATE/TIMESTAMP/DATETIME: Date
+
 ## Using the `dataType` field/column option with MySQL
 
-The loopback-datasource-juggler MySQL connector now supports using the `dataType` column/property attribute to specify
-what MySQL column type is used for many loopback-datasource-juggler types.
+`loopback-connector-mysql` allows mapping of LoopBack model properties to MYSQL columns using the 'mysql' property of the
+ property definition. For example,
+
+    "locationId":{
+        "type":"String",
+        "required":true,
+        "length":20,
+        "mysql":
+        {
+            "columnName":"LOCATION_ID",
+            "dataType":"VARCHAR2",
+            "dataLength":20,
+            "nullable":"N"
+        }
+    }
+
+`loopback-connector-mysql` also supports using the `dataType` column/property attribute to specify what MySQL column
+type is used for many loopback-datasource-juggler types.
 
 The following type-dataType combinations are supported:
 - Number
@@ -115,7 +156,7 @@ The following type-dataType combinations are supported:
 
 MySQL data sources allow you to discover model definition information from existing mysql databases. See the following APIs:
 
- - [dataSource.discoverModelDefinitions([username], fn)](https://github.com/strongloop/loopback#datasourcediscovermodeldefinitionsusername-fn)
+ - [dataSource.discoverModelDefinitions([owner], fn)](https://github.com/strongloop/loopback#datasourcediscovermodeldefinitionsusername-fn)
  - [dataSource.discoverSchema([owner], name, fn)](https://github.com/strongloop/loopback#datasourcediscoverschemaowner-name-fn)
 
 ### Asynchronous APIs for discovery
@@ -221,7 +262,95 @@ MySQL data sources allow you to discover model definition information from exist
 
 ### Discover/build/try the models
 
-The following example uses `discoverAndBuildModels` to discover, build and try the models:
+#### Build a LDL schema by discovery
+
+Data sources backed by the MySQL connector can discover LDL models from the database using the `discoverSchema` API. For
+example,
+
+    dataSource.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema) {
+        ...
+    }
+
+Here is the sample result. Please note there are 'mysql' properties in addition to the regular LDL model options and
+properties. The 'mysql' objects contain the MySQL specific mappings.
+
+    {
+      "name":"Inventory",
+      "options":{
+        "idInjection":false,
+        "mysql":{
+          "schema":"STRONGLOOP",
+          "table":"INVENTORY"
+        }
+      },
+      "properties":{
+        "productId":{
+          "type":"String",
+          "required":false,
+          "length":60,
+          "precision":null,
+          "scale":null,
+          "id":1,
+          "mysql":{
+            "columnName":"PRODUCT_ID",
+            "dataType":"varchar",
+            "dataLength":60,
+            "dataPrecision":null,
+            "dataScale":null,
+            "nullable":"NO"
+          }
+        },
+        "locationId":{
+          "type":"String",
+          "required":false,
+          "length":60,
+          "precision":null,
+          "scale":null,
+          "id":2,
+          "mysql":{
+            "columnName":"LOCATION_ID",
+            "dataType":"varchar",
+            "dataLength":60,
+            "dataPrecision":null,
+            "dataScale":null,
+            "nullable":"NO"
+          }
+        },
+        "available":{
+          "type":"Number",
+          "required":false,
+          "length":null,
+          "precision":10,
+          "scale":0,
+          "mysql":{
+            "columnName":"AVAILABLE",
+            "dataType":"int",
+            "dataLength":null,
+            "dataPrecision":10,
+            "dataScale":0,
+            "nullable":"YES"
+          }
+        },
+        "total":{
+          "type":"Number",
+          "required":false,
+          "length":null,
+          "precision":10,
+          "scale":0,
+          "mysql":{
+            "columnName":"TOTAL",
+            "dataType":"int",
+            "dataLength":null,
+            "dataPrecision":10,
+            "dataScale":0,
+            "nullable":"YES"
+          }
+        }
+      }
+    }
+
+We can also discover and build model classes in one shot. The following example uses `discoverAndBuildModels` to discover,
+build and try the models:
 
     dataSource.discoverAndBuildModels('INVENTORY', { owner: 'STRONGLOOP', visited: {}, associations: true},
          function (err, models) {
