@@ -2,6 +2,12 @@
 
 `loopback-connector-mysql` is the MySQL connector module for [loopback-datasource-juggler](http://docs.strongloop.com/loopback-datasource-juggler/).
 
+## Installation
+
+````sh
+npm install loopback-connector-mysql --save
+````
+
 ## Usage
 
 To use it you need `loopback-datasource-juggler`.
