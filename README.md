@@ -251,15 +251,6 @@ MySQL data sources allow you to discover model definition information from exist
           pkTableName: 'PRODUCT',
           pkColumnName: 'ID' }
 
-
-### Synchronous APIs for discovery
-
-* MySQL.prototype.discoverModelDefinitionsSync = function (options)
-* MySQL.prototype.discoverModelPropertiesSync = function (table, options)
-* MySQL.prototype.discoverPrimaryKeysSync= function(table, options)
-* MySQL.prototype.discoverForeignKeysSync= function(table, options)
-* MySQL.prototype.discoverExportedForeignKeysSync= function(table, options)
-
 ### Discover/build/try the models
 
 #### Build a LDL schema by discovery
