@@ -248,7 +248,7 @@ describe('migrations', function() {
         }
 
         UserData.create({email: 'test@example.com'}, function(err, user) {
-            assert.ok(!err, 'Could not create user');
+            assert.ok(err, 'Could not create user');
             userExists(function(yep) {
                 assert.ok(yep, 'User does not exist');
             });
