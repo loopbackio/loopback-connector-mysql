@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mysql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
@@ -11,13 +11,13 @@
     "coverage": "mocha -r blanket -R html-cov > coverage_loopback-connector-mysql.html"
   },
   "dependencies": {
-    "loopback-datasource-juggler": "strongloop/loopback-datasource-juggler",
+    "loopback-datasource-juggler": "1.x.x",
     "mysql": "~2.0.0-alpha9",
     "async": "~0.2.9"
   },
   "devDependencies": {
     "should": "~1.3.0",
-    "mocha": "~1.13.0",
+    "mocha": "~1.14.0",
     "blanket": "~1.1.5",
     "rc": "~0.3.1"
   },
