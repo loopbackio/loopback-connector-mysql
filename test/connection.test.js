@@ -8,7 +8,7 @@ describe('migrations', function() {
     before(function() {
         require('./init.js');
         
-        odb = getDataSource({collation: 'utf8_general_ci'});
+        odb = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
         db = odb;
     });
     
@@ -57,7 +57,7 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done){
         assert.ok(!err);
         odb.client.end(function(){ 
             
-            db = getSchema({collation: test_set_collo});
+            db = getSchema({collation: test_set_collo, createDatabase: true});
             DummyModel = db.define('DummyModel', {string: String});
             db.automigrate(function(){
                 var q = 'SELECT DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = ' + db.client.escape(db.settings.database) + ' LIMIT 1';
