@@ -41,7 +41,7 @@ describe('migrations', function() {
     });
     
     it('should drop db and disconnect all', function(done) {
-        db.adapter.query('DROP DATABASE IF EXISTS ' + db.settings.database, function(err) {
+        db.connector.query('DROP DATABASE IF EXISTS ' + db.settings.database, function(err) {
             db.client.end(function(){
                 done();
             });
@@ -61,10 +61,10 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done){
             DummyModel = db.define('DummyModel', {string: String});
             db.automigrate(function(){
                 var q = 'SELECT DEFAULT_COLLATION_NAME FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = ' + db.client.escape(db.settings.database) + ' LIMIT 1';
-                db.client.query(q, function(err, r) {
+                db.connector.query(q, function(err, r) {
                     assert.ok(!err);
                     assert.ok(r[0].DEFAULT_COLLATION_NAME.match(test_collo));
-                    db.client.query('SHOW VARIABLES LIKE "character_set%"', function(err, r){
+                    db.connector.query('SHOW VARIABLES LIKE "character_set%"', function(err, r){
                         assert.ok(!err);
                         var hit_all = 0;
                         for (var result in r) {
@@ -75,7 +75,7 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done){
                         }
                         assert.equal(hit_all, 4);
                     });
-                    db.client.query('SHOW VARIABLES LIKE "collation%"', function(err, r){
+                    db.connector.query('SHOW VARIABLES LIKE "collation%"', function(err, r){
                         assert.ok(!err);
                         var hit_all = 0;
                         for (var result in r) {
@@ -101,7 +101,7 @@ function matchResult(result, variable_name, match) {
 }
 
 var query = function (sql, cb) {
-    odb.adapter.query(sql, cb);
+    odb.connector.query(sql, cb);
 };
 
 
