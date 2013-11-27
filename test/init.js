@@ -11,7 +11,8 @@ global.getConfig = function(options) {
         port: config.port || 3306,
         database: 'myapp_test',
         username: config.username,
-        password: config.password
+        password: config.password,
+        createDatabase: true
     };
 
     if (options) {
