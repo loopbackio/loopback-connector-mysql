@@ -7,6 +7,7 @@ var db;
 
 before(function() {
     var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
+    config.database = 'STRONGLOOP';
     db = new DataSource(require('../'), config);
 });
 
@@ -191,4 +192,29 @@ describe('Discover LDL schema from a table', function () {
             done(null, schema);
         });
     });
+});
+
+describe('Discover and build models', function () {
+  it('should discover and build models', function (done) {
+    db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true}, function (err, models) {
+      assert(models.Inventory, 'Inventory model should be discovered and built');
+      var schema = models.Inventory.definition;
+      assert(schema.settings.mysql.schema === 'STRONGLOOP');
+      assert(schema.settings.mysql.table === 'INVENTORY');
+      assert(schema.properties.productId);
+      assert(schema.properties.productId.type === String);
+      assert(schema.properties.productId.mysql.columnName === 'PRODUCT_ID');
+      assert(schema.properties.locationId);
+      assert(schema.properties.locationId.type === String);
+      assert(schema.properties.locationId.mysql.columnName === 'LOCATION_ID');
+      assert(schema.properties.available);
+      assert(schema.properties.available.type === Number);
+      assert(schema.properties.total);
+      assert(schema.properties.total.type === Number);
+      models.Inventory.findOne(function (err, inv) {
+        assert(!err, 'error should not be reported');
+        done();
+      });
+    });
+  });
 });
