@@ -4,7 +4,7 @@
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --globals getSchema --timeout 15000"
+    "test": "mocha"
   },
   "dependencies": {
     "mysql": "~2.0.0-rc2",
