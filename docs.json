@@ -1,8 +1,14 @@
 {
-"content": [
-    {"title": "LoopBack MySQL Connector API", "depth": 2},
+  "content": [
+    {
+      "title": "LoopBack MySQL Connector API",
+      "depth": 2
+    },
     "lib/mysql.js",
-    {"title": "MySQL Discovery API", "depth": 2},    
+    {
+      "title": "MySQL Discovery API",
+      "depth": 2
+    },
     "lib/discovery.js"
   ],
   "codeSectionDepth": 3
