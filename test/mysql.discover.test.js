@@ -3,10 +3,10 @@ require('should');
 
 var assert = require('assert');
 var DataSource = require('loopback-datasource-juggler').DataSource;
-var db;
+var db, config;
 
 before(function () {
-  var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
+  config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
   config.database = 'STRONGLOOP';
   db = new DataSource(require('../'), config);
 });
@@ -31,6 +31,26 @@ describe('discoverModels', function () {
             }
           });
           assert(views, 'Should have views');
+          done(null, models);
+        }
+      });
+    });
+  });
+
+  describe('Discover current user\'s tables', function () {
+    it('should return an array of tables for the current user', function (done) {
+
+      db.discoverModelDefinitions({
+        limit: 3
+      }, function (err, models) {
+        if (err) {
+          console.error(err);
+          done(err);
+        } else {
+          var views = false;
+          models.forEach(function (m) {
+            assert.equal(m.owner, config.username);
+          });
           done(null, models);
         }
       });
