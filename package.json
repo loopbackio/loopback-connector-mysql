@@ -8,10 +8,8 @@
   },
   "dependencies": {
     "mysql": "~2.1.1",
-    "async": "~0.2.9"
-  },
-  "devDependencies": {
-    "loopback-datasource-juggler": "1.x.x"
+    "async": "~0.7.0",
+    "debug": "~0.8.0"
   },
   "devDependencies": {
     "loopback-datasource-juggler": "1.x.x",

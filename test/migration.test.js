@@ -118,12 +118,13 @@ describe('migrations', function () {
 
   it('StringData should have correct columns', function (done) {
     getFields('StringData', function (err, fields) {
-      assert.deepEqual(fields, { id: { Field: 'id',
-        Type: 'int(11)',
-        Null: 'NO',
-        Key: 'PRI',
-        Default: null,
-        Extra: 'auto_increment' },
+      assert.deepEqual(fields, {
+        idString: { Field: "idString",
+          Type: 'varchar(255)',
+          Null: 'NO',
+          Key: 'PRI',
+          Default: null,
+          Extra: ''},
         smallString: { Field: 'smallString',
           Type: 'char(127)',
           Null: 'NO',
@@ -223,7 +224,7 @@ describe('migrations', function () {
     });
   });
 
-  it('should autoupgrade', function (done) {
+  it('should autoupdate', function (done) {
     var userExists = function (cb) {
       query('SELECT * FROM UserData', function (err, res) {
         cb(!err && res[0].email == 'test@example.com');
@@ -306,7 +307,7 @@ describe('migrations', function () {
 
   it('should disconnect when done', function (done) {
     db.disconnect();
-    done()
+    done();
   });
 
 });
@@ -332,6 +333,7 @@ function setup(done) {
   });
 
   StringData = db.define('StringData', {
+    idString: {type: String, id: true},
     smallString: {type: String, null: false, index: true, dataType: 'char', limit: 127},
     mediumString: {type: String, null: false, dataType: 'varchar', limit: 255},
     tinyText: {type: String, dataType: 'tinyText'},
