@@ -49,6 +49,24 @@ describe('MySQL specific datatypes', function () {
     });
   });
 
+  it('should create a model instance with object/json types', function (done) {
+    var note = {a: 1, b: '2'};
+    var extras = {c: 3, d: '4'};
+    var em = EnumModel.create({animal: ANIMAL_ENUM.DOG, condition: 'sleepy',
+      mood: 'happy', note: note, extras: extras}, function (err, obj) {
+      assert.ok(!err);
+      assert.equal(obj.condition, 'sleepy');
+      EnumModel.findOne({where: {animal: ANIMAL_ENUM.DOG}}, function (err, found) {
+        assert.ok(!err);
+        assert.equal(found.mood, 'happy');
+        assert.equal(found.animal, ANIMAL_ENUM.DOG);
+        assert.deepEqual(found.note, note);
+        assert.deepEqual(found.extras, extras);
+        done();
+      });
+    });
+  });
+
   it('should disconnect when done', function (done) {
     db.disconnect();
     done()
@@ -67,7 +85,9 @@ function setup(done) {
   EnumModel = db.define('EnumModel', {
     animal: { type: ANIMAL_ENUM, null: false },
     condition: { type: db.EnumFactory('hungry', 'sleepy', 'thirsty') },
-    mood: { type: db.EnumFactory('angry', 'happy', 'sad') }
+    mood: { type: db.EnumFactory('angry', 'happy', 'sad') },
+    note: Object,
+    extras: 'JSON'
   });
 
   blankDatabase(db, done);

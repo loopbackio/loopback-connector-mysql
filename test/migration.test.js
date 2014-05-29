@@ -26,14 +26,14 @@ describe('migrations', function () {
           Extra: 'auto_increment' },
         email: {
           Field: 'email',
-          Type: 'varchar(255)',
+          Type: 'varchar(1024)',
           Null: 'NO',
           Key: 'MUL',
           Default: null,
           Extra: '' },
         name: {
           Field: 'name',
-          Type: 'varchar(255)',
+          Type: 'varchar(1024)',
           Null: 'YES',
           Key: '',
           Default: null,
@@ -74,7 +74,6 @@ describe('migrations', function () {
   it('UserData should have correct indexes', function (done) {
     // Note: getIndexes truncates multi-key indexes to the first member. Hence index1 is correct.
     getIndexes('UserData', function (err, fields) {
-      // console.log('....', fields);
       assert.deepEqual(fields, { PRIMARY: { Table: 'UserData',
         Non_unique: 0,
         Key_name: 'PRIMARY',
@@ -94,7 +93,7 @@ describe('migrations', function () {
           Column_name: 'email',
           Collation: 'A',
           Cardinality: null,
-          Sub_part: null,
+          Sub_part: 333,
           Packed: null,
           Null: '',
           Index_type: 'BTREE',
@@ -106,7 +105,7 @@ describe('migrations', function () {
           Column_name: 'email',
           Collation: 'A',
           Cardinality: null,
-          Sub_part: null,
+          Sub_part: 333,
           Packed: null,
           Null: '',
           Index_type: 'BTREE',
