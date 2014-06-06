@@ -10,6 +10,8 @@ describe('mysql', function () {
     Post = db.define('PostWithDefaultId', {
       title: { type: String, length: 255, index: true },
       content: { type: String },
+      comments: [String],
+      history: Object,
       stars: Number
     });
 
@@ -31,6 +33,26 @@ describe('mysql', function () {
         done();
       });
     });
+  });
+
+  it('should allow array or object', function (done) {
+    Post.create({title: 'a', content: 'AAA', comments: ['1', '2'],
+      history: {a: 1, b: 'b'}}, function (err, post) {
+
+      should.not.exist(err);
+
+      Post.findById(post.id, function (err, p) {
+        p.id.should.be.equal(post.id);
+
+        p.content.should.be.equal(post.content);
+        p.title.should.be.equal('a');
+        p.comments.should.eql(['1', '2']);
+        p.history.should.eql({a: 1, b: 'b'});
+
+        done();
+      });
+    });
+
   });
 
   it('updateOrCreate should update the instance', function (done) {
