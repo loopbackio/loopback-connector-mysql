@@ -2,7 +2,7 @@
 
 `loopback-connector-mysql` is the MySQL connector module for [loopback-datasource-juggler](https://github.com/strongloop/loopback-datasource-juggler/).
 
-For complete documentation, see [StrongLoop Documentation | MySQL Connector](http://docs.strongloop.com/display/DOC/MySQL+connector).
+For complete documentation, see [StrongLoop Documentation | MySQL Connector](http://docs.strongloop.com/display/LB/MySQL+connector).
 
 ## Installation
 
