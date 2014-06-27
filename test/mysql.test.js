@@ -362,7 +362,7 @@ describe('mysql', function () {
       function (err, post) {
         Post.create({title: 'My Post2', content: 'Hello', stars: 20},
           function (err, post) {
-            Post.find({where: {title: {inq: 'SELECT title from PostWithDefaultId'}}},
+            Post.find({where: {title: {inq: ['SELECT title from PostWithDefaultId']}}},
               function (err, posts) {
                 should.not.exist(err);
                 posts.should.have.property('length', 0);
@@ -392,7 +392,7 @@ describe('mysql', function () {
       function (err, post) {
         Post.create({title: 'My Post2', content: 'Hello', stars: 20},
           function (err, post) {
-            Post.find({where: {title: {nin: 'SELECT title from PostWithDefaultId'}}},
+            Post.find({where: {title: {nin: ['SELECT title from PostWithDefaultId']}}},
               function (err, posts) {
                 should.not.exist(err);
                 posts.should.have.property('length', 2);
@@ -408,7 +408,7 @@ describe('mysql', function () {
       function (err, post) {
         Post.create({title: 'My Post2', content: 'Hello', stars: 20},
           function (err, post) {
-            Post.find({where: {stars: {inq: 'SELECT title from PostWithDefaultId'}}},
+            Post.find({where: {stars: {inq: ['SELECT title from PostWithDefaultId']}}},
               function (err, posts) {
                 should.not.exist(err);
                 posts.should.have.property('length', 0);
