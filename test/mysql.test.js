@@ -183,7 +183,7 @@ describe('mysql', function () {
   });
 
   it('all return should honor filter.fields', function (done) {
-    var post = new Post({title: 'b', content: 'BBB'})
+    var post = new Post({title: 'b', content: 'BBB'});
     post.save(function (err, post) {
       Post.all({fields: ['title'], where: {title: 'b'}}, function (err, posts) {
         should.not.exist(err);
