@@ -26,14 +26,14 @@ describe('migrations', function () {
           Extra: 'auto_increment' },
         email: {
           Field: 'email',
-          Type: 'varchar(1024)',
+          Type: 'varchar(512)',
           Null: 'NO',
           Key: 'MUL',
           Default: null,
           Extra: '' },
         name: {
           Field: 'name',
-          Type: 'varchar(1024)',
+          Type: 'varchar(512)',
           Null: 'YES',
           Key: '',
           Default: null,
