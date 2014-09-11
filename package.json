@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mysql",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
@@ -8,9 +8,9 @@
   },
   "dependencies": {
     "loopback-connector": "1.x",
-    "mysql": "~2.3.2",
+    "mysql": "~2.5.0",
     "async": "~0.9.0",
-    "debug": "~1.0.2"
+    "debug": "~2.0.0"
   },
   "devDependencies": {
     "loopback-datasource-juggler": "1.x.x",
