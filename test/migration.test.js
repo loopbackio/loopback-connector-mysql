@@ -304,6 +304,18 @@ describe('migrations', function () {
     });
   });
 
+  it('should report errors for automigrate', function() {
+    db.automigrate('XYZ', function(err) {
+      assert(err);
+    });
+  });
+
+  it('should report errors for autoupdate', function() {
+    db.autoupdate('XYZ', function(err) {
+      assert(err);
+    });
+  });
+
   it('should disconnect when done', function (done) {
     db.disconnect();
     done();
