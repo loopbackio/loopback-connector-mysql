@@ -1,6 +1,6 @@
 var should = require('./init.js');
 
-var Post, PostWithStringId, db;
+var Post, PostWithStringId, PostWithUniqueTitle, db;
 
 describe('mysql', function () {
 
@@ -21,7 +21,12 @@ describe('mysql', function () {
       content: { type: String }
     });
 
-    db.automigrate(['PostWithDefaultId', 'PostWithStringId'], function (err) {
+    PostWithUniqueTitle = db.define('PostWithUniqueTitle', {
+      title: { type: String, length: 255, index: {unique: true} },
+      content: { type: String }
+    });
+
+    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle'], function (err) {
       should.not.exist(err);
       done(err);
     });
@@ -30,7 +35,9 @@ describe('mysql', function () {
   beforeEach(function (done) {
     Post.destroyAll(function () {
       PostWithStringId.destroyAll(function () {
-        done();
+        PostWithUniqueTitle.destroyAll(function () {
+          done();
+        });
       });
     });
   });
@@ -448,9 +455,22 @@ describe('mysql', function () {
       });
   });
 
+  it('should not allow duplicate titles', function (done) {
+    var data = {title: 'a', content: 'AAA'};
+    PostWithUniqueTitle.create(data, function (err, post) {
+      should.not.exist(err);
+      PostWithUniqueTitle.create(data, function (err, post) {
+        should.exist(err);
+        done();
+      });
+    });
+  });
+
   after(function (done) {
     Post.destroyAll(function () {
-      PostWithStringId.destroyAll(done);
+      PostWithStringId.destroyAll(function () {
+        PostWithUniqueTitle.destroyAll(done);
+      });
     });
   });
 });
