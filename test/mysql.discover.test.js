@@ -200,12 +200,14 @@ describe('Discover LDL schema from a table', function () {
       assert(schema.options.mysql.schema === 'STRONGLOOP');
       assert(schema.options.mysql.table === 'INVENTORY');
       assert(schema.properties.productId);
+      assert(schema.properties.productId.required);
       assert(schema.properties.productId.type === 'String');
       assert(schema.properties.productId.mysql.columnName === 'PRODUCT_ID');
       assert(schema.properties.locationId);
       assert(schema.properties.locationId.type === 'String');
       assert(schema.properties.locationId.mysql.columnName === 'LOCATION_ID');
       assert(schema.properties.available);
+      assert(schema.properties.available.required === false);
       assert(schema.properties.available.type === 'Number');
       assert(schema.properties.total);
       assert(schema.properties.total.type === 'Number');
