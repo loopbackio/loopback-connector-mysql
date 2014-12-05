@@ -1,3 +1,13 @@
+2014-12-05, Version 1.4.9
+=========================
+
+ * Add a test case for autoupdate (Raymond Feng)
+
+ * Create 'NOT NULL' constraint for required or id properties (Raymond Feng)
+
+ * Better handle discovery of nullable columns (Raymond Feng)
+
+
 2014-11-27, Version 1.4.8
 =========================
 
