@@ -72,7 +72,8 @@ describe('migrations', function () {
   });
 
   it('UserData should have correct indexes', function (done) {
-    // Note: getIndexes truncates multi-key indexes to the first member. Hence index1 is correct.
+    // Note: getIndexes truncates multi-key indexes to the first member.
+    // Hence index1 is correct.
     getIndexes('UserData', function (err, fields) {
       assert.deepEqual(fields, { PRIMARY: { Table: 'UserData',
         Non_unique: 0,
@@ -182,7 +183,7 @@ describe('migrations', function () {
           Extra: '' },
         mediumInt: { Field: 'mediumInt',
           Type: 'mediumint(8) unsigned',
-          Null: 'YES',
+          Null: 'NO',
           Key: '',
           Default: null,
           Extra: '' },
@@ -236,9 +237,12 @@ describe('migrations', function () {
         assert.ok(yep, 'User does not exist');
       });
       UserData.defineProperty('email', { type: String });
-      UserData.defineProperty('name', {type: String, dataType: 'char', limit: 50});
-      UserData.defineProperty('newProperty', {type: Number, unsigned: true, dataType: 'bigInt'});
-      // UserData.defineProperty('pendingPeriod', false); This will not work as expected.
+      UserData.defineProperty('name', {type: String,
+        dataType: 'char', limit: 50});
+      UserData.defineProperty('newProperty', {type: Number, unsigned: true,
+        dataType: 'bigInt'});
+      // UserData.defineProperty('pendingPeriod', false);
+      // This will not work as expected.
       db.autoupdate(function (err) {
         getFields('UserData', function (err, fields) {
           // change nullable for email
@@ -248,10 +252,12 @@ describe('migrations', function () {
           // add new column
           assert.ok(fields.newProperty, 'New column was not added');
           if (fields.newProperty) {
-            assert.equal(fields.newProperty.Type, 'bigint(20) unsigned', 'New column type is not bigint(20) unsigned');
+            assert.equal(fields.newProperty.Type, 'bigint(20) unsigned',
+              'New column type is not bigint(20) unsigned');
           }
           // drop column - will not happen.
-          // assert.ok(!fields.pendingPeriod, 'Did not drop column pendingPeriod');
+          // assert.ok(!fields.pendingPeriod,
+          // 'Did not drop column pendingPeriod');
           // user still exists
           userExists(function (yep) {
             assert.ok(yep, 'User does not exist');
@@ -276,7 +282,8 @@ describe('migrations', function () {
   });
 
   it('should allow numbers with decimals', function (done) {
-    NumberData.create({number: 1.1234567, tinyInt: 123456, mediumInt: -1234567, floater: 123456789.1234567 }, function (err, obj) {
+    NumberData.create({number: 1.1234567, tinyInt: 123456, mediumInt: -1234567,
+      floater: 123456789.1234567 }, function (err, obj) {
       assert.ok(!err);
       assert.ok(obj);
       NumberData.findById(obj.id, function (err, found) {
@@ -297,8 +304,10 @@ describe('migrations', function () {
       assert.ok(!err);
       assert.ok(obj);
       DateData.findById(obj.id, function (err, found) {
-        assert.equal(found.dateTime.toGMTString(), 'Fri, 09 Aug 1996 07:47:33 GMT');
-        assert.equal(found.timestamp.toGMTString(), 'Sat, 22 Sep 2007 17:12:22 GMT');
+        assert.equal(found.dateTime.toGMTString(),
+          'Fri, 09 Aug 1996 07:47:33 GMT');
+        assert.equal(found.timestamp.toGMTString(),
+          'Sat, 22 Sep 2007 17:12:22 GMT');
         done();
       });
     });
@@ -345,7 +354,8 @@ function setup(done) {
 
   StringData = db.define('StringData', {
     idString: {type: String, id: true},
-    smallString: {type: String, null: false, index: true, dataType: 'char', limit: 127},
+    smallString: {type: String, null: false, index: true,
+      dataType: 'char', limit: 127},
     mediumString: {type: String, null: false, dataType: 'varchar', limit: 255},
     tinyText: {type: String, dataType: 'tinyText'},
     giantJSON: {type: Schema.JSON, dataType: 'longText'},
@@ -353,9 +363,11 @@ function setup(done) {
   });
 
   NumberData = db.define('NumberData', {
-    number: {type: Number, null: false, index: true, unsigned: true, dataType: 'decimal', precision: 10, scale: 3},
+    number: {type: Number, null: false, index: true, unsigned: true,
+      dataType: 'decimal', precision: 10, scale: 3},
     tinyInt: {type: Number, dataType: 'tinyInt', display: 2},
-    mediumInt: {type: Number, dataType: 'mediumInt', unsigned: true},
+    mediumInt: {type: Number, dataType: 'mediumInt', unsigned: true,
+      required: true},
     floater: {type: Number, dataType: 'double', precision: 14, scale: 6}
   });
 
