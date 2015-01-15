@@ -1,3 +1,21 @@
+2015-01-15, Version 1.5.1
+=========================
+
+ * Fix the loop of models (Raymond Feng)
+
+ * Set ok default to false (Geoffroy Lesage)
+
+ * Fixed missing 'ok' (Geoffroy Lesage)
+
+ * Changed default type mapping (Geoffroy Lesage)
+
+ * Fixed isActual syntax to accept optional model arg (Geoffroy Lesage)
+
+ * Fixed isActual implemenation (Geoffroy Lesage)
+
+ * Inherit Schema From DataSource if not defined (Serkan Serttop)
+
+
 2015-01-09, Version 1.5.0
 =========================
 
