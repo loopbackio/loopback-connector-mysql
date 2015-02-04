@@ -455,6 +455,18 @@ describe('mysql', function () {
       });
   });
 
+  it('should convert NaN to NULL for query', function(done) {
+    Post.create({title: 'My Post1', content: 'Hello', stars: 5},
+      function(err, post) {
+        Post.findById('x',
+          function(err, post) {
+            should.not.exist(err);
+            should.not.exist(post);
+            done();
+          });
+      });
+  });
+
   it('should not allow duplicate titles', function (done) {
     var data = {title: 'a', content: 'AAA'};
     PostWithUniqueTitle.create(data, function (err, post) {
