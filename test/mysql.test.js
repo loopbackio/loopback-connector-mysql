@@ -103,7 +103,7 @@ describe('mysql', function () {
       ];
       Post.updateOrCreate(post, function (err, p) {
         should.not.exist(err);
-        p.id.should.be.equal(post.id);
+        p.id.should.be.equal(post.id)
         p.title.should.be.equal(post.title);
         Post.findById(post.id, function (err, p) {
           p.id.should.be.equal(post.id);
