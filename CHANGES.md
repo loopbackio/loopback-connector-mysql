@@ -1,3 +1,11 @@
+2015-02-21, Version 1.6.0
+=========================
+
+ * Update deps (Raymond Feng)
+
+ * Include tests of persistence hooks from juggler. (Miroslav Bajtoš)
+
+
 2015-01-15, Version 1.5.1
 =========================
 
