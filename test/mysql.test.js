@@ -197,7 +197,7 @@ describe('mysql', function () {
         posts.should.have.lengthOf(1);
         post = posts[0];
         post.should.have.property('title', 'b');
-        post.should.not.have.property('content');
+        post.should.have.property('content', undefined);
         should.not.exist(post.id);
 
         done();
