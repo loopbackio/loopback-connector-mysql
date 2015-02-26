@@ -1,6 +1,6 @@
 var should = require('./init.js');
 
-var Post, PostWithStringId, PostWithUniqueTitle, db;
+var Post, PostWithStringId, PostWithUniqueTitle,PostWithWatchAndStart, db;
 
 describe('mysql', function () {
 
@@ -26,6 +26,12 @@ describe('mysql', function () {
       content: { type: String }
     });
 
+    PostWithWatchAndStart = db.define('PostWithUniqueTitle', {
+      title: { type: String, length: 255, index: {unique: true} },
+      watch: { type: Number },
+      start: { type: Number }
+    });
+
     db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle'], function (err) {
       should.not.exist(err);
       done(err);
@@ -36,7 +42,9 @@ describe('mysql', function () {
     Post.destroyAll(function () {
       PostWithStringId.destroyAll(function () {
         PostWithUniqueTitle.destroyAll(function () {
-          done();
+          PostWithWatchAndStart.destroyAll(function () {
+            done();
+          })
         });
       });
     });
@@ -231,6 +239,40 @@ describe('mysql', function () {
         });
       });
     });
+
+  it('should allow to find using $where', function (done) {
+    PostWithWatchAndStart.create([
+      {title: 'Post1', watch: 1,start:2},
+      {title: 'Post2', watch: 1,start:0},
+      {title: 'Post3', watch: 2,start:0}
+    ], function (err, posts) {
+      PostWithWatchAndStart.find({where: {$where:'watch>start' }}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 2);
+        posts.forEach(function (post) {
+          (post.watch>post.start).should.be.true;
+        });
+        done();
+      });
+    });
+  });
+
+  it('should allow to find using $where and other keys', function (done) {
+    PostWithWatchAndStart.create([
+      {title: 'Post1', watch: 1,start:2},
+      {title: 'Post2', watch: 1,start:0},
+      {title: 'Post3', watch: 2,start:1}
+    ], function (err, posts) {
+      PostWithWatchAndStart.find({where: {$where:'watch>start',start:1 }}, function (err, posts) {
+        should.not.exist(err);
+        posts.should.have.property('length', 1);
+        posts.forEach(function (post) {
+          (post.watch>post.start && post.start==1).should.be.true;
+        });
+        done();
+      });
+    });
+  });
 
   it('should allow to find using like', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
