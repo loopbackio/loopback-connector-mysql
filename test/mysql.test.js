@@ -2,6 +2,19 @@ var should = require('./init.js');
 
 var Post, PostWithStringId, PostWithUniqueTitle, db;
 
+// Mock up mongodb ObjectID
+function ObjectID(id) {
+  if (!(this instanceof ObjectID)) {
+    return new ObjectID(id);
+  }
+  this.id1 = id.substring(0, 2);
+  this.id2 = id.substring(2);
+}
+
+ObjectID.prototype.toJSON = function() {
+  return this.id1 + this.id2;
+};
+
 describe('mysql', function () {
 
   before(function (done) {
@@ -12,7 +25,8 @@ describe('mysql', function () {
       content: { type: String },
       comments: [String],
       history: Object,
-      stars: Number
+      stars: Number,
+      userId: ObjectID
     });
 
     PostWithStringId = db.define('PostWithStringId', {
@@ -44,11 +58,11 @@ describe('mysql', function () {
 
   it('should allow array or object', function (done) {
     Post.create({title: 'a', content: 'AAA', comments: ['1', '2'],
-      history: {a: 1, b: 'b'}}, function (err, post) {
+      history: {a: 1, b: 'b'}}, function(err, post) {
 
       should.not.exist(err);
 
-      Post.findById(post.id, function (err, p) {
+      Post.findById(post.id, function(err, p) {
         p.id.should.be.equal(post.id);
 
         p.content.should.be.equal(post.content);
@@ -59,7 +73,24 @@ describe('mysql', function () {
         done();
       });
     });
+  });
 
+  it('should allow ObjectID', function(done) {
+    var uid = new ObjectID('123');
+    Post.create({title: 'a', content: 'AAA', userId: uid},
+      function(err, post) {
+
+        should.not.exist(err);
+
+        Post.findById(post.id, function(err, p) {
+          p.id.should.be.equal(post.id);
+
+          p.content.should.be.equal(post.content);
+          p.title.should.be.equal('a');
+          p.userId.should.eql(uid);
+          done();
+        });
+      });
   });
 
   it('updateOrCreate should update the instance', function (done) {
