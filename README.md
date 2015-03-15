@@ -44,3 +44,11 @@ To use it you need `loopback-datasource-juggler`.
     to `utf8_general_ci`. The `collation` value will also be used to derive the
     connection charset.
 
+## Running Tests
+
+These tests are mainly integration tests, meaning you will need to run using
+our preconfigured test server.
+
+1. Ask a core developer for instructions on how to set up test server
+   credentials on your machine
+2. `npm test`
