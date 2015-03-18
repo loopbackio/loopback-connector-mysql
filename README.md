@@ -46,9 +46,7 @@ To use it you need `loopback-datasource-juggler`.
 
 ## Running Tests
 
-These tests are mainly integration tests, meaning you will need to run using
-our preconfigured test server.
+The tests in this repository are mainly integration tests. This means you will need to run them using our preconfigured test server.
 
-1. Ask a core developer for instructions on how to set up test server
-   credentials on your machine
+1. Ask a core developer for instructions on how to set up test server credentials on your machine
 2. `npm test`
