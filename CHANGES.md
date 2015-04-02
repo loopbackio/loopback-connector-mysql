@@ -1,4 +1,26 @@
-2015-02-21, Version 1.6.0
+2015-04-02, Version 1.7.0
+=========================
+
+ * Return isNewInstance from upsert (Raymond Feng)
+
+ * Update rc dep (Raymond Feng)
+
+ * Return count when updating or deleting models (Simon Ho)
+
+ * Update README.md (Simon Ho)
+
+ * Add test running instructions to readme (Simon Ho)
+
+ * Fix mysql neq for NULL value. (ulion)
+
+ * replace dataLength instead of adding length property (Partap Davis)
+
+ * Allow models backed by MySQL to reference mongodb ObjectID (Raymond Feng)
+
+ * Query string length for schema in characters in addition to bytes (Partap Davis)
+
+
+2015-02-20, Version 1.6.0
 =========================
 
  * Update deps (Raymond Feng)
