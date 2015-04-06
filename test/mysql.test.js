@@ -221,7 +221,7 @@ describe('mysql', function () {
   });
 
   it('all return should honor filter.fields', function (done) {
-    var post = new Post({title: 'b', content: 'BBB'})
+    var post = new Post({title: 'b', content: 'BBB'});
     post.save(function (err, post) {
       Post.all({fields: ['title'], where: {title: 'b'}}, function (err, posts) {
         should.not.exist(err);
@@ -258,6 +258,38 @@ describe('mysql', function () {
                 done();
               });
             });
+          });
+        });
+      });
+    });
+
+  it('find should group by title if group by title is set in the query filter',
+    function (done) {
+      PostWithStringId.create({id: '2', title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringId.create({id: '1', title: 'c', content: 'DDD'}, function (err, post) {
+          PostWithStringId.find({
+            groupBy: 'title'
+          },
+          function (err, posts) {
+            should.not.exist(err);
+            posts.length.should.be.equal(1);
+            done();
+          });
+        });
+      });
+    });
+
+  it('find should group by title and content if group by title, content is set in the query filter',
+    function (done) {
+      PostWithStringId.create({id: '2', title: 'c', content: 'CCC'}, function (err, post) {
+        PostWithStringId.create({id: '1', title: 'c', content: 'DDD'}, function (err, post) {
+          PostWithStringId.find({
+            groupBy: ['title', 'content']
+          },
+          function (err, posts) {
+            should.not.exist(err);
+            posts.length.should.be.equal(2);
+            done();
           });
         });
       });
