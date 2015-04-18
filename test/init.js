@@ -9,7 +9,7 @@ global.getConfig = function (options) {
   var dbConf = {
     host: config.host || 'localhost',
     port: config.port || 3306,
-    database: 'myapp_test',
+    database: config.database || 'myapp_test',
     username: config.username,
     password: config.password,
     createDatabase: true

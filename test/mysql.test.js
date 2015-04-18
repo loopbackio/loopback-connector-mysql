@@ -466,6 +466,16 @@ describe('mysql', function () {
     });
   });
 
+  it('should not alter filter for inq operator', function (done) {
+    var postIdsOrig = [1,2];
+    var postIdsCopy = postIdsOrig.slice();
+    Post.find({where: {id: {inq: postIdsCopy}}}, function (err, posts) {
+        should.not.exist(err);
+        postIdsCopy.should.be.eql(postIdsOrig);
+        done();
+      });
+  });
+
   after(function (done) {
     Post.destroyAll(function () {
       PostWithStringId.destroyAll(function () {
