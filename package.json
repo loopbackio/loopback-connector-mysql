@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/strongloop/loopback-connector-mysql.git"
+    "url": "https://github.com/iorikingdom/loopback-connector-mysql.git"
   },
   "license": {
     "name": "Dual MIT/StrongLoop",
