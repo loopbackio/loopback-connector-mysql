@@ -95,7 +95,7 @@ function setup(done) {
 }
 
 var query = function (sql, cb) {
-  db.adapter.query(sql, cb);
+  db.adapter.execute(sql, cb);
 };
 
 var blankDatabase = function (db, cb) {
