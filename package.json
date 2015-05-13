@@ -7,14 +7,14 @@
     "test": "mocha"
   },
   "dependencies": {
-    "loopback-connector": "1.x",
+    "loopback-connector": "^2.0.0",
     "mysql": "^2.5.4",
     "async": "^0.9.0",
     "debug": "^2.1.1"
   },
   "devDependencies": {
     "bluebird": "~2.9.10",
-    "loopback-datasource-juggler": "^2.17.0",
+    "loopback-datasource-juggler": "^2.27.0",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
     "should": "^5.0.0"
