@@ -1,3 +1,11 @@
+2015-05-13, Version 2.0.0
+=========================
+
+ * Update deps (Raymond Feng)
+
+ * Refactor the code to use base SqlConnector (Raymond Feng)
+
+
 2015-04-02, Version 1.7.0
 =========================
 
