@@ -1,3 +1,11 @@
+2015-05-18, Version 2.1.0
+=========================
+
+ * Update deps (Raymond Feng)
+
+ * Start to add transaction support (Raymond Feng)
+
+
 2015-05-14, Version 2.0.1
 =========================
 
