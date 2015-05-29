@@ -158,23 +158,21 @@ describe('transactions', function() {
     var post = {title: 't3', content: 'c3'};
     before(createPostInTx(post, 500));
 
-    it('should report timeout', function(done) {
-      setTimeout(function() {
-        Post.find({where: {title: 't3'}}, {transaction: currentTx},
-          function(err, posts) {
-            if (err) return done(err);
-            posts.length.should.be.eql(1);
-            done();
-          });
-      }, 1000);
-      done();
-    });
-
     it('should invoke the timeout hook', function(done) {
       currentTx.observe('timeout', function(context, next) {
         next();
+        // It will only proceed upon timeout
         done();
       });
+    });
+
+    it('should rollback the transaction if timeout', function(done) {
+      Post.find({where: {title: 't3'}}, {transaction: currentTx},
+        function(err, posts) {
+          if (err) return done(err);
+          posts.length.should.be.eql(0);
+          done();
+        });
     });
 
   });
