@@ -7,7 +7,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "loopback-connector": "1.x",
+    "loopback-connector": "^2.1.0",
     "mysql": "^2.5.4",
     "async": "^0.9.0",
     "debug": "^2.1.1"
