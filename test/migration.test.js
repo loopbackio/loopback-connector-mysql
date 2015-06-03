@@ -16,7 +16,7 @@ describe('migrations', function () {
 
   it('UserData should have correct columns', function (done) {
     getFields('UserData', function (err, fields) {
-      assert.deepEqual(fields, {
+      fields.should.be.eql({
         id: {
           Field: 'id',
           Type: 'int(11)',
@@ -75,7 +75,7 @@ describe('migrations', function () {
     // Note: getIndexes truncates multi-key indexes to the first member.
     // Hence index1 is correct.
     getIndexes('UserData', function (err, fields) {
-      assert.deepEqual(fields, { PRIMARY: { Table: 'UserData',
+      fields.should.be.eql({ PRIMARY: { Table: 'UserData',
         Non_unique: 0,
         Key_name: 'PRIMARY',
         Seq_in_index: 1,
@@ -118,7 +118,7 @@ describe('migrations', function () {
 
   it('StringData should have correct columns', function (done) {
     getFields('StringData', function (err, fields) {
-      assert.deepEqual(fields, {
+      fields.should.be.eql({
         idString: { Field: "idString",
           Type: 'varchar(255)',
           Null: 'NO',
@@ -162,7 +162,7 @@ describe('migrations', function () {
 
   it('NumberData should have correct columns', function (done) {
     getFields('NumberData', function (err, fields) {
-      assert.deepEqual(fields, {
+      fields.should.be.eql({
         id: { Field: 'id',
           Type: 'int(11)',
           Null: 'NO',
@@ -200,7 +200,7 @@ describe('migrations', function () {
 
   it('DateData should have correct columns', function (done) {
     getFields('DateData', function (err, fields) {
-      assert.deepEqual(fields, {
+      fields.should.be.eql({
         id: { Field: 'id',
           Type: 'int(11)',
           Null: 'NO',
@@ -381,7 +381,7 @@ function setup(done) {
 }
 
 var query = function (sql, cb) {
-  db.adapter.query(sql, cb);
+  db.adapter.execute(sql, cb);
 };
 
 var blankDatabase = function (db, cb) {
