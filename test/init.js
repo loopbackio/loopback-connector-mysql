@@ -29,4 +29,4 @@ global.getDataSource = global.getSchema = function (options) {
   return db;
 };
 
-
+global.sinon = require('sinon');
