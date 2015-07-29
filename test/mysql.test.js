@@ -498,13 +498,16 @@ describe('mysql', function () {
   });
 
   context('regexp operator', function() {
+    beforeEach(function deleteExistingTestFixtures(done) {
+      Post.destroyAll(done);
+    });
     beforeEach(function createTestFixtures(done) {
       Post.create([
         {title: 'a', content: 'AAA'},
         {title: 'b', content: 'BBB'}
       ], done);
     });
-    afterEach(function deleteTestFixtures(done) {
+    after(function deleteTestFixtures(done) {
       Post.destroyAll(done);
     });
 
