@@ -531,6 +531,15 @@ describe('mysql', function () {
           console.warn.restore();
         });
 
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
+
         it('should print a warning when the ignore flag is set',
             function(done) {
           Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
@@ -567,7 +576,6 @@ describe('mysql', function () {
             done();
           });
         });
-
       });
 
       context('using flags', function() {
@@ -576,6 +584,15 @@ describe('mysql', function () {
         });
         afterEach(function removeSpy()  {
           console.warn.restore();
+        });
+
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
         });
 
         it('should print a warning when the ignore flag is set',
@@ -625,9 +642,18 @@ describe('mysql', function () {
       });
 
       context('using flags', function() {
+        it('should work', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}},
+              function(err, posts) {
+            should.not.exist(err);
+            posts.length.should.equal(1);
+            posts[0].content.should.equal('AAA');
+            done();
+          });
+        });
         it('should print a warning when the ignore flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}}, function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
@@ -635,7 +661,7 @@ describe('mysql', function () {
 
         it('should print a warning when the global flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: /^a/g}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/g)}}}, function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
@@ -643,7 +669,7 @@ describe('mysql', function () {
 
         it('should print a warning when the multiline flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: /^a/m}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/m)}}}, function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
