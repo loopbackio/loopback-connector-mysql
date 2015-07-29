@@ -653,7 +653,8 @@ describe('mysql', function () {
         });
         it('should print a warning when the ignore flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/i)}}},
+              function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
@@ -661,7 +662,8 @@ describe('mysql', function () {
 
         it('should print a warning when the global flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: new RegExp(/^a/g)}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/g)}}},
+              function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
@@ -669,7 +671,8 @@ describe('mysql', function () {
 
         it('should print a warning when the multiline flag is set',
             function(done) {
-          Post.find({where: {content: {regexp: new RegExp(/^a/m)}}}, function(err, posts) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/m)}}},
+              function(err, posts) {
             console.warn.calledOnce.should.be.ok;
             done();
           });
