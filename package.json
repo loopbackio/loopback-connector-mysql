@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mysql",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,6 @@
     "url": "https://github.com/strongloop/loopback-connector-mysql/blob/master/LICENSE"
   },
   "optionalDependencies": {
-    "sl-blip": "http://blip.strongloop.com/loopback-connector-mysql@2.1.1"
+    "sl-blip": "http://blip.strongloop.com/loopback-connector-mysql@2.2.0"
   }
 }

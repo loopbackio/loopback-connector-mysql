@@ -1,3 +1,15 @@
+2015-07-30, Version 2.2.0
+=========================
+
+ * Clean up regexop tests (Simon Ho)
+
+ * Add regexp operator tests (Simon Ho)
+
+ * Fix RegExp unit test setup/teardown (Simon Ho)
+
+ * Add support for RegExp operator (Simon Ho)
+
+
 2015-05-29, Version 2.1.1
 =========================
 
