@@ -24,10 +24,7 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-mysql.git"
   },
-  "license": {
-    "name": "Dual MIT/StrongLoop",
-    "url": "https://github.com/strongloop/loopback-connector-mysql/blob/master/LICENSE"
-  },
+  "license": "MIT",
   "optionalDependencies": {
     "sl-blip": "http://blip.strongloop.com/loopback-connector-mysql@2.2.0"
   }
