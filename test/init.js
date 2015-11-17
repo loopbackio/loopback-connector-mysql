@@ -7,8 +7,8 @@ var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 global.getConfig = function (options) {
 
   var dbConf = {
-    host: config.host || 'localhost',
-    port: config.port || 3306,
+    host: process.env.MYSQL_HOST || config.host || 'localhost',
+    port: process.env.MYSQL_PORT || config.port || 3306,
     database: 'myapp_test',
     username: config.username,
     password: config.password,
