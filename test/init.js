@@ -20,7 +20,6 @@ global.getConfig = function (options) {
       dbConf[el] = options[el];
     }
   }
-  console.log(dbConf)
   return dbConf;
 };
 
