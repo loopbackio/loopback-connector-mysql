@@ -3,15 +3,15 @@ module.exports = require('should');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
-
+console.log(config)
 global.getConfig = function (options) {
 
   var dbConf = {
-    host: config.host || 'localhost',
-    port: config.port || 3306,
+    host: process.env.TEST_MYSQL_HOST || config.host || 'localhost',
+    port: process.env.TEST_MYSQL_PORT || config.port || 3306,
     database: 'myapp_test',
-    username: config.username,
-    password: config.password,
+    username: process.env.TEST_MYSQL_USER || config.username,
+    password: process.env.TEST_MYSQL_PASSWORD || config.password,
     createDatabase: true
   };
 
@@ -20,7 +20,6 @@ global.getConfig = function (options) {
       dbConf[el] = options[el];
     }
   }
-
   return dbConf;
 };
 
