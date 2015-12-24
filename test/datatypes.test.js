@@ -80,12 +80,12 @@ function setup(done) {
 
   db = getSchema();
 
-  ANIMAL_ENUM = db.EnumFactory('dog', 'cat', 'mouse');
+  ANIMAL_ENUM = db.Enum('dog', 'cat', 'mouse');
 
   EnumModel = db.define('EnumModel', {
     animal: { type: ANIMAL_ENUM, null: false },
-    condition: { type: db.EnumFactory('hungry', 'sleepy', 'thirsty') },
-    mood: { type: db.EnumFactory('angry', 'happy', 'sad') },
+    condition: { type: db.Enum('hungry', 'sleepy', 'thirsty') },
+    mood: { type: db.Enum('angry', 'happy', 'sad') },
     note: Object,
     extras: 'JSON'
   });
@@ -147,9 +147,3 @@ getIndexes = function (model, cb) {
     }
   });
 };
-
-
-
-
-
-
