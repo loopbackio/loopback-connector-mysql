@@ -17,7 +17,7 @@
     "loopback-datasource-juggler": "^2.28.0",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
-    "should": "^5.0.0",
+    "should": "^8.0.2",
     "sinon": "^1.15.4"
   },
   "repository": {
