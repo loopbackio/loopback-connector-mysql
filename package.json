@@ -24,8 +24,5 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-mysql.git"
   },
-  "license": "MIT",
-  "optionalDependencies": {
-    "sl-blip": "http://blip.strongloop.com/loopback-connector-mysql@2.2.0"
-  }
+  "license": "MIT"
 }
