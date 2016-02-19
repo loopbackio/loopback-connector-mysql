@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-mysql",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {

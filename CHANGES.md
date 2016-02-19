@@ -1,3 +1,27 @@
+2016-02-19, Version 2.2.1
+=========================
+
+ * Remove sl-blip from dependencies (Miroslav Bajtoš)
+
+ * Upgrade `should` module (Amir Jafarian)
+
+ * removed console.log (cgole)
+
+ * seperate env variable for test db (cgole)
+
+ * Changed username to user (cgole)
+
+ * Added db username password (cgole)
+
+ * Add mysql CI host (cgole)
+
+ * Refer to licenses with a link (Sam Roberts)
+
+ * Pass options to the execute command. (Diogo Correia)
+
+ * Use strongloop conventions for licensing (Sam Roberts)
+
+
 2015-07-30, Version 2.2.0
 =========================
 
