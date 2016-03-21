@@ -26,7 +26,7 @@ describe('migrations', function () {
           Extra: 'auto_increment' },
         email: {
           Field: 'email',
-          Type: 'varchar(512)',
+          Type: 'varchar(255)',
           Null: 'NO',
           Key: 'MUL',
           Default: null,
