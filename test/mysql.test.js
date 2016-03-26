@@ -303,6 +303,46 @@ describe('mysql', function () {
     });
   });
 
+it('should allow to find using ilike', function (done) {
+  Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+    Post.find({where: {title: {ilike: 'm%st'}}}, function (err, posts) {
+      should.not.exist(err);
+      posts.should.have.property('length', 1);
+      done();
+    });
+  });
+});
+
+it('should support ilike for no match', function (done) {
+  Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+    Post.find({where: {title: {ilike: 'm%xy'}}}, function (err, posts) {
+      should.not.exist(err);
+      posts.should.have.property('length', 0);
+      done();
+    });
+  });
+});
+
+it('should allow to find using nilike', function (done) {
+  Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+    Post.find({where: {title: {nilike: 'm%st'}}}, function (err, posts) {
+      should.not.exist(err);
+      posts.should.have.property('length', 0);
+      done();
+    });
+  });
+});
+
+it('should support nilike for no match', function (done) {
+  Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
+    Post.find({where: {title: {nilike: 'm%xy'}}}, function (err, posts) {
+      should.not.exist(err);
+      posts.should.have.property('length', 1);
+      done();
+    });
+  });
+});
+
   it('should support "and" operator that is satisfied', function (done) {
     Post.create({title: 'My Post', content: 'Hello'}, function (err, post) {
       Post.find({where: {and: [
