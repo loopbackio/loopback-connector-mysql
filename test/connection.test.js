@@ -1,15 +1,40 @@
 require('./init.js');
 var assert = require('assert');
+var DataSource = require('loopback-datasource-juggler').DataSource;
+var mysqlConnector = require('../');
+var url = require('url');
 
-var db, DummyModel, odb;
+var db, DummyModel, odb, config;
 
 describe('connections', function () {
 
   before(function () {
     require('./init.js');
 
+    config = global.getConfig();
+
     odb = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
     db = odb;
+  });
+
+  it('should pass with valid settings', function (done) {
+    var db = new DataSource(mysqlConnector, config);
+    db.ping(done);
+  });
+
+  it('ignores all other settings when url is present', function (done) {
+    var formatedUrl = generateURL(config);
+    var dbConfig = {
+      url: formatedUrl,
+      host: 'invalid-hostname',
+      port: 80,
+      database: 'invalid-database',
+      username: 'invalid-username',
+      password: 'invalid-password',
+    };
+
+    var db = new DataSource(mysqlConnector, dbConfig);
+    db.ping(done);
   });
 
   it('should use utf8 charset', function (done) {
@@ -103,6 +128,17 @@ var query = function (sql, cb) {
   odb.connector.execute(sql, cb);
 };
 
+function generateURL(config) {
+  var urlObj = {
+    protocol: 'mysql',
+    auth: config.username + ':' + config.password,
+    hostname: config.host,
+    pathname: config.database,
+    slashes: true
+  };
+  var formatedUrl = url.format(urlObj);
+  return formatedUrl;
+}
 
 
 
