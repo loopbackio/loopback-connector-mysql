@@ -2,93 +2,93 @@ var assert = require('assert');
 require('./init');
 var ds;
 
-before(function () {
+before(function() {
   ds = getDataSource();
 });
 
-describe('MySQL connector', function () {
-  it('should auto migrate/update tables', function (done) {
+describe('MySQL connector', function() {
+  it('should auto migrate/update tables', function(done) {
 
     var schema_v1 =
-    {
-      "name": "CustomerTest",
-      "options": {
-        "idInjection": false,
-        "mysql": {
-          "schema": "myapp_test",
-          "table": "customer_test"
-        }
-      },
-      "properties": {
-        "id": {
-          "type": "String",
-          "length": 20,
-          "id": 1
+      {
+        'name': 'CustomerTest',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+          'schema': 'myapp_test',
+          'table': 'customer_test',
         },
-        "name": {
-          "type": "String",
-          "required": false,
-          "length": 40
         },
-        "email": {
-          "type": "String",
-          "required": true,
-          "length": 40
+        'properties': {
+          'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
         },
-        "age": {
-          "type": "Number",
-          "required": false
-        }
-      }
-    }
+          'name': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+          'email': {
+          'type': 'String',
+          'required': true,
+          'length': 40,
+        },
+          'age': {
+          'type': 'Number',
+          'required': false,
+        },
+        },
+      };
 
     var schema_v2 =
-    {
-      "name": "CustomerTest",
-      "options": {
-        "idInjection": false,
-        "mysql": {
-          "schema": "myapp_test",
-          "table": "customer_test"
-        }
-      },
-      "properties": {
-        "id": {
-          "type": "String",
-          "length": 20,
-          "id": 1
+      {
+        'name': 'CustomerTest',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+          'schema': 'myapp_test',
+          'table': 'customer_test',
         },
-        "email": {
-          "type": "String",
-          "required": false,
-          "length": 60,
-          "mysql": {
-            "columnName": "email",
-            "dataType": "varchar",
-            "dataLength": 60,
-            "nullable": "YES"
-          }
         },
-        "firstName": {
-          "type": "String",
-          "required": false,
-          "length": 40
+        'properties': {
+          'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
         },
-        "lastName": {
-          "type": "String",
-          "required": false,
-          "length": 40
-        }
-      }
-    }
+          'email': {
+          'type': 'String',
+          'required': false,
+          'length': 60,
+          'mysql': {
+            'columnName': 'email',
+            'dataType': 'varchar',
+            'dataLength': 60,
+            'nullable': 'YES',
+          },
+        },
+          'firstName': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+          'lastName': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+        },
+      };
 
     ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
 
-    ds.automigrate(function () {
+    ds.automigrate(function() {
 
-      ds.discoverModelProperties('customer_test', function (err, props) {
+      ds.discoverModelProperties('customer_test', function(err, props) {
         assert.equal(props.length, 4);
-        var names = props.map(function (p) {
+        var names = props.map(function(p) {
           return p.columnName;
         });
         assert.equal(props[0].nullable, 'N');
@@ -102,10 +102,10 @@ describe('MySQL connector', function () {
 
         ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
 
-        ds.autoupdate(function (err, result) {
-          ds.discoverModelProperties('customer_test', function (err, props) {
+        ds.autoupdate(function(err, result) {
+          ds.discoverModelProperties('customer_test', function(err, props) {
             assert.equal(props.length, 4);
-            var names = props.map(function (p) {
+            var names = props.map(function(p) {
               return p.columnName;
             });
             assert.equal(names[0], 'id');

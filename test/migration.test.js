@@ -4,18 +4,18 @@ var Schema = require('loopback-datasource-juggler').Schema;
 
 var db, UserData, StringData, NumberData, DateData;
 
-describe('migrations', function () {
+describe('migrations', function() {
 
   before(setup);
 
-  it('should run migration', function (done) {
-    db.automigrate(function () {
+  it('should run migration', function(done) {
+    db.automigrate(function() {
       done();
     });
   });
 
-  it('UserData should have correct columns', function (done) {
-    getFields('UserData', function (err, fields) {
+  it('UserData should have correct columns', function(done) {
+    getFields('UserData', function(err, fields) {
       fields.should.be.eql({
         id: {
           Field: 'id',
@@ -65,16 +65,16 @@ describe('migrations', function () {
           Null: 'YES',
           Key: '',
           Default: null,
-          Extra: '' }
+          Extra: '' },
       });
       done();
     });
   });
 
-  it('UserData should have correct indexes', function (done) {
+  it('UserData should have correct indexes', function(done) {
     // Note: getIndexes truncates multi-key indexes to the first member.
     // Hence index1 is correct.
-    getIndexes('UserData', function (err, fields) {
+    getIndexes('UserData', function(err, fields) {
       fields.should.be.eql({ PRIMARY: { Table: 'UserData',
         Non_unique: 0,
         Key_name: 'PRIMARY',
@@ -110,21 +110,21 @@ describe('migrations', function () {
           Packed: null,
           Null: '',
           Index_type: 'BTREE',
-          Comment: '' }
+          Comment: '' },
       });
       done();
     });
   });
 
-  it('StringData should have correct columns', function (done) {
-    getFields('StringData', function (err, fields) {
+  it('StringData should have correct columns', function(done) {
+    getFields('StringData', function(err, fields) {
       fields.should.be.eql({
-        idString: { Field: "idString",
+        idString: { Field: 'idString',
           Type: 'varchar(255)',
           Null: 'NO',
           Key: 'PRI',
           Default: null,
-          Extra: ''},
+          Extra: '' },
         smallString: { Field: 'smallString',
           Type: 'char(127)',
           Null: 'NO',
@@ -154,14 +154,14 @@ describe('migrations', function () {
           Null: 'YES',
           Key: '',
           Default: null,
-          Extra: '' }
+          Extra: '' },
       });
       done();
     });
   });
 
-  it('NumberData should have correct columns', function (done) {
-    getFields('NumberData', function (err, fields) {
+  it('NumberData should have correct columns', function(done) {
+    getFields('NumberData', function(err, fields) {
       fields.should.be.eql({
         id: { Field: 'id',
           Type: 'int(11)',
@@ -192,14 +192,14 @@ describe('migrations', function () {
           Null: 'YES',
           Key: '',
           Default: null,
-          Extra: '' }
+          Extra: '' },
       });
       done();
     });
   });
 
-  it('DateData should have correct columns', function (done) {
-    getFields('DateData', function (err, fields) {
+  it('DateData should have correct columns', function(done) {
+    getFields('DateData', function(err, fields) {
       fields.should.be.eql({
         id: { Field: 'id',
           Type: 'int(11)',
@@ -218,33 +218,33 @@ describe('migrations', function () {
           Null: 'YES',
           Key: '',
           Default: null,
-          Extra: '' }
+          Extra: '' },
       });
       done();
     });
   });
 
-  it('should autoupdate', function (done) {
-    var userExists = function (cb) {
-      query('SELECT * FROM UserData', function (err, res) {
+  it('should autoupdate', function(done) {
+    var userExists = function(cb) {
+      query('SELECT * FROM UserData', function(err, res) {
         cb(!err && res[0].email == 'test@example.com');
       });
-    }
+    };
 
-    UserData.create({email: 'test@example.com'}, function (err, user) {
+    UserData.create({ email: 'test@example.com' }, function(err, user) {
       assert.ok(!err, 'Could not create user: ' + err);
-      userExists(function (yep) {
+      userExists(function(yep) {
         assert.ok(yep, 'User does not exist');
       });
       UserData.defineProperty('email', { type: String });
-      UserData.defineProperty('name', {type: String,
-        dataType: 'char', limit: 50});
-      UserData.defineProperty('newProperty', {type: Number, unsigned: true,
-        dataType: 'bigInt'});
+      UserData.defineProperty('name', { type: String,
+        dataType: 'char', limit: 50 });
+      UserData.defineProperty('newProperty', { type: Number, unsigned: true,
+        dataType: 'bigInt' });
       // UserData.defineProperty('pendingPeriod', false);
       // This will not work as expected.
-      db.autoupdate(function (err) {
-        getFields('UserData', function (err, fields) {
+      db.autoupdate(function(err) {
+        getFields('UserData', function(err, fields) {
           // change nullable for email
           assert.equal(fields.email.Null, 'YES', 'Email does not allow null');
           // change type of name
@@ -259,7 +259,7 @@ describe('migrations', function () {
           // assert.ok(!fields.pendingPeriod,
           // 'Did not drop column pendingPeriod');
           // user still exists
-          userExists(function (yep) {
+          userExists(function(yep) {
             assert.ok(yep, 'User does not exist');
             done();
           });
@@ -268,25 +268,25 @@ describe('migrations', function () {
     });
   });
 
-  it('should check actuality of dataSource', function (done) {
+  it('should check actuality of dataSource', function(done) {
     // 'drop column'
-    UserData.dataSource.isActual(function (err, ok) {
+    UserData.dataSource.isActual(function(err, ok) {
       assert.ok(ok, 'dataSource is not actual (should be)');
-      UserData.defineProperty('essay', {type: Schema.Text});
+      UserData.defineProperty('essay', { type: Schema.Text });
       // UserData.defineProperty('email', false); Can't undefine currently.
-      UserData.dataSource.isActual(function (err, ok) {
+      UserData.dataSource.isActual(function(err, ok) {
         assert.ok(!ok, 'dataSource is actual (shouldn\t be)');
-        done()
+        done();
       });
     });
   });
 
-  it('should allow numbers with decimals', function (done) {
-    NumberData.create({number: 1.1234567, tinyInt: 123456, mediumInt: -1234567,
-      floater: 123456789.1234567 }, function (err, obj) {
+  it('should allow numbers with decimals', function(done) {
+    NumberData.create({ number: 1.1234567, tinyInt: 123456, mediumInt: -1234567,
+      floater: 123456789.1234567 }, function(err, obj) {
       assert.ok(!err);
       assert.ok(obj);
-      NumberData.findById(obj.id, function (err, found) {
+      NumberData.findById(obj.id, function(err, found) {
         assert.equal(found.number, 1.123);
         assert.equal(found.tinyInt, 127);
         assert.equal(found.mediumInt, 0);
@@ -296,14 +296,14 @@ describe('migrations', function () {
     });
   });
 
-  it('should allow both kinds of date columns', function (done) {
+  it('should allow both kinds of date columns', function(done) {
     DateData.create({
       dateTime: new Date('Aug 9 1996 07:47:33 GMT'),
-      timestamp: new Date('Sep 22 2007 17:12:22 GMT')
-    }, function (err, obj) {
+      timestamp: new Date('Sep 22 2007 17:12:22 GMT'),
+    }, function(err, obj) {
       assert.ok(!err);
       assert.ok(obj);
-      DateData.findById(obj.id, function (err, found) {
+      DateData.findById(obj.id, function(err, found) {
         assert.equal(found.dateTime.toGMTString(),
           'Fri, 09 Aug 1996 07:47:33 GMT');
         assert.equal(found.timestamp.toGMTString(),
@@ -325,7 +325,7 @@ describe('migrations', function () {
     });
   });
 
-  it('should disconnect when done', function (done) {
+  it('should disconnect when done', function(done) {
     db.disconnect();
     done();
   });
@@ -347,48 +347,48 @@ function setup(done) {
     createdByAdmin: Boolean,
   }, { indexes: {
     index0: {
-      columns: 'email, createdByAdmin'
-    }
-  }
+      columns: 'email, createdByAdmin',
+    },
+  },
   });
 
   StringData = db.define('StringData', {
-    idString: {type: String, id: true},
-    smallString: {type: String, null: false, index: true,
-      dataType: 'char', limit: 127},
-    mediumString: {type: String, null: false, dataType: 'varchar', limit: 255},
-    tinyText: {type: String, dataType: 'tinyText'},
-    giantJSON: {type: Schema.JSON, dataType: 'longText'},
-    text: {type: Schema.Text, dataType: 'varchar', limit: 1024}
+    idString: { type: String, id: true },
+    smallString: { type: String, null: false, index: true,
+      dataType: 'char', limit: 127 },
+    mediumString: { type: String, null: false, dataType: 'varchar', limit: 255 },
+    tinyText: { type: String, dataType: 'tinyText' },
+    giantJSON: { type: Schema.JSON, dataType: 'longText' },
+    text: { type: Schema.Text, dataType: 'varchar', limit: 1024 },
   });
 
   NumberData = db.define('NumberData', {
-    number: {type: Number, null: false, index: true, unsigned: true,
-      dataType: 'decimal', precision: 10, scale: 3},
-    tinyInt: {type: Number, dataType: 'tinyInt', display: 2},
-    mediumInt: {type: Number, dataType: 'mediumInt', unsigned: true,
-      required: true},
-    floater: {type: Number, dataType: 'double', precision: 14, scale: 6}
+    number: { type: Number, null: false, index: true, unsigned: true,
+      dataType: 'decimal', precision: 10, scale: 3 },
+    tinyInt: { type: Number, dataType: 'tinyInt', display: 2 },
+    mediumInt: { type: Number, dataType: 'mediumInt', unsigned: true,
+      required: true },
+    floater: { type: Number, dataType: 'double', precision: 14, scale: 6 },
   });
 
   DateData = db.define('DateData', {
-    dateTime: {type: Date, dataType: 'datetime'},
-    timestamp: {type: Date, dataType: 'timestamp'}
+    dateTime: { type: Date, dataType: 'datetime' },
+    timestamp: { type: Date, dataType: 'timestamp' },
   });
 
   blankDatabase(db, done);
 
 }
 
-var query = function (sql, cb) {
+var query = function(sql, cb) {
   db.adapter.execute(sql, cb);
 };
 
-var blankDatabase = function (db, cb) {
+var blankDatabase = function(db, cb) {
   var dbn = db.settings.database;
   var cs = db.settings.charset;
   var co = db.settings.collation;
-  query('DROP DATABASE IF EXISTS ' + dbn, function (err) {
+  query('DROP DATABASE IF EXISTS ' + dbn, function(err) {
     var q = 'CREATE DATABASE ' + dbn;
     if (cs) {
       q += ' CHARACTER SET ' + cs;
@@ -396,37 +396,37 @@ var blankDatabase = function (db, cb) {
     if (co) {
       q += ' COLLATE ' + co;
     }
-    query(q, function (err) {
+    query(q, function(err) {
       query('USE ' + dbn, cb);
     });
   });
 };
 
-getFields = function (model, cb) {
-  query('SHOW FIELDS FROM ' + model, function (err, res) {
+getFields = function(model, cb) {
+  query('SHOW FIELDS FROM ' + model, function(err, res) {
     if (err) {
       cb(err);
     } else {
       var fields = {};
-      res.forEach(function (field) {
+      res.forEach(function(field) {
         fields[field.Field] = field;
       });
       cb(err, fields);
     }
   });
-}
+};
 
-getIndexes = function (model, cb) {
-  query('SHOW INDEXES FROM ' + model, function (err, res) {
+getIndexes = function(model, cb) {
+  query('SHOW INDEXES FROM ' + model, function(err, res) {
     if (err) {
       console.log(err);
       cb(err);
     } else {
       var indexes = {};
       // Note: this will only show the first key of compound keys
-      res.forEach(function (index) {
+      res.forEach(function(index) {
         if (parseInt(index.Seq_in_index, 10) == 1) {
-          indexes[index.Key_name] = index
+          indexes[index.Key_name] = index;
         }
       });
       cb(err, indexes);

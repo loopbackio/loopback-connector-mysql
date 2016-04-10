@@ -7,17 +7,17 @@ var db, Post, Review;
 describe('transactions', function() {
 
   before(function(done) {
-    db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
+    db = getDataSource({ collation: 'utf8_general_ci', createDatabase: true });
     db.once('connected', function() {
       Post = db.define('PostTX', {
-        title: {type: String, length: 255, index: true},
-        content: {type: String}
-      }, {mysql: {engine: 'INNODB'}});
+        title: { type: String, length: 255, index: true },
+        content: { type: String },
+      }, { mysql: { engine: 'INNODB' }});
       Review = db.define('ReviewTX', {
         author: String,
-        content: {type: String}
-      }, {mysql: {engine: 'INNODB'}});
-      Post.hasMany(Review, {as: 'reviews', foreignKey: 'postId'});
+        content: { type: String },
+      }, { mysql: { engine: 'INNODB' }});
+      Post.hasMany(Review, { as: 'reviews', foreignKey: 'postId' });
       db.automigrate(['PostTX', 'ReviewTX'], done);
     });
   });
@@ -29,9 +29,9 @@ describe('transactions', function() {
     return function(done) {
       // Transaction.begin(db.connector, Transaction.READ_COMMITTED,
       Post.beginTransaction({
-          isolationLevel: Transaction.READ_COMMITTED,
-          timeout: timeout
-        },
+        isolationLevel: Transaction.READ_COMMITTED,
+        timeout: timeout,
+      },
         function(err, tx) {
           if (err) return done(err);
           (typeof tx.id).should.be.eql('string');
@@ -53,15 +53,15 @@ describe('transactions', function() {
             next();
           });
           currentTx = tx;
-          Post.create(post, {transaction: tx},
+          Post.create(post, { transaction: tx },
             function(err, p) {
               if (err) {
                 done(err);
               } else {
                 p.reviews.create({
-                    author: 'John',
-                    content: 'Review for ' + p.title
-                  }, {transaction: tx},
+                  author: 'John',
+                  content: 'Review for ' + p.title,
+                }, { transaction: tx },
                   function(err, c) {
                     done(err);
                   });
@@ -79,7 +79,7 @@ describe('transactions', function() {
       if (inTx) {
         options.transaction = currentTx;
       }
-      Post.find({where: where}, options,
+      Post.find({ where: where }, options,
         function(err, posts) {
           if (err) return done(err);
           posts.length.should.be.eql(count);
@@ -101,7 +101,7 @@ describe('transactions', function() {
 
   describe('commit', function() {
 
-    var post = {title: 't1', content: 'c1'};
+    var post = { title: 't1', content: 'c1' };
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -128,7 +128,7 @@ describe('transactions', function() {
 
   describe('rollback', function() {
 
-    var post = {title: 't2', content: 'c2'};
+    var post = { title: 't2', content: 'c2' };
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -155,7 +155,7 @@ describe('transactions', function() {
 
   describe('timeout', function() {
 
-    var post = {title: 't3', content: 'c3'};
+    var post = { title: 't3', content: 'c3' };
     before(createPostInTx(post, 500));
 
     it('should invoke the timeout hook', function(done) {
@@ -167,7 +167,7 @@ describe('transactions', function() {
     });
 
     it('should rollback the transaction if timeout', function(done) {
-      Post.find({where: {title: 't3'}}, {transaction: currentTx},
+      Post.find({ where: { title: 't3' }}, { transaction: currentTx },
         function(err, posts) {
           if (err) return done(err);
           posts.length.should.be.eql(0);
