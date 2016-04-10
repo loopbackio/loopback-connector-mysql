@@ -10,17 +10,17 @@ var db, Post, Review;
 describe('transactions with promise', function() {
 
   before(function(done) {
-    db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
+    db = getDataSource({ collation: 'utf8_general_ci', createDatabase: true });
     db.once('connected', function() {
       Post = db.define('PostTX', {
-        title: {type: String, length: 255, index: true},
-        content: {type: String}
-      }, {mysql: {engine: 'INNODB'}});
+        title: { type: String, length: 255, index: true },
+        content: { type: String },
+      }, { mysql: { engine: 'INNODB' }});
       Review = db.define('ReviewTX', {
         author: String,
-        content: {type: String}
-      }, {mysql: {engine: 'INNODB'}});
-      Post.hasMany(Review, {as: 'reviews', foreignKey: 'postId'});
+        content: { type: String },
+      }, { mysql: { engine: 'INNODB' }});
+      Post.hasMany(Review, { as: 'reviews', foreignKey: 'postId' });
       db.automigrate(['PostTX', 'ReviewTX'], done);
     });
   });
@@ -33,7 +33,7 @@ describe('transactions with promise', function() {
       // Transaction.begin(db.connector, Transaction.READ_COMMITTED,
       var promise = Post.beginTransaction({
         isolationLevel: Transaction.READ_COMMITTED,
-        timeout: timeout
+        timeout: timeout,
       });
       promise.then(function(tx) {
         (typeof tx.id).should.be.eql('string');
@@ -56,12 +56,12 @@ describe('transactions with promise', function() {
           next();
         });
       }).then(function() {
-        Post.create(post, {transaction: currentTx}).then(
+        Post.create(post, { transaction: currentTx }).then(
           function(p) {
             p.reviews.create({
               author: 'John',
-              content: 'Review for ' + p.title
-            }, {transaction: currentTx}).then(
+              content: 'Review for ' + p.title,
+            }, { transaction: currentTx }).then(
               function(c) {
                 done(null, c);
               });
@@ -78,7 +78,7 @@ describe('transactions with promise', function() {
       if (inTx) {
         options.transaction = currentTx;
       }
-      Post.find({where: where}, options).then(
+      Post.find({ where: where }, options).then(
         function(posts) {
           posts.length.should.be.eql(count);
           if (count) {
@@ -98,7 +98,7 @@ describe('transactions with promise', function() {
 
   describe('commit', function() {
 
-    var post = {title: 't1', content: 'c1'};
+    var post = { title: 't1', content: 'c1' };
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -125,7 +125,7 @@ describe('transactions with promise', function() {
 
   describe('rollback', function() {
 
-    var post = {title: 't2', content: 'c2'};
+    var post = { title: 't2', content: 'c2' };
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -152,7 +152,7 @@ describe('transactions with promise', function() {
 
   describe('timeout', function() {
 
-    var post = {title: 't3', content: 'c3'};
+    var post = { title: 't3', content: 'c3' };
     before(createPostInTx(post, 500));
 
     it('should invoke the timeout hook', function(done) {
@@ -164,7 +164,7 @@ describe('transactions with promise', function() {
     });
 
     it('should rollback the transaction if timeout', function(done) {
-      Post.find({where: {title: 't3'}}, {transaction: currentTx},
+      Post.find({ where: { title: 't3' }}, { transaction: currentTx },
         function(err, posts) {
           if (err) return done(err);
           posts.length.should.be.eql(0);
