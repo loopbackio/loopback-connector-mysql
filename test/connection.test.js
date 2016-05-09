@@ -5,6 +5,7 @@
 
 require('./init.js');
 var assert = require('assert');
+var should = require('should');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var mysqlConnector = require('../');
 var url = require('url');
@@ -72,6 +73,39 @@ describe('connections', function () {
   it('should drop db and disconnect all', function (done) {
     db.connector.execute('DROP DATABASE IF EXISTS ' + db.settings.database, function (err) {
       db.disconnect(function () {
+        done();
+      });
+    });
+  });
+
+  describe('lazyConnect', function() {
+    it('should skip connect phase (lazyConnect = true)', function(done) {
+      var dbConfig = {
+        host: '127.0.0.1',
+        port: 4,
+        lazyConnect: true,
+      };
+      var ds = new DataSource(mysqlConnector, dbConfig);
+
+      var errTimeout = setTimeout(function() {
+        done();
+      }, 2000);
+      ds.on('error', function(err) {
+        clearTimeout(errTimeout);
+        done(err);
+      });
+    });
+
+    it('should report connection error (lazyConnect = false)', function(done) {
+      var dbConfig = {
+        host: '127.0.0.1',
+        port: 4,
+        lazyConnect: false,
+      };
+      var ds = new DataSource(mysqlConnector, dbConfig);
+
+      ds.on('error', function(err) {
+        err.message.should.containEql('ECONNREFUSED');
         done();
       });
     });
