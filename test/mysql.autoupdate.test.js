@@ -23,6 +23,16 @@ describe('MySQL connector', function() {
             'schema': 'myapp_test',
             'table': 'customer_test',
           },
+          'indexes': {
+            'name_index': {
+              'keys': {
+                'name': 1,
+              },
+              'options': {
+                'unique': true,
+              },
+            },
+          },
         },
         'properties': {
           'id': {
@@ -55,6 +65,17 @@ describe('MySQL connector', function() {
           'mysql': {
             'schema': 'myapp_test',
             'table': 'customer_test',
+          },
+          'indexes': {
+            'updated_name_index': {
+              'keys': {
+                'firstName': 1,
+                'lastName': -1,
+              },
+              'options': {
+                'unique': true,
+              },
+            },
           },
         },
         'properties': {
@@ -104,19 +125,38 @@ describe('MySQL connector', function() {
         assert.equal(names[2], 'email');
         assert.equal(names[3], 'age');
 
-        ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
-
-        ds.autoupdate(function(err, result) {
-          ds.discoverModelProperties('customer_test', function(err, props) {
-            assert.equal(props.length, 4);
-            var names = props.map(function(p) {
-              return p.columnName;
+        ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, indexes) {
+          if (err) return done (err);
+          assert(indexes);
+          assert(indexes.length.should.be.above(1));
+          assert.equal(indexes[1].Key_name, 'name_index');
+          assert.equal(indexes[1].Non_unique, 0);
+          ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
+          ds.autoupdate(function(err, result) {
+            if (err) return done (err);
+            ds.discoverModelProperties('customer_test', function(err, props) {
+              if (err) return done (err);
+              assert.equal(props.length, 4);
+              var names = props.map(function(p) {
+                return p.columnName;
+              });
+              assert.equal(names[0], 'id');
+              assert.equal(names[1], 'email');
+              assert.equal(names[2], 'firstName');
+              assert.equal(names[3], 'lastName');
+              ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, updatedindexes) {
+                if (err) return done (err);
+                assert(updatedindexes);
+                assert(updatedindexes.length.should.be.above(2));
+                assert.equal(updatedindexes[1].Key_name, 'updated_name_index');
+                assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
+                //Mysql supports only index sorting in ascending; DESC is ignored
+                assert.equal(updatedindexes[1].Collation, 'A');
+                assert.equal(updatedindexes[2].Collation, 'A');
+                assert.equal(updatedindexes[1].Non_unique, 0);
+                done(err, result);
+              });
             });
-            assert.equal(names[0], 'id');
-            assert.equal(names[1], 'email');
-            assert.equal(names[2], 'firstName');
-            assert.equal(names[3], 'lastName');
-            done(err, result);
           });
         });
       });
