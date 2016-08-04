@@ -1,0 +1,10 @@
+{
+  "6ce5c3a3d305e965ff06e2b3e16e1252": "{{options}} must be an {{object}}: {0}",
+  "a0078d732b2dbabf98ed2efcdb55b402": "{{table}} is a required string argument: {0}",
+  "b7c60421de706ca1e050f2a86953745e": "No arguments - could not create {{Enum}}.",
+  "80a32e80cbed65eba2103201a7c94710": "Model not found: {0}",
+  "026ed55518f3812a9ef4b86e8a195e76": "{{MySQL}} {{regex}} syntax does not respect the {{`g`}} flag",
+  "0ac9f848b934332210bb27747d12a033": "{{MySQL}} {{regex}} syntax does not respect the {{`i`}} flag",
+  "4e9e35876bfb1511205456b52c6659d0": "{{MySQL}} {{regex}} syntax does not respect the {{`m`}} flag",
+  "57512a471969647e8eaa2509cc292018": "{{callback}} should be a function"
+}
