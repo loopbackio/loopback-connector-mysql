@@ -170,11 +170,14 @@ var query = function (sql, cb) {
 function generateURL(config) {
   var urlObj = {
     protocol: 'mysql',
-    auth: config.username + ':' + config.password,
+    auth: config.username || '',
     hostname: config.host,
     pathname: config.database,
     slashes: true
   };
+  if (config.password) {
+    urlObj.auth += ':' + config.password;
+  }
   var formatedUrl = url.format(urlObj);
   return formatedUrl;
 }
