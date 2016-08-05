@@ -13,7 +13,7 @@ var db, config;
 before(function () {
   require('./init');
   config = getConfig();
-  config.database = 'STRONGLOOP';
+  config.database = 'strongloop';
   db = new DataSource(require('../'), config);
 });
 
@@ -116,7 +116,7 @@ describe('Discover models including other users', function () {
         var others = false;
         models.forEach(function (m) {
           // console.dir(m);
-          if (m.owner !== 'STRONGLOOP') {
+          if (m.owner !== 'strongloop') {
             others = true;
           }
         });
@@ -129,15 +129,15 @@ describe('Discover models including other users', function () {
 
 describe('Discover model properties', function () {
   describe('Discover a named model', function () {
-    it('should return an array of columns for PRODUCT', function (done) {
-      db.discoverModelProperties('PRODUCT', function (err, models) {
+    it('should return an array of columns for product', function (done) {
+      db.discoverModelProperties('product', function (err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
           models.forEach(function (m) {
             // console.dir(m);
-            assert(m.tableName === 'PRODUCT');
+            assert(m.tableName === 'product');
           });
           done(null, models);
         }
@@ -148,30 +148,30 @@ describe('Discover model properties', function () {
 });
 
 describe('Discover model primary keys', function () {
-  it('should return an array of primary keys for PRODUCT', function (done) {
-    db.discoverPrimaryKeys('PRODUCT', function (err, models) {
+  it('should return an array of primary keys for product', function (done) {
+    db.discoverPrimaryKeys('product', function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.tableName === 'PRODUCT');
+          assert(m.tableName === 'product');
         });
         done(null, models);
       }
     });
   });
 
-  it('should return an array of primary keys for STRONGLOOP.PRODUCT', function (done) {
-    db.discoverPrimaryKeys('PRODUCT', {owner: 'STRONGLOOP'}, function (err, models) {
+  it('should return an array of primary keys for strongloop.product', function (done) {
+    db.discoverPrimaryKeys('product', {owner: 'strongloop'}, function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.tableName === 'PRODUCT');
+          assert(m.tableName === 'product');
         });
         done(null, models);
       }
@@ -180,29 +180,29 @@ describe('Discover model primary keys', function () {
 });
 
 describe('Discover model foreign keys', function () {
-  it('should return an array of foreign keys for INVENTORY', function (done) {
-    db.discoverForeignKeys('INVENTORY', function (err, models) {
+  it('should return an array of foreign keys for inventory', function (done) {
+    db.discoverForeignKeys('inventory', function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.fkTableName === 'INVENTORY');
+          assert(m.fkTableName === 'inventory');
         });
         done(null, models);
       }
     });
   });
-  it('should return an array of foreign keys for STRONGLOOP.INVENTORY', function (done) {
-    db.discoverForeignKeys('INVENTORY', {owner: 'STRONGLOOP'}, function (err, models) {
+  it('should return an array of foreign keys for strongloop.inventory', function (done) {
+    db.discoverForeignKeys('inventory', {owner: 'strongloop'}, function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.fkTableName === 'INVENTORY');
+          assert(m.fkTableName === 'inventory');
         });
         done(null, models);
       }
@@ -213,18 +213,18 @@ describe('Discover model foreign keys', function () {
 describe('Discover LDL schema from a table', function () {
   var schema;
   before(function (done) {
-    db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema_) {
+    db.discoverSchema('inventory', {owner: 'strongloop'}, function (err, schema_) {
       schema = schema_;
       done(err);
     });
   });
-  it('should return an LDL schema for INVENTORY', function () {
+  it('should return an LDL schema for inventory', function () {
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
     console.error('schema:', schema);
     assert.strictEqual(schema.name, 'Inventory');
-    assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
-    assert.strictEqual(schema.options.mysql.table, 'INVENTORY');
+    assert.ok(/strongloop/i.test(schema.options.mysql.schema));
+    assert.strictEqual(schema.options.mysql.table, 'inventory');
     assert(schema.properties[productId]);
     // TODO: schema shows this field is default NULL, which means it isn't required
     // assert(schema.properties[productId].required);
@@ -244,7 +244,7 @@ describe('Discover LDL schema from a table', function () {
 describe('Discover and build models', function () {
   var models;
   before(function (done) {
-    db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true}, function (err, models_) {
+    db.discoverAndBuildModels('inventory', {owner: 'strongloop', visited: {}, associations: true}, function (err, models_) {
       models = models_;
       done(err);
     });
@@ -254,8 +254,8 @@ describe('Discover and build models', function () {
     var schema = models.Inventory.definition;
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
-    assert(/STRONGLOOP/i.test(schema.settings.mysql.schema));
-    assert.strictEqual(schema.settings.mysql.table, 'INVENTORY');
+    assert(/strongloop/i.test(schema.settings.mysql.schema));
+    assert.strictEqual(schema.settings.mysql.table, 'inventory');
     assert(schema.properties[productId]);
     assert.strictEqual(schema.properties[productId].type, String);
     assert.strictEqual(schema.properties[productId].mysql.columnName, 'productId');
