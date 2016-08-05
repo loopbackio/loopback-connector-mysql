@@ -4,6 +4,7 @@
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
+    "pretest": "node pretest.js",
     "test": "mocha"
   },
   "dependencies": {
