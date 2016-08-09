@@ -126,7 +126,7 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done) {
           db.driver.escape(db.settings.database) + ' LIMIT 1';
         db.connector.execute(q, function (err, r) {
           assert.ok(!err);
-          assert.ok(r[0].DEFAULT_COLLATION_NAME.match(test_collo));
+          should(r[0].DEFAULT_COLLATION_NAME).match(test_collo);
           db.connector.execute('SHOW VARIABLES LIKE "character_set%"', function (err, r) {
             assert.ok(!err);
             var hit_all = 0;
@@ -170,11 +170,14 @@ var query = function (sql, cb) {
 function generateURL(config) {
   var urlObj = {
     protocol: 'mysql',
-    auth: config.username + ':' + config.password,
+    auth: config.username || '',
     hostname: config.host,
     pathname: config.database,
     slashes: true
   };
+  if (config.password) {
+    urlObj.auth += ':' + config.password;
+  }
   var formatedUrl = url.format(urlObj);
   return formatedUrl;
 }
