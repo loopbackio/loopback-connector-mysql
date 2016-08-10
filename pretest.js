@@ -13,7 +13,7 @@ if (!process.env.TEST_MYSQL_USER) {
 var fs = require('fs');
 var cp = require('child_process');
 
-var sql = fs.createReadStream(require.resolve('./example/table.sql'));
+var sql = fs.createReadStream(require.resolve('./test/schema.sql'));
 var stdio = ['pipe', process.stdout, process.stderr];
 var args = ['--user=' + process.env.TEST_MYSQL_USER];
 
