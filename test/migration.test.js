@@ -89,7 +89,10 @@ describe('migrations', function () {
           Seq_in_index: 1,
           Column_name: 'id',
           Collation: 'A',
-          Cardinality: 0,
+          // XXX: this actually has more to do with whether the table existed or not and
+          // what kind of data is in it that MySQL has analyzed:
+          // https://dev.mysql.com/doc/refman/5.5/en/show-index.html
+          // Cardinality: /^5\.[567]/.test(mysqlVersion) ? 0 : null,
           Sub_part: null,
           Packed: null,
           Null: '',
@@ -102,8 +105,11 @@ describe('migrations', function () {
           Seq_in_index: 1,
           Column_name: 'email',
           Collation: 'A',
-          Cardinality: /^5\.7/.test(mysqlVersion) ? 0 : null,
-          Sub_part: /^5\.7/.test(mysqlVersion) ? null : 333,
+          // XXX: this actually has more to do with whether the table existed or not and
+          // what kind of data is in it that MySQL has analyzed:
+          // https://dev.mysql.com/doc/refman/5.5/en/show-index.html
+          // Cardinality: /^5\.[567]/.test(mysqlVersion) ? 0 : null,
+          Sub_part: /^5\.7/.test(mysqlVersion) ? null : /^5\.5/.test(mysqlVersion) ? 255 : 333,
           Packed: null,
           Null: '',
           Index_type: 'BTREE',
@@ -115,8 +121,11 @@ describe('migrations', function () {
           Seq_in_index: 1,
           Column_name: 'email',
           Collation: 'A',
-          Cardinality: /^5\.7/.test(mysqlVersion) ? 0 : null,
-          Sub_part: /^5\.7/.test(mysqlVersion) ? null : 333,
+          // XXX: this actually has more to do with whether the table existed or not and
+          // what kind of data is in it that MySQL has analyzed:
+          // https://dev.mysql.com/doc/refman/5.5/en/show-index.html
+          // Cardinality: /^5\.[567]/.test(mysqlVersion) ? 0 : null,
+          Sub_part: /^5\.7/.test(mysqlVersion) ? null : /^5\.5/.test(mysqlVersion) ? 255 : 333,
           Packed: null,
           Null: '',
           Index_type: 'BTREE',

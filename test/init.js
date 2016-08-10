@@ -3,6 +3,13 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+// TODO: used for testing support for parallel testing on ci.strongloop.com which
+// provides MYSQL_* env vars instead of TEST_MYSQL_* env vars.
+process.env.TEST_MYSQL_USER = process.env.TEST_MYSQL_USER || process.env.MYSQL_USER;
+process.env.TEST_MYSQL_PASSWORD = process.env.TEST_MYSQL_PASSWORD || process.env.MYSQL_PASSWORD;
+process.env.TEST_MYSQL_HOST = process.env.TEST_MYSQL_HOST || process.env.MYSQL_HOST;
+process.env.TEST_MYSQL_PORT = process.env.TEST_MYSQL_PORT || process.env.MYSQL_PORT;
+
 module.exports = require('should');
 
 var DataSource = require('loopback-datasource-juggler').DataSource;

@@ -13,7 +13,7 @@ var db, config;
 before(function () {
   require('./init');
   config = getConfig();
-  config.database = 'strongloop';
+  config.database = 'STRONGLOOP';
   db = new DataSource(require('../'), config);
 });
 
@@ -116,7 +116,7 @@ describe('Discover models including other users', function () {
         var others = false;
         models.forEach(function (m) {
           // console.dir(m);
-          if (m.owner !== 'strongloop') {
+          if (m.owner !== 'STRONGLOOP') {
             others = true;
           }
         });
@@ -163,8 +163,8 @@ describe('Discover model primary keys', function () {
     });
   });
 
-  it('should return an array of primary keys for strongloop.product', function (done) {
-    db.discoverPrimaryKeys('product', {owner: 'strongloop'}, function (err, models) {
+  it('should return an array of primary keys for STRONGLOOP.PRODUCT', function (done) {
+    db.discoverPrimaryKeys('product', {owner: 'STRONGLOOP'}, function (err, models) {
       if (err) {
         console.error(err);
         done(err);
@@ -180,29 +180,29 @@ describe('Discover model primary keys', function () {
 });
 
 describe('Discover model foreign keys', function () {
-  it('should return an array of foreign keys for inventory', function (done) {
-    db.discoverForeignKeys('inventory', function (err, models) {
+  it('should return an array of foreign keys for INVENTORY', function (done) {
+    db.discoverForeignKeys('INVENTORY', function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.fkTableName === 'inventory');
+          assert(m.fkTableName === 'INVENTORY');
         });
         done(null, models);
       }
     });
   });
-  it('should return an array of foreign keys for strongloop.inventory', function (done) {
-    db.discoverForeignKeys('inventory', {owner: 'strongloop'}, function (err, models) {
+  it('should return an array of foreign keys for STRONGLOOP.INVENTORY', function (done) {
+    db.discoverForeignKeys('INVENTORY', {owner: 'STRONGLOOP'}, function (err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         models.forEach(function (m) {
           // console.dir(m);
-          assert(m.fkTableName === 'inventory');
+          assert(m.fkTableName === 'INVENTORY');
         });
         done(null, models);
       }
@@ -213,26 +213,26 @@ describe('Discover model foreign keys', function () {
 describe('Discover LDL schema from a table', function () {
   var schema;
   before(function (done) {
-    db.discoverSchema('inventory', {owner: 'strongloop'}, function (err, schema_) {
+    db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema_) {
       schema = schema_;
       done(err);
     });
   });
-  it('should return an LDL schema for inventory', function () {
+  it('should return an LDL schema for INVENTORY', function () {
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
     console.error('schema:', schema);
     assert.strictEqual(schema.name, 'Inventory');
-    assert.ok(/strongloop/i.test(schema.options.mysql.schema));
-    assert.strictEqual(schema.options.mysql.table, 'inventory');
+    assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
+    assert.strictEqual(schema.options.mysql.table, 'INVENTORY');
     assert(schema.properties[productId]);
     // TODO: schema shows this field is default NULL, which means it isn't required
     // assert(schema.properties[productId].required);
     assert.strictEqual(schema.properties[productId].type, 'String');
-    assert.strictEqual(schema.properties[productId].mysql.columnName, 'productId');
+    assert.strictEqual(schema.properties[productId].mysql.columnName, 'PRODUCT_ID');
     assert(schema.properties[locationId]);
     assert.strictEqual(schema.properties[locationId].type, 'String');
-    assert.strictEqual(schema.properties[locationId].mysql.columnName, 'locationId');
+    assert.strictEqual(schema.properties[locationId].mysql.columnName, 'LOCATION_ID');
     assert(schema.properties.available);
     assert.strictEqual(schema.properties.available.required, false);
     assert.strictEqual(schema.properties.available.type, 'Number');
@@ -244,7 +244,7 @@ describe('Discover LDL schema from a table', function () {
 describe('Discover and build models', function () {
   var models;
   before(function (done) {
-    db.discoverAndBuildModels('inventory', {owner: 'strongloop', visited: {}, associations: true}, function (err, models_) {
+    db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true}, function (err, models_) {
       models = models_;
       done(err);
     });
@@ -254,14 +254,14 @@ describe('Discover and build models', function () {
     var schema = models.Inventory.definition;
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
-    assert(/strongloop/i.test(schema.settings.mysql.schema));
-    assert.strictEqual(schema.settings.mysql.table, 'inventory');
+    assert(/STRONGLOOP/i.test(schema.settings.mysql.schema));
+    assert.strictEqual(schema.settings.mysql.table, 'INVENTORY');
     assert(schema.properties[productId]);
     assert.strictEqual(schema.properties[productId].type, String);
-    assert.strictEqual(schema.properties[productId].mysql.columnName, 'productId');
+    assert.strictEqual(schema.properties[productId].mysql.columnName, 'PRODUCT_ID');
     assert(schema.properties[locationId]);
     assert.strictEqual(schema.properties[locationId].type, String);
-    assert.strictEqual(schema.properties[locationId].mysql.columnName, 'locationId');
+    assert.strictEqual(schema.properties[locationId].mysql.columnName, 'LOCATION_ID');
     assert(schema.properties.available);
     assert.strictEqual(schema.properties.available.type, Number);
     assert(schema.properties.total);
