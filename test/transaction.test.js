@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
 var Transaction = require('loopback-datasource-juggler').Transaction;
 require('./init.js');
 require('should');
@@ -10,17 +11,16 @@ require('should');
 var db, Post, Review;
 
 describe('transactions', function() {
-
   before(function(done) {
     db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
     db.once('connected', function() {
       Post = db.define('PostTX', {
         title: {type: String, length: 255, index: true},
-        content: {type: String}
+        content: {type: String},
       }, {mysql: {engine: 'INNODB'}});
       Review = db.define('ReviewTX', {
         author: String,
-        content: {type: String}
+        content: {type: String},
       }, {mysql: {engine: 'INNODB'}});
       Post.hasMany(Review, {as: 'reviews', foreignKey: 'postId'});
       db.automigrate(['PostTX', 'ReviewTX'], done);
@@ -34,9 +34,9 @@ describe('transactions', function() {
     return function(done) {
       // Transaction.begin(db.connector, Transaction.READ_COMMITTED,
       Post.beginTransaction({
-          isolationLevel: Transaction.READ_COMMITTED,
-          timeout: timeout
-        },
+        isolationLevel: Transaction.READ_COMMITTED,
+        timeout: timeout,
+      },
         function(err, tx) {
           if (err) return done(err);
           (typeof tx.id).should.be.eql('string');
@@ -64,9 +64,9 @@ describe('transactions', function() {
                 done(err);
               } else {
                 p.reviews.create({
-                    author: 'John',
-                    content: 'Review for ' + p.title
-                  }, {transaction: tx},
+                  author: 'John',
+                  content: 'Review for ' + p.title,
+                }, {transaction: tx},
                   function(err, c) {
                     done(err);
                   });
@@ -105,7 +105,6 @@ describe('transactions', function() {
   }
 
   describe('commit', function() {
-
     var post = {title: 't1', content: 'c1'};
     before(createPostInTx(post));
 
@@ -132,7 +131,6 @@ describe('transactions', function() {
   });
 
   describe('rollback', function() {
-
     var post = {title: 't2', content: 'c2'};
     before(createPostInTx(post));
 
@@ -159,7 +157,6 @@ describe('transactions', function() {
   });
 
   describe('timeout', function() {
-
     var post = {title: 't3', content: 'c3'};
     before(createPostInTx(post, 500));
 
@@ -179,7 +176,5 @@ describe('transactions', function() {
           done();
         });
     });
-
   });
 });
-
