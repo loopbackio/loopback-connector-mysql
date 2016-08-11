@@ -1,3 +1,4 @@
+'use strict';
 // TODO: used for testing support for parallel testing on ci.strongloop.com which
 // provides MYSQL_* env vars instead of TEST_MYSQL_* env vars.
 process.env.TEST_MYSQL_USER = process.env.TEST_MYSQL_USER || process.env.MYSQL_USER;

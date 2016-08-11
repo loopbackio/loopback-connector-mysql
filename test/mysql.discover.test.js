@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
 process.env.NODE_ENV = 'test';
 require('should');
 
@@ -10,14 +11,14 @@ var assert = require('assert');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var db, config;
 
-before(function () {
+before(function() {
   require('./init');
   config = getConfig();
   config.database = 'STRONGLOOP';
   db = new DataSource(require('../'), config);
 });
 
-describe('discoverModels', function () {
+describe('discoverModels', function() {
   describe('Discover database schemas', function() {
     it('should return an array of db schemas', function(done) {
       db.connector.discoverDatabaseSchemas(function(err, schemas) {
@@ -29,19 +30,18 @@ describe('discoverModels', function () {
     });
   });
 
-  describe('Discover models including views', function () {
-    it('should return an array of tables and views', function (done) {
-
+  describe('Discover models including views', function() {
+    it('should return an array of tables and views', function(done) {
       db.discoverModelDefinitions({
         views: true,
-        limit: 3
-      }, function (err, models) {
+        limit: 3,
+      }, function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
           var views = false;
-          models.forEach(function (m) {
+          models.forEach(function(m) {
             // console.dir(m);
             if (m.type === 'view') {
               views = true;
@@ -54,18 +54,17 @@ describe('discoverModels', function () {
     });
   });
 
-  describe('Discover current user\'s tables', function () {
-    it('should return an array of tables for the current user', function (done) {
-
+  describe('Discover current user\'s tables', function() {
+    it('should return an array of tables for the current user', function(done) {
       db.discoverModelDefinitions({
-        limit: 3
-      }, function (err, models) {
+        limit: 3,
+      }, function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
           var views = false;
-          models.forEach(function (m) {
+          models.forEach(function(m) {
             assert.equal(m.owner, config.username);
           });
           done(null, models);
@@ -74,20 +73,19 @@ describe('discoverModels', function () {
     });
   });
 
-  describe('Discover models excluding views', function () {
+  describe('Discover models excluding views', function() {
     // TODO: this test assumes the current user owns the tables
-    it.skip('should return an array of only tables', function (done) {
-
+    it.skip('should return an array of only tables', function(done) {
       db.discoverModelDefinitions({
         views: false,
-        limit: 3
-      }, function (err, models) {
+        limit: 3,
+      }, function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
           var views = false;
-          models.forEach(function (m) {
+          models.forEach(function(m) {
             // console.dir(m);
             if (m.type === 'view') {
               views = true;
@@ -102,19 +100,18 @@ describe('discoverModels', function () {
   });
 });
 
-describe('Discover models including other users', function () {
-  it('should return an array of all tables and views', function (done) {
-
+describe('Discover models including other users', function() {
+  it('should return an array of all tables and views', function(done) {
     db.discoverModelDefinitions({
       all: true,
-      limit: 3
-    }, function (err, models) {
+      limit: 3,
+    }, function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         var others = false;
-        models.forEach(function (m) {
+        models.forEach(function(m) {
           // console.dir(m);
           if (m.owner !== 'STRONGLOOP') {
             others = true;
@@ -127,15 +124,15 @@ describe('Discover models including other users', function () {
   });
 });
 
-describe('Discover model properties', function () {
-  describe('Discover a named model', function () {
-    it('should return an array of columns for product', function (done) {
-      db.discoverModelProperties('product', function (err, models) {
+describe('Discover model properties', function() {
+  describe('Discover a named model', function() {
+    it('should return an array of columns for product', function(done) {
+      db.discoverModelProperties('product', function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
-          models.forEach(function (m) {
+          models.forEach(function(m) {
             // console.dir(m);
             assert(m.tableName === 'product');
           });
@@ -144,17 +141,16 @@ describe('Discover model properties', function () {
       });
     });
   });
-
 });
 
-describe('Discover model primary keys', function () {
-  it('should return an array of primary keys for product', function (done) {
-    db.discoverPrimaryKeys('product', function (err, models) {
+describe('Discover model primary keys', function() {
+  it('should return an array of primary keys for product', function(done) {
+    db.discoverPrimaryKeys('product', function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
-        models.forEach(function (m) {
+        models.forEach(function(m) {
           // console.dir(m);
           assert(m.tableName === 'product');
         });
@@ -163,13 +159,13 @@ describe('Discover model primary keys', function () {
     });
   });
 
-  it('should return an array of primary keys for STRONGLOOP.PRODUCT', function (done) {
-    db.discoverPrimaryKeys('product', {owner: 'STRONGLOOP'}, function (err, models) {
+  it('should return an array of primary keys for STRONGLOOP.PRODUCT', function(done) {
+    db.discoverPrimaryKeys('product', {owner: 'STRONGLOOP'}, function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
-        models.forEach(function (m) {
+        models.forEach(function(m) {
           // console.dir(m);
           assert(m.tableName === 'product');
         });
@@ -179,14 +175,14 @@ describe('Discover model primary keys', function () {
   });
 });
 
-describe('Discover model foreign keys', function () {
-  it('should return an array of foreign keys for INVENTORY', function (done) {
-    db.discoverForeignKeys('INVENTORY', function (err, models) {
+describe('Discover model foreign keys', function() {
+  it('should return an array of foreign keys for INVENTORY', function(done) {
+    db.discoverForeignKeys('INVENTORY', function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
-        models.forEach(function (m) {
+        models.forEach(function(m) {
           // console.dir(m);
           assert(m.fkTableName === 'INVENTORY');
         });
@@ -194,13 +190,13 @@ describe('Discover model foreign keys', function () {
       }
     });
   });
-  it('should return an array of foreign keys for STRONGLOOP.INVENTORY', function (done) {
-    db.discoverForeignKeys('INVENTORY', {owner: 'STRONGLOOP'}, function (err, models) {
+  it('should return an array of foreign keys for STRONGLOOP.INVENTORY', function(done) {
+    db.discoverForeignKeys('INVENTORY', {owner: 'STRONGLOOP'}, function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
-        models.forEach(function (m) {
+        models.forEach(function(m) {
           // console.dir(m);
           assert(m.fkTableName === 'INVENTORY');
         });
@@ -210,15 +206,15 @@ describe('Discover model foreign keys', function () {
   });
 });
 
-describe('Discover LDL schema from a table', function () {
+describe('Discover LDL schema from a table', function() {
   var schema;
-  before(function (done) {
-    db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function (err, schema_) {
+  before(function(done) {
+    db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function(err, schema_) {
       schema = schema_;
       done(err);
     });
   });
-  it('should return an LDL schema for INVENTORY', function () {
+  it('should return an LDL schema for INVENTORY', function() {
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
     console.error('schema:', schema);
@@ -241,15 +237,16 @@ describe('Discover LDL schema from a table', function () {
   });
 });
 
-describe('Discover and build models', function () {
+describe('Discover and build models', function() {
   var models;
-  before(function (done) {
-    db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true}, function (err, models_) {
-      models = models_;
-      done(err);
-    });
+  before(function(done) {
+    db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true},
+     function(err, models_) {
+       models = models_;
+       done(err);
+     });
   });
-  it('should discover and build models', function () {
+  it('should discover and build models', function() {
     assert(models.Inventory, 'Inventory model should be discovered and built');
     var schema = models.Inventory.definition;
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
@@ -267,9 +264,9 @@ describe('Discover and build models', function () {
     assert(schema.properties.total);
     assert.strictEqual(schema.properties.total.type, Number);
   });
-  it('should be able to find an instance', function (done) {
+  it('should be able to find an instance', function(done) {
     assert(models.Inventory, 'Inventory model must exist');
-    models.Inventory.findOne(function (err, inv) {
+    models.Inventory.findOne(function(err, inv) {
       assert(!err, 'error should not be reported');
       done();
     });
