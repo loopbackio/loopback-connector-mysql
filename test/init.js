@@ -4,12 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-// TODO: used for testing support for parallel testing on ci.strongloop.com which
-// provides MYSQL_* env vars instead of TEST_MYSQL_* env vars.
-process.env.TEST_MYSQL_USER = process.env.TEST_MYSQL_USER || process.env.MYSQL_USER;
-process.env.TEST_MYSQL_PASSWORD = process.env.TEST_MYSQL_PASSWORD || process.env.MYSQL_PASSWORD;
-process.env.TEST_MYSQL_HOST = process.env.TEST_MYSQL_HOST || process.env.MYSQL_HOST;
-process.env.TEST_MYSQL_PORT = process.env.TEST_MYSQL_PORT || process.env.MYSQL_PORT;
 
 module.exports = require('should');
 
@@ -19,11 +13,13 @@ var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 console.log(config);
 global.getConfig = function(options) {
   var dbConf = {
-    host: process.env.TEST_MYSQL_HOST || config.host || 'localhost',
-    port: process.env.TEST_MYSQL_PORT || config.port || 3306,
+    host: process.env.TEST_MYSQL_HOST || process.env.MYSQL_HOST ||
+      config.host || 'localhost',
+    port: process.env.TEST_MYSQL_PORT || process.env.MYSQL_PORT ||
+      config.port || 3306,
     database: 'myapp_test',
-    username: process.env.TEST_MYSQL_USER || config.username,
-    password: process.env.TEST_MYSQL_PASSWORD || config.password,
+    username: process.env.MYSQL_USER || config.username,
+    password: process.env.MYSQL_PASSWORD || config.password,
     createDatabase: true,
   };
 
