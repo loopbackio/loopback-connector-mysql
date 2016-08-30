@@ -13,7 +13,7 @@ before(function() {
 });
 
 describe('MySQL connector', function() {
-  before(function () {
+  before(function() {
     setupAltColNameData();
   });
 
@@ -168,32 +168,32 @@ describe('MySQL connector', function() {
   });
 
   function setupAltColNameData() {
-     var schema = {
-      "name": "ColRenameTest",
-      "options": {
-        "idInjection": false,
-        "mysql": {
-          "schema": "myapp_test",
-          "table": "col_rename_test"
-        }
-      },
-      "properties": {
-        "firstName": {
-          "type": "String",
-          "required": false,
-          "length": 40,
-          "mysql": {
-            "columnName": "first_name",
-            "dataType": "varchar",
-            "dataLength": 40
-          }
+    var schema = {
+      name: 'ColRenameTest',
+      options: {
+        idInjection: false,
+        mysql: {
+          schema: 'myapp_test',
+          table: 'col_rename_test',
         },
-        "lastName": {
-          "type": "String",
-          "required": false,
-          "length": 40
-        }
-      }
+      },
+      properties: {
+        firstName: {
+          type: 'String',
+          required: false,
+          length: 40,
+          mysql: {
+            columnName: 'first_name',
+            dataType: 'varchar',
+            dataLength: 40,
+          },
+        },
+        lastName: {
+          type: 'String',
+          required: false,
+          length: 40,
+        },
+      },
     };
     ds.createModel(schema.name, schema.properties, schema.options);
   }
@@ -212,19 +212,19 @@ describe('MySQL connector', function() {
     });
   });
 
-  it('"mysql.columnName" is updated with correct name on create table', function (done) {
+  it('"mysql.columnName" is updated with correct name on create table', function(done) {
     // first autoupdate call uses create table
     verifyMysqlColumnNameAutoupdate(done);
   });
 
-  it('"mysql.columnName" is updated without changing column name on alter table', function (done) {
+  it('"mysql.columnName" is updated without changing column name on alter table', function(done) {
     // second autoupdate call uses alter table
     verifyMysqlColumnNameAutoupdate(done);
   });
 
   function verifyMysqlColumnNameAutoupdate(done) {
-    ds.autoupdate('ColRenameTest', function (err) {
-      ds.discoverModelProperties('col_rename_test', function (err, props) {
+    ds.autoupdate('ColRenameTest', function(err) {
+      ds.discoverModelProperties('col_rename_test', function(err, props) {
         assert.equal(props[0].columnName, 'first_name');
         assert.equal(props[1].columnName, 'lastName');
         assert.equal(props.length, 2);

@@ -338,14 +338,13 @@ describe('migrations', function() {
     });
   });
 
-  it('should map zero dateTime into null', function (done) {
-
+  it('should map zero dateTime into null', function(done) {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("0000-00-00 00:00:00", "0000-00-00 00:00:00") ',
-      function (err, ret) {
+      function(err, ret) {
         should.not.exists(err);
-        DateData.findById(ret.insertId, function (err, dateData) {
+        DateData.findById(ret.insertId, function(err, dateData) {
           should(dateData.dateTime)
             .be.null();
           should(dateData.timestamp)
