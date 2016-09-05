@@ -32,6 +32,8 @@ describe('mysql', function() {
       history: Object,
       stars: Number,
       userId: ObjectID,
+    }, {
+      forceId: false
     });
 
     PostWithStringId = db.define('PostWithStringId', {
