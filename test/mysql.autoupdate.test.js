@@ -228,6 +228,152 @@ describe('MySQL connector', function() {
     });
   });
 
+  it('should auto migrate/update foreign keys in tables', function(done) {
+    var customer2_schema =
+      {
+        'name': 'CustomerTest2',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+            'schema': 'myapp_test',
+            'table': 'customer_test2',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'name': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'email': {
+            'type': 'String',
+            'required': true,
+            'length': 40,
+          },
+          'age': {
+            'type': 'Number',
+            'required': false,
+          },
+        },
+      };
+
+    var schema_v1 =
+      {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+          'foreignKeys': {
+            'fk_ordertest_customerId': {
+              'name': 'fk_ordertest_customerId',
+              'entity': 'CustomerTest2',
+              'entityKey': 'id',
+              'foreignKey': 'customerId',
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+    var schema_v2 =
+      {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+    var foreignKeySelect =
+      'SELECT TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_COLUMN_NAME ' +
+      'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
+      'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
+      'AND   REFERENCED_TABLE_NAME = "customer_test2"';
+
+    ds.createModel(customer2_schema.name, customer2_schema.properties, customer2_schema.options);
+    ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
+
+    ds.automigrate(function() {
+      ds.autoupdate(function() { //foreign keys won't be created on table create
+        ds.discoverModelProperties('order_test', function(err, props) {
+          assert.equal(props.length, 3);
+
+          ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+            if (err) return done (err);
+            assert(foreignKeys);
+            assert(foreignKeys.length.should.be.equal(1));
+            assert.equal(foreignKeys[0].TABLE_NAME, 'order_test');
+            assert.equal(foreignKeys[0].COLUMN_NAME, 'customerId');
+            assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
+            assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
+
+            ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
+            ds.autoupdate(function(err, result) {
+              if (err) return done (err);
+              ds.discoverModelProperties('order_test', function(err, props) {
+                if (err) return done (err);
+
+                assert.equal(props.length, 3);
+
+                ds.connector.execute(foreignKeySelect, function(err, updatedForeignKeys) {
+                  if (err) return done (err);
+                  assert(updatedForeignKeys);
+                  assert(updatedForeignKeys.length.should.be.equal(0));
+
+                  done(err, result);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
   function setupAltColNameData() {
     var schema = {
       name: 'ColRenameTest',
