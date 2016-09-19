@@ -1,0 +1,11 @@
+{
+  "6ce5c3a3d305e965ff06e2b3e16e1252": "{{options}} moet een {{object}} zijn: {0}",
+  "a0078d732b2dbabf98ed2efcdb55b402": "{{table}} is een verplicht tekenreeksargument: {0}",
+  "b7c60421de706ca1e050f2a86953745e": "Geen argumenten - {{Enum}} kan niet worden gemaakt.",
+  "80a32e80cbed65eba2103201a7c94710": "Model is niet gevonden: {0}",
+  "026ed55518f3812a9ef4b86e8a195e76": "Syntaxis van {{MySQL}} {{regex}} voldoet niet aan vlag {{`g`}}",
+  "0ac9f848b934332210bb27747d12a033": "Syntaxis van {{MySQL}} {{regex}} voldoet niet aan vlag {{`i`}}",
+  "4e9e35876bfb1511205456b52c6659d0": "Syntaxis van {{MySQL}} {{regex}} voldoet niet aan vlag {{`m`}}",
+  "57512a471969647e8eaa2509cc292018": "{{callback}} moet een functie zijn"
+}
+

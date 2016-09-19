@@ -4,5 +4,4 @@ coverage
 *.xml
 .loopbackrc
 .idea
-intl/*
-!intl/en/
+
