@@ -1,0 +1,13 @@
+{
+   "extends": "loopback",
+   "rules": {
+     "max-len": ["error", 120, 4, {
+       "ignoreComments": true,
+       "ignoreUrls": true,
+       "ignorePattern": "^\\s*var\\s.=\\s*(require\\s*\\()|(/)"
+     }],
+     "camelcase": 0,
+     "one-var": "off",
+     "no-unused-expressions": "off"
+   }
+ }

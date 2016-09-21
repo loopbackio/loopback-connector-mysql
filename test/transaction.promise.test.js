@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+'use strict';
 if (typeof Promise === 'undefined') {
   global.Promise = require('bluebird');
 }
@@ -13,17 +14,16 @@ require('should');
 var db, Post, Review;
 
 describe('transactions with promise', function() {
-
   before(function(done) {
     db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
     db.once('connected', function() {
       Post = db.define('PostTX', {
         title: {type: String, length: 255, index: true},
-        content: {type: String}
+        content: {type: String},
       }, {mysql: {engine: 'INNODB'}});
       Review = db.define('ReviewTX', {
         author: String,
-        content: {type: String}
+        content: {type: String},
       }, {mysql: {engine: 'INNODB'}});
       Post.hasMany(Review, {as: 'reviews', foreignKey: 'postId'});
       db.automigrate(['PostTX', 'ReviewTX'], done);
@@ -38,7 +38,7 @@ describe('transactions with promise', function() {
       // Transaction.begin(db.connector, Transaction.READ_COMMITTED,
       var promise = Post.beginTransaction({
         isolationLevel: Transaction.READ_COMMITTED,
-        timeout: timeout
+        timeout: timeout,
       });
       promise.then(function(tx) {
         (typeof tx.id).should.be.eql('string');
@@ -65,7 +65,7 @@ describe('transactions with promise', function() {
           function(p) {
             p.reviews.create({
               author: 'John',
-              content: 'Review for ' + p.title
+              content: 'Review for ' + p.title,
             }, {transaction: currentTx}).then(
               function(c) {
                 done(null, c);
@@ -102,7 +102,6 @@ describe('transactions with promise', function() {
   }
 
   describe('commit', function() {
-
     var post = {title: 't1', content: 'c1'};
     before(createPostInTx(post));
 
@@ -129,7 +128,6 @@ describe('transactions with promise', function() {
   });
 
   describe('rollback', function() {
-
     var post = {title: 't2', content: 'c2'};
     before(createPostInTx(post));
 
@@ -156,7 +154,6 @@ describe('transactions with promise', function() {
   });
 
   describe('timeout', function() {
-
     var post = {title: 't3', content: 'c3'};
     before(createPostInTx(post, 500));
 
@@ -176,7 +173,5 @@ describe('transactions with promise', function() {
           done();
         });
     });
-
   });
 });
-

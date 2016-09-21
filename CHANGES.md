@@ -1,3 +1,19 @@
+2016-06-21, Version 2.3.0
+=========================
+
+ * Add function connect (juehou)
+
+ * insert/update copyright notices (Ryan Graham)
+
+ * relicense as MIT only (Ryan Graham)
+
+ * Override other settings if url provided (juehou)
+
+ * Add `connectorCapabilities ` (Amir Jafarian)
+
+ * Implement ReplaceOrCreate (Amir Jafarian)
+
+
 2016-02-19, Version 2.2.1
 =========================
 
