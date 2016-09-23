@@ -12,8 +12,8 @@
   "dependencies": {
     "async": "^0.9.0",
     "debug": "^2.1.1",
-    "loopback-connector": "^2.1.0",
-    "mysql": "^2.5.4",
+    "loopback-connector": "^2.4.0",
+    "mysql": "^2.11.1",
     "strong-globalize": "^2.5.8"
   },
   "devDependencies": {
