@@ -33,7 +33,7 @@ describe('mysql', function() {
       stars: Number,
       userId: ObjectID,
     }, {
-      forceId: false
+      forceId: false,
     });
 
     PostWithStringId = db.define('PostWithStringId', {
