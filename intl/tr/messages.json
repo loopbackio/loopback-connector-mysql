@@ -1,6 +1,6 @@
 {
   "6ce5c3a3d305e965ff06e2b3e16e1252": "{{options}} bir {{object}} olmalıdır: {0}",
-  "a0078d732b2dbabf98ed2efcdb55b402": "{{table}} zorunlu bir dize bağımsız değişkeni: {0}",
+  "a0078d732b2dbabf98ed2efcdb55b402": "{{table}} zorunlu bir dizgi bağımsız değişkeni: {0}",
   "b7c60421de706ca1e050f2a86953745e": "Bağımsız değişken yok - {{Enum}} yaratılamadı.",
   "80a32e80cbed65eba2103201a7c94710": "Model bulunamadı: {0}",
   "026ed55518f3812a9ef4b86e8a195e76": "{{MySQL}} {{regex}} düzenli ifade sözdizimi {{`g`}} işareti kuralına uymuyor",
