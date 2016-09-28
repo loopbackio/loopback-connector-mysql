@@ -206,6 +206,42 @@ describe('Discover model foreign keys', function() {
   });
 });
 
+describe('Discover model generated columns', function() {
+  it('should return an array of columns for STRONGLOOP.PRODUCT and none of them is generated', function(done) {
+    db.discoverModelProperties('product', function(err, models) {
+      if (err) {
+        console.error(err);
+        done(err);
+      } else {
+        models.forEach(function(m) {
+          // console.dir(m);
+          assert(m.tableName === 'PRODUCT');
+          assert(!m.generated, 'STRONGLOOP.PRODUCT table should not have generated (identity) columns');
+
+        });
+        done(null, models);
+      }
+    });
+  });
+  it('should return an array of columns for STRONGLOOP.TESTGEN and the first is generated', function(done) {
+    db.discoverModelProperties('testgen', function(err, models) {
+      if (err) {
+        console.error(err);
+        done(err);
+      } else {
+        models.forEach(function(m) {
+          // console.dir(m);
+          assert(m.tableName === 'TESTGEN');
+          if (m.columnName === 'ID') {
+            assert(m.generated, 'STRONGLOOP.TESTGEN.ID should be a generated (identity) column');
+          }
+        });
+        done(null, models);
+      }
+    });
+  });
+});
+
 describe('Discover LDL schema from a table', function() {
   var schema;
   before(function(done) {
