@@ -343,7 +343,7 @@ describe('migrations', function() {
   it('should map zero dateTime into null', function(done) {
     //Mysql 5.7 converts out of range values to its Zero value
     if (/^5\.7/.test(mysqlVersion)) {
-      assert.ok(mysqlVersion, 'skipping map zerp dateTime test on mysql 5.7');
+      assert.ok(mysqlVersion, 'skipping map zero dateTime test on mysql 5.7');
       return done();
     }
 
