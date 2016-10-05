@@ -271,4 +271,138 @@ describe('Discover and build models', function() {
       done();
     });
   });
+
+  describe('discoverModelProperties() flags', function() {
+    context('with default flags', function() {
+      var models, schema;
+      before(discoverAndBuildModels);
+
+      it('handles CHAR(1) as Boolean', function() {
+        assert(schema.properties.enabled);
+        assert.strictEqual(schema.properties.enabled.type, Boolean);
+      });
+
+      it('handles BIT(1) as Bit', function() {
+        assert(schema.properties.disabled);
+        assert.strictEqual(schema.properties.disabled.type, Buffer);
+      });
+
+      it('handles TINYINT(1) as Number', function() {
+        assert(schema.properties.active);
+        assert.strictEqual(schema.properties.active.type, Number);
+      });
+
+      function discoverAndBuildModels(done) {
+        db.discoverAndBuildModels('INVENTORY', {
+          owner: 'STRONGLOOP',
+          visited: {},
+          associations: true,
+        }, function(err, models_) {
+          models = models_;
+          schema = models.Inventory.definition;
+          done(err);
+        });
+      }
+    });
+
+    context('with flag treatCHAR1AsString = true', function() {
+      var models, schema;
+      before(discoverAndBuildModels);
+
+      it('handles CHAR(1) as String', function() {
+        assert(schema.properties.enabled);
+        assert.strictEqual(schema.properties.enabled.type, String);
+      });
+
+      it('handles BIT(1) as Binary', function() {
+        assert(schema.properties.disabled);
+        assert.strictEqual(schema.properties.disabled.type, Buffer);
+      });
+
+      it('handles TINYINT(1) as Number', function() {
+        assert(schema.properties.active);
+        assert.strictEqual(schema.properties.active.type, Number);
+      });
+
+      function discoverAndBuildModels(done) {
+        db.discoverAndBuildModels('INVENTORY', {
+          owner: 'STRONGLOOP',
+          visited: {},
+          associations: true,
+          treatCHAR1AsString: true,
+        }, function(err, models_) {
+          models = models_;
+          schema = models.Inventory.definition;
+          done(err);
+        });
+      }
+    });
+
+    context('with flag treatBIT1AsBit = false', function() {
+      var models, schema;
+      before(discoverAndBuildModels);
+
+      it('handles CHAR(1) as Boolean', function() {
+        assert(schema.properties.enabled);
+        assert.strictEqual(schema.properties.enabled.type, Boolean);
+      });
+
+      it('handles BIT(1) as Boolean', function() {
+        assert(schema.properties.disabled);
+        assert.strictEqual(schema.properties.disabled.type, Boolean);
+      });
+
+      it('handles TINYINT(1) as Number', function() {
+        assert(schema.properties.active);
+        assert.strictEqual(schema.properties.active.type, Number);
+      });
+
+      function discoverAndBuildModels(done) {
+        db.discoverAndBuildModels('INVENTORY', {
+          owner: 'STRONGLOOP',
+          visited: {},
+          associations: true,
+          treatBIT1AsBit: false,
+        }, function(err, models_) {
+          models = models_;
+          schema = models.Inventory.definition;
+          done(err);
+        });
+      }
+    });
+
+    context('with flag treatTINYINT1AsTinyInt = false', function() {
+      var models, schema;
+      before(discoverAndBuildModels);
+
+      it('handles CHAR(1) as Boolean', function() {
+        assert(schema.properties.enabled);
+        assert.strictEqual(schema.properties.enabled.type, Boolean);
+      });
+
+      it('handles BIT(1) as Binary', function() {
+        assert(schema.properties.disabled);
+        assert.strictEqual(schema.properties.disabled.type, Buffer);
+      });
+
+      it('handles TINYINT(1) as Boolean', function() {
+        assert(schema.properties.active);
+        assert.strictEqual(schema.properties.active.type, Boolean);
+      });
+
+      function discoverAndBuildModels(done) {
+        db.discoverAndBuildModels('INVENTORY', {
+          owner: 'STRONGLOOP',
+          visited: {},
+          associations: true,
+          treatTINYINT1AsTinyInt: false,
+        }, function(err, models_) {
+          if (err) return done(err);
+          models = models_;
+          schema = models.Inventory.definition;
+          done();
+        });
+      }
+    });
+  });
 });
