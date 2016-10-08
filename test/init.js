@@ -13,10 +13,8 @@ var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 console.log(config);
 global.getConfig = function(options) {
   var dbConf = {
-    host: process.env.TEST_MYSQL_HOST || process.env.MYSQL_HOST ||
-      config.host || 'localhost',
-    port: process.env.TEST_MYSQL_PORT || process.env.MYSQL_PORT ||
-      config.port || 3306,
+    host: process.env.MYSQL_HOST || config.host || 'localhost',
+    port: process.env.MYSQL_PORT || config.port || 3306,
     database: 'myapp_test',
     username: process.env.MYSQL_USER || config.username,
     password: process.env.MYSQL_PASSWORD || config.password,
