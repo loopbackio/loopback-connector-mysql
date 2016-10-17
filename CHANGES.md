@@ -1,3 +1,63 @@
+2016-10-17, Version 2.4.0
+=========================
+
+ * Add connectorCapabilities global object (#201) (Nicholas Duffy)
+
+ * Remove unused prefix for test env vars (#203) (Simon Ho)
+
+ * Update translation files - round#2 (#199) (Candy)
+
+ * Add CI fixes (#197) (Loay)
+
+ * Add translated files (gunjpan)
+
+ * Update deps to loopback 3.0.0 RC (Miroslav Bajtoš)
+
+ * Remove Makefile in favour of NPM test scripts (Simon Ho)
+
+ * Fixing lint errors (Ron Lloyd)
+
+ * Autoupdate mysql.columnName bug fix (Ron Lloyd)
+
+ * Tests for autoupdate mysql.columnName bug fix (Ron Lloyd)
+
+ * Use juggler@3 for running the tests (Miroslav Bajtoš)
+
+ * Explictly set forceId:false in test model (Miroslav Bajtoš)
+
+ * Fix pretest and init test configs (Simon Ho)
+
+ * Fix to configure model index in keys field (deepakrkris)
+
+ * Update eslint infrastructure (Loay)
+
+ * test: use dump of original test DB as seed (Ryan Graham)
+
+ * test: skip cardinality, update sub_part (Ryan Graham)
+
+ * test: accept alternate test db credentials (Ryan Graham)
+
+ * test: use should for easier debugging (Ryan Graham)
+
+ * test: account for mysql version differences (Ryan Graham)
+
+ * test: match case with example/table.sql (Ryan Graham)
+
+ * test: separate assertions from test flow control (Ryan Graham)
+
+ * test: update tests to use example DB (Ryan Graham)
+
+ * test: seed test DB with example (Ryan Graham)
+
+ * test: fix undefined password (Ryan Graham)
+
+ * Add special handling of zero date/time entries (Carl Fürstenberg)
+
+ * Add globalization (Candy)
+
+ * Update URLs in CONTRIBUTING.md (#176) (Ryan Graham)
+
+
 2016-06-21, Version 2.3.0
 =========================
 
