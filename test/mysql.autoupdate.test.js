@@ -261,8 +261,77 @@ describe('MySQL connector', function() {
           },
         },
       };
+    var customer3_schema =
+      {
+        'name': 'CustomerTest3',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+            'schema': 'myapp_test',
+            'table': 'customer_test3',
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'name': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+          'email': {
+            'type': 'String',
+            'required': true,
+            'length': 40,
+          },
+          'age': {
+            'type': 'Number',
+            'required': false,
+          },
+        },
+      };
 
     var schema_v1 =
+      {
+        'name': 'OrderTest',
+        'options': {
+          'idInjection': false,
+          'mysql': {
+            'schema': 'myapp_test',
+            'table': 'order_test',
+          },
+          'foreignKeys': {
+            'fk_ordertest_customerId': {
+              'name': 'fk_ordertest_customerId',
+              'entity': 'CustomerTest3',
+              'entityKey': 'id',
+              'foreignKey': 'customerId',
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'customerId': {
+            'type': 'String',
+            'length': 20,
+            'id': 1,
+          },
+          'description': {
+            'type': 'String',
+            'required': false,
+            'length': 40,
+          },
+        },
+      };
+
+    var schema_v2 =
       {
         'name': 'OrderTest',
         'options': {
@@ -299,7 +368,7 @@ describe('MySQL connector', function() {
         },
       };
 
-    var schema_v2 =
+    var schema_v3 =
       {
         'name': 'OrderTest',
         'options': {
@@ -329,42 +398,73 @@ describe('MySQL connector', function() {
       };
 
     var foreignKeySelect =
-      'SELECT TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_COLUMN_NAME ' +
+      'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
       'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
       'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
-      'AND   REFERENCED_TABLE_NAME = "customer_test2"';
+      'AND   TABLE_NAME = "order_test"';
 
     ds.createModel(customer2_schema.name, customer2_schema.properties, customer2_schema.options);
+    ds.createModel(customer3_schema.name, customer3_schema.properties, customer3_schema.options);
     ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
 
-    ds.automigrate(function() {
-      ds.autoupdate(function() { //foreign keys won't be created on table create
-        ds.discoverModelProperties('order_test', function(err, props) {
-          assert.equal(props.length, 3);
+    //do initial update/creation of table
+    ds.autoupdate(function() {
+      ds.discoverModelProperties('order_test', function(err, props) {
+        //validate that we have the correct number of properties
+        assert.equal(props.length, 3);
 
-          ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+        //get the foreign keys for this table
+        ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+          if (err) return done (err);
+          //validate that the foreign key exists and points to the right column
+          assert(foreignKeys);
+          assert(foreignKeys.length.should.be.equal(1));
+          assert.equal(foreignKeys[0].REFERENCED_TABLE_NAME, 'customer_test3');
+          assert.equal(foreignKeys[0].COLUMN_NAME, 'customerId');
+          assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
+          assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
+
+          //update our model (move foreign key) and run autoupdate to migrate
+          ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
+          ds.autoupdate(function(err, result) {
             if (err) return done (err);
-            assert(foreignKeys);
-            assert(foreignKeys.length.should.be.equal(1));
-            assert.equal(foreignKeys[0].TABLE_NAME, 'order_test');
-            assert.equal(foreignKeys[0].COLUMN_NAME, 'customerId');
-            assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
-            assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
 
-            ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
-            ds.autoupdate(function(err, result) {
+            //get and validate the properties on this model
+            ds.discoverModelProperties('order_test', function(err, props) {
               if (err) return done (err);
-              ds.discoverModelProperties('order_test', function(err, props) {
+
+              assert.equal(props.length, 3);
+
+              //get the foreign keys that exist after the migration
+              ds.connector.execute(foreignKeySelect, function(err, updatedForeignKeys) {
                 if (err) return done (err);
+                //validate that the foreign keys was moved to the new column
+                assert(updatedForeignKeys);
+                assert(updatedForeignKeys.length.should.be.equal(1));
+                assert.equal(updatedForeignKeys[0].REFERENCED_TABLE_NAME, 'customer_test2');
+                assert.equal(updatedForeignKeys[0].COLUMN_NAME, 'customerId');
+                assert.equal(updatedForeignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
+                assert.equal(updatedForeignKeys[0].REFERENCED_COLUMN_NAME, 'id');
 
-                assert.equal(props.length, 3);
-
-                ds.connector.execute(foreignKeySelect, function(err, updatedForeignKeys) {
+                //update model (to drop foreign key) and autoupdate
+                ds.createModel(schema_v3.name, schema_v3.properties, schema_v3.options);
+                ds.autoupdate(function(err, result) {
                   if (err) return done (err);
-                  assert(updatedForeignKeys);
-                  assert(updatedForeignKeys.length.should.be.equal(0));
+                  //validate the properties
+                  ds.discoverModelProperties('order_test', function(err, props) {
+                    if (err) return done (err);
 
-                  done(err, result);
+                    assert.equal(props.length, 3);
+
+                    //get the foreign keys and validate the foreign key has been dropped
+                    ds.connector.execute(foreignKeySelect, function(err, thirdForeignKeys) {
+                      if (err) return done (err);
+                      assert(thirdForeignKeys);
+                      assert(thirdForeignKeys.length.should.be.equal(0));
+
+                      done(err, result);
+                    });
+                  });
                 });
               });
             });
