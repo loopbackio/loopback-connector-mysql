@@ -1,6 +1,9 @@
 {
   "name": "loopback-connector-mysql",
   "version": "2.4.0",
+  "publishConfig": {
+    "tag": "lts"
+  },
   "description": "MySQL connector for loopback-datasource-juggler",
   "main": "index.js",
   "scripts": {
@@ -20,7 +23,7 @@
     "bluebird": "~2.9.10",
     "eslint": "^2.13.1",
     "eslint-config-loopback": "^4.0.0",
-    "loopback-datasource-juggler": "^3.0.0",
+    "loopback-datasource-juggler": "^2.53.0",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
     "should": "^8.0.2",
