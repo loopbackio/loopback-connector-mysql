@@ -4,7 +4,7 @@
   "description": "MySQL connector for loopback-datasource-juggler",
   "engines": {
     "node": ">=4"
-  },  
+  },
   "main": "index.js",
   "scripts": {
     "pretest": "node pretest.js",
