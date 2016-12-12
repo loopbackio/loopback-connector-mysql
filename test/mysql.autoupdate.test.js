@@ -58,6 +58,19 @@ describe('MySQL connector', function() {
             'type': 'Number',
             'required': false,
           },
+          'discount': {
+            'type': 'Number',
+            'required': false,
+            'dataType': 'decimal',
+            'precision': 10,
+            'scale': 2,
+            'mysql': {
+              'columnName': 'customer_discount',
+              'dataType': 'decimal',
+              'dataPrecision': 10,
+              'dataScale': 2,
+            },
+          },
         },
       };
 
@@ -109,6 +122,46 @@ describe('MySQL connector', function() {
             'required': false,
             'length': 40,
           },
+          // remove age
+          // change data type details with column name
+          'discount': {
+            'type': 'Number',
+            'required': false,
+            'dataType': 'decimal',
+            'precision': 12,
+            'scale': 5,
+            'mysql': {
+              'columnName': 'customer_discount',
+              'dataType': 'decimal',
+              'dataPrecision': 12,
+              'dataScale': 5,
+            },
+          },
+          // add new column with column name
+          'address': {
+            'type': 'String',
+            'required': false,
+            'length': 10,
+            'mysql': {
+              'columnName': 'customer_address',
+              'dataType': 'varchar',
+              'length': 10,
+            },
+          },
+          // add new column with index & column name
+          'code': {
+            'type': 'String',
+            'required': true,
+            'length': 12,
+            'index': {
+              unique: true,
+            },
+            'mysql': {
+              'columnName': 'customer_code',
+              'dataType': 'varchar',
+              'length': 12,
+            },
+          },
         },
       };
 
@@ -116,7 +169,7 @@ describe('MySQL connector', function() {
 
     ds.automigrate(function() {
       ds.discoverModelProperties('customer_test', function(err, props) {
-        assert.equal(props.length, 4);
+        assert.equal(props.length, 5);
         var names = props.map(function(p) {
           return p.columnName;
         });
@@ -128,6 +181,7 @@ describe('MySQL connector', function() {
         assert.equal(names[1], 'name');
         assert.equal(names[2], 'email');
         assert.equal(names[3], 'age');
+        assert.equal(names[4], 'customer_discount');
 
         ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, indexes) {
           if (err) return done (err);
@@ -140,24 +194,31 @@ describe('MySQL connector', function() {
             if (err) return done (err);
             ds.discoverModelProperties('customer_test', function(err, props) {
               if (err) return done (err);
-              assert.equal(props.length, 4);
+              assert.equal(props.length, 7);
               var names = props.map(function(p) {
                 return p.columnName;
               });
               assert.equal(names[0], 'id');
               assert.equal(names[1], 'email');
-              assert.equal(names[2], 'firstName');
-              assert.equal(names[3], 'lastName');
+              assert.equal(names[2], 'customer_discount');
+              assert.equal(names[3], 'firstName');
+              assert.equal(names[4], 'lastName');
+              assert.equal(names[5], 'customer_address');
+              assert.equal(names[6], 'customer_code');
               ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, updatedindexes) {
                 if (err) return done (err);
                 assert(updatedindexes);
-                assert(updatedindexes.length.should.be.above(2));
-                assert.equal(updatedindexes[1].Key_name, 'updated_name_index');
+                assert(updatedindexes.length.should.be.above(3));
+                assert.equal(updatedindexes[1].Key_name, 'customer_code');
                 assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
+                assert.equal(updatedindexes[3].Key_name, 'updated_name_index');
                 //Mysql supports only index sorting in ascending; DESC is ignored
                 assert.equal(updatedindexes[1].Collation, 'A');
                 assert.equal(updatedindexes[2].Collation, 'A');
+                assert.equal(updatedindexes[3].Collation, 'A');
                 assert.equal(updatedindexes[1].Non_unique, 0);
+                assert.equal(updatedindexes[2].Non_unique, 0);
+                assert.equal(updatedindexes[3].Non_unique, 0);
                 done(err, result);
               });
             });
