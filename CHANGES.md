@@ -1,3 +1,15 @@
+2016-12-19, Version 2.4.1
+=========================
+
+ * Fix CI Failures (Loay Gewily)
+
+ * Revert dev-dependency on loopback to 2.x (Siddhi Pai)
+
+ * Set publish tag to "lts" (Siddhi Pai)
+
+ * Update README with correct doc links, etc (Amir Jafarian)
+
+
 2016-10-17, Version 2.4.0
 =========================
 
