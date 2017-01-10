@@ -2,7 +2,7 @@
 
 [MySQL](https://www.mysql.com/) is a popular open-source relational database management system (RDBMS).  The `loopback-connector-mysql` module provides the MySQL connector module for the LoopBack framework.
 
-<div class="gh-only">See also [LoopBack MySQL Connector](http://loopback.io/doc/en/lb2/MySQL-connector.html) in LoopBack documentation.
+<div class="gh-only">See also [LoopBack MySQL Connector](http://loopback.io/doc/en/lb3/MySQL-connector.html) in LoopBack documentation.
 
 **NOTE**: The MySQL connector requires MySQL 5.0+.
 </div>
@@ -311,12 +311,21 @@ MOOD('sad'); // 'sad'
 { choice: { type: dataSource.EnumFactory('yes', 'no', 'maybe'), null: false }}
 ```
 
-## Discovery methods
+## Discovery and auto-migration
 
-LoopBack provides a unified API to create models based on schema and tables in relational databases.
-The same discovery API is available when using connectors for Oracle, MySQL, PostgreSQL, and SQL Server.
-For more information, see [Discovering models from relational databases](http://loopback.io/doc/en/lb3/Discovering-models-from-relational-databases.html) and 
-[Database discovery API](http://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-discoverandbuildmodels).
+### Model discovery
+
+The MySQL connector supports _model discovery_ that enables you to create LoopBack models 
+based on an existing database schema using the unified [database discovery API](http://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-discoverandbuildmodels).  For more information on discovery, see [Discovering models from relational databases](https://loopback.io/doc/en/lb3/Discovering-models-from-relational-databases.html).
+
+### Auto-migratiion
+
+The MySQL connector also supports _auto-migration_ that enables you to create a database schema
+from LoopBack models using the [LoopBack automigrate method](http://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-automigrate).
+
+For more information on auto-migration, see [Creating a database schema from models](https://loopback.io/doc/en/lb3/Creating-a-database-schema-from-models.html) for more information.
+
+Destroying models may result in errors due to foreign key integrity. First delete any related models first calling delete on models with relationships.
 
 ## Running tests
 
