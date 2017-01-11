@@ -38,8 +38,6 @@ The entry in the application's `/server/datasources.json` will look like this:
   "password": "mypassword",
   "user": "admin"
  }
-
-}
 ```
 
 Edit `datasources.json` to add any other additional properties that you require.
@@ -210,7 +208,7 @@ See [LoopBack types](http://loopback.io/doc/en/lb3/LoopBack-types.html) for de
 
 ## Using the datatype field/column option with MySQL
 
-`loopback-connector-mysql` allows mapping of LoopBack model properties to MySQL columns using the 'mysql' property of the property definition.
+Use the `mysql` model property to specify additional MySQL-specific properties for a LoopBack model.
 
 For example:
 
@@ -244,7 +242,12 @@ The following type-dataType combinations are supported:
 Use the `limit` option to alter the display width. Example:
 
 ```javascript
-{ count : { type: Number, dataType: 'smallInt' }}
+{ userName : {
+    type: String,
+    dataType: 'char',
+    limit: 24
+  }
+}
 ```
 
 ### Floating-point types
@@ -252,7 +255,13 @@ Use the `limit` option to alter the display width. Example:
 For Float and Double data types, use the `precision` and `scale` options to specify custom precision. Default is (16,8). For example:
 
 ```javascript
-{ average : { type: Number, dataType: 'float', precision: 20, scale: 4 }}
+{ average :
+  { type: Number,
+    dataType: 'float',
+    precision: 20,
+    scale: 4
+  }
+}
 ```
 
 ### Fixed-point exact value types
@@ -263,7 +272,13 @@ These aren't likely to function as true fixed-point.
 Example:
 
 ```javascript
-{ stdDev : { type: Number, dataType: 'decimal', precision: 12, scale: 8 }}
+{ stdDev :
+  { type: Number, 
+    dataType: 'decimal',
+    precision: 12,
+    scale: 8
+  }
+}
 ```
 
 ### Other types
@@ -280,13 +295,22 @@ Convert String / DataSource.Text / DataSource.JSON to the following MySQL types:
 Example: 
 
 ```javascript
-{ userName : { type: String, dataType: 'char', limit: 24 }}
+{ userName :
+  { type: String,
+    dataType: 'char',
+    limit: 24
+  }
+}
 ```
 
 Example: 
 
 ```javascript
-{ biography : { type: String, dataType: 'longtext' }}
+{ biography :
+  { type: String,
+  dataType: 'longtext'
+  }
+}
 ```
 
 Convert JSON Date types to  datetime or timestamp
@@ -294,7 +318,11 @@ Convert JSON Date types to  datetime or timestamp
 Example: 
 
 ```javascript
-{ startTime : { type: Date, dataType: 'timestamp' }}
+{ startTime :
+  { type: Date,
+    dataType: 'timestamp'
+  }
+}
 ```
 
 ### Enum
@@ -315,7 +343,7 @@ MOOD('sad'); // 'sad'
 
 ### Model discovery
 
-The MySQL connector supports _model discovery_ that enables you to create LoopBack models 
+The MySQL connector supports _model discovery_ that enables you to create LoopBack models
 based on an existing database schema using the unified [database discovery API](http://apidocs.strongloop.com/loopback-datasource-juggler/#datasource-prototype-discoverandbuildmodels).  For more information on discovery, see [Discovering models from relational databases](https://loopback.io/doc/en/lb3/Discovering-models-from-relational-databases.html).
 
 ### Auto-migratiion
