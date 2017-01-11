@@ -4,7 +4,7 @@
 
 <div class="gh-only">See also <a href="http://loopback.io/doc/en/lb3/MySQL-connector.html">LoopBack MySQL Connector</a> in LoopBack documentation.
 <br/><br/>
-**NOTE**: The MySQL connector requires MySQL 5.0+.
+<b>NOTE</b>: The MySQL connector requires MySQL 5.0+.
 </div>
 
 ## Installation
