@@ -1,3 +1,25 @@
+2017-01-13, Version 3.0.0
+=========================
+
+ * Follow mysql recommendations for handling booleans (Carl Fürstenberg)
+
+ * Fix readme glitch (#231) (Rand McKinney)
+
+ * Update readme w info from docs (#229) (Rand McKinney)
+
+ * Fix expected column name when autoupdate (muhammad hasan)
+
+ * Update paid support URL (Siddhi Pai)
+
+ * Fix CI Failures (Loay Gewily)
+
+ * Drop support for Node v0.10 and v0.12 (Siddhi Pai)
+
+ * Start the development of the next major version (Siddhi Pai)
+
+ * Update README with correct doc links, etc (Amir Jafarian)
+
+
 2016-10-17, Version 2.4.0
 =========================
 
