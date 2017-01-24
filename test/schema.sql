@@ -198,7 +198,8 @@ DROP TABLE IF EXISTS `TESTGEN`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `TESTGEN` (
   `ID` int(11) NOT NULL  AUTO_INCREMENT,
-  `NAME` varchar(64) DEFAULT NULL
+  `NAME` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
