@@ -217,7 +217,6 @@ describe('Discover model generated columns', function() {
           // console.dir(m);
           assert(m.tableName === 'PRODUCT');
           assert(!m.generated, 'STRONGLOOP.PRODUCT table should not have generated (identity) columns');
-
         });
         done(null, models);
       }
