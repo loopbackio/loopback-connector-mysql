@@ -211,22 +211,22 @@ describe('Discover model generated columns', function() {
     db.discoverModelProperties('product', function(err, models) {
       if (err) return done(err);
       models.forEach(function(model) {
-        assert(model.tableName === 'PRODUCT');
+        assert(model.tableName === 'product');
         assert(!model.generated, 'STRONGLOOP.PRODUCT table should not have generated (identity) columns');
-        done();
       });
+      done();
     });
   });
   it('should return an array of columns for STRONGLOOP.TESTGEN and the first is generated', function(done) {
     db.discoverModelProperties('testgen', function(err, models) {
       if (err) return done(err);
       models.forEach(function(model) {
-        assert(model.tableName === 'TESTGEN');
+        assert(model.tableName === 'testgen');
         if (model.columnName === 'ID') {
           assert(model.generated, 'STRONGLOOP.TESTGEN.ID should be a generated (identity) column');
         }
-        done();
       });
+      done();
     });
   });
 });
