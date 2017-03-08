@@ -86,7 +86,7 @@ DROP TABLE IF EXISTS `INVENTORY_VIEW`;
 /*!50001 DROP VIEW IF EXISTS `INVENTORY_VIEW`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `INVENTORY_VIEW` AS SELECT 
+/*!50001 CREATE VIEW `INVENTORY_VIEW` AS SELECT
  1 AS `ID`,
  1 AS `PRODUCT_ID`,
  1 AS `PRODUCT_NAME`,
@@ -188,6 +188,20 @@ LOCK TABLES `RESERVATION` WRITE;
 /*!40000 ALTER TABLE `RESERVATION` DISABLE KEYS */;
 /*!40000 ALTER TABLE `RESERVATION` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `TESTGEN`
+--
+
+DROP TABLE IF EXISTS `TESTGEN`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TESTGEN` (
+  `ID` int(11) NOT NULL  AUTO_INCREMENT,
+  `NAME` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Current Database: `STRONGLOOP`
