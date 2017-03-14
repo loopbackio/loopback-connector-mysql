@@ -40,12 +40,12 @@ describe('mysql', function () {
       content: { type: String }
     });
 
-    Hash = db.define('Hash', {
+    Hash = db.define('Buffer', {
       hash: { type: 'buffer', mysql: {columnName: 'hash', dataType: 'BINARY', dataLength: 16}},
       buffer: { type: Buffer }
     });
 
-    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle', 'Hash'], function (err) {
+    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle', 'Buffer'], function (err) {
       should.not.exist(err);
       done(err);
     });
@@ -574,7 +574,7 @@ describe('mysql', function () {
     });
   });
 
-  it('test', function (done) {
+  it('buffer fields should be stored correctly', function (done) {
     var hash = '00112233445566778899aabbccddeeff';
     var buffer = 'some text';
     var data = {hash: Buffer.from(hash, 'hex'), buffer: Buffer.from(buffer)};
