@@ -40,7 +40,12 @@ describe('mysql', function () {
       content: { type: String }
     });
 
-    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle'], function (err) {
+    Hash = db.define('Hash', {
+      hash: { type: 'buffer', mysql: {columnName: 'hash', dataType: 'BINARY', dataLength: 16}},
+      buffer: { type: Buffer }
+    });
+
+    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle', 'Hash'], function (err) {
       should.not.exist(err);
       done(err);
     });
@@ -564,6 +569,21 @@ describe('mysql', function () {
       should.not.exist(err);
       PostWithUniqueTitle.create(data, function (err, post) {
         should.exist(err);
+        done();
+      });
+    });
+  });
+
+  it('test', function (done) {
+    var hash = '00112233445566778899aabbccddeeff';
+    var buffer = 'some text';
+    var data = {hash: Buffer.from(hash, 'hex'), buffer: Buffer.from(buffer)};
+    Hash.create(data, function (err, h1) {
+      should.not.exist(err);
+      Hash.findById(h1.id, function (err, h2) {
+        should.not.exist(err);
+        h2.hash.toString('hex').should.be.equal(hash);
+        h2.buffer.toString().should.be.equal(buffer);
         done();
       });
     });
