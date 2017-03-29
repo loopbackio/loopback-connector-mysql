@@ -3,3 +3,5 @@ coverage
 *.tgz
 *.xml
 .loopbackrc
+.idea
+

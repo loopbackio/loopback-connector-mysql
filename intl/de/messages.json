@@ -1,0 +1,11 @@
+{
+  "6ce5c3a3d305e965ff06e2b3e16e1252": "{{options}} muss ein {{object}} sein: {0}",
+  "a0078d732b2dbabf98ed2efcdb55b402": "{{table}} ist ein erforderliches Zeichenfolgeargument: {0}",
+  "b7c60421de706ca1e050f2a86953745e": "Keine Argumente - {{Enum}} konnte nicht erstellt werden.",
+  "80a32e80cbed65eba2103201a7c94710": "Modell nicht gefunden: {0}",
+  "026ed55518f3812a9ef4b86e8a195e76": "{{MySQL}} {{regex}}-Syntax berücksichtigt nicht das {{`g`}}-Flag",
+  "0ac9f848b934332210bb27747d12a033": "{{MySQL}} {{regex}}-Syntax berücksichtigt nicht das {{`i`}}-Flag",
+  "4e9e35876bfb1511205456b52c6659d0": "{{MySQL}} {{regex}}-Syntax berücksichtigt nicht das {{`m`}}-Flag",
+  "57512a471969647e8eaa2509cc292018": "{{callback}} sollte eine Funktion sein"
+}
+
