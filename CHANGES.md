@@ -1,3 +1,51 @@
+2017-03-31, Version 4.0.0
+=========================
+
+ * Replicate new issue_template from loopback (Siddhi Pai)
+
+ * Replicate issue_template from loopback repo (Siddhi Pai)
+
+ * fix linting problems (juanra)
+
+ * Extract functions to base connector (ssh24)
+
+ * Refactor alter table (ssh24)
+
+ * Typo on README (#236) (Ctibor Laky)
+
+ * Return if column is generated or not (#198) (Christiaan Westerbeek)
+
+ * Upgrade to loopback-connector@4.x (Loay)
+
+ * Refactor migration methods (ssh24)
+
+ * Refactor Discovery Methods (Loay)
+
+ * Remove old TODO and commented out code (Matthew Dickinson)
+
+ * Fix autoupdate to create foreign keys after tables (Matthew Dickinson)
+
+ * Add logging for errors encountered in discovery (Matthew Dickinson)
+
+ * Update signature for alterTable (Matthew Dickinson)
+
+ * Limit foreign key creation current connector (Matthew Dickinson)
+
+ * Fix linting error (Matthew Dickinson)
+
+ * Added test to validate foreign key handling (Matthew Dickinson)
+
+ * Update foreign key creation table name handling (Matthew Dickinson)
+
+ * Update alterTable to actually drop constraints (Matthew Dickinson)
+
+ * Add rough handling for automatic foreign keys (Matthew Dickinson)
+
+ * remove line not needed (#237) (ivy ho)
+
+ * Update LB-connector version (Loay)
+
+
 2017-01-13, Version 3.0.0
 =========================
 
