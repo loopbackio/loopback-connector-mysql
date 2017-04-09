@@ -7,8 +7,8 @@
 require('./init.js');
 var assert = require('assert');
 
-var db, BlobModel, EnumModel, ANIMAL_ENUM;
-var mysqlVersion;
+var db, BlobModel, EnumModel, DateModel, ANIMAL_ENUM;
+var mysqlVersion, mysqlVersion57Plus;
 
 describe('MySQL specific datatypes', function() {
   before(setup);
@@ -48,9 +48,11 @@ describe('MySQL specific datatypes', function() {
     // or the internal numeric equivalent thereof. Invalid values are rejected.
     // Reference: http://dev.mysql.com/doc/refman/5.7/en/constraint-enum.html
     EnumModel.create({animal: 'horse', condition: 'sleepy', mood: 'happy'}, function(err, obj) {
-      assert.ok(err);
-      assert.equal(err.code, 'WARN_DATA_TRUNCATED');
-      assert.equal(err.errno, 1265);
+      if (mysqlVersion57Plus) {
+          assert.ok(err);
+          assert.equal(err.code, 'WARN_DATA_TRUNCATED');
+          assert.equal(err.errno, 1265);
+      }
       done();
     });
   });
@@ -86,6 +88,33 @@ describe('MySQL specific datatypes', function() {
       });
     });
   });
+  it('should create a model instance with dates with local TZ', function(done) {
+      var date = new Date();
+      date.setMilliseconds(0);
+      var dateOnly = new Date();
+      dateOnly.setMilliseconds(0);
+      dateOnly.setSeconds(0);
+      dateOnly.setHours(0);
+      dateOnly.setMinutes(0);
+    DateModel.upsert({
+        id:1,
+        datetimeField: date,
+        timestampField: date,
+        dateField: dateOnly,
+    }, function(err, obj) {
+      assert.ok(!err);
+      assert.equal(obj.datetimeField.toISOString(), date.toISOString());
+      assert.equal(obj.timestampField.toISOString(), date.toISOString());
+      assert.equal(obj.dateField.toString(), dateOnly.toString());
+      DateModel.findOne({where: {id: obj.id}}, function(err, found) {
+        assert.ok(!err);
+        assert.equal(found.datetimeField.toISOString(), date.toISOString());
+        assert.equal(found.timestampField.toISOString(), date.toISOString());
+        assert.equal(found.dateField.toString(), dateOnly.toString());
+        done();
+      });
+    });
+  });
   it('should disconnect when done', function(done) {
     db.disconnect();
     done();
@@ -110,8 +139,19 @@ function setup(done) {
     bin: {type: Buffer, dataType: 'blob', null: false},
     name: {type: String},
   });
+  DateModel = db.define('DateModel', {
+    id: {type:Number, id:1},
+    datetimeField: {type: Date, dataType: 'datetime', null: false},
+    timestampField: {type: Date, dataType: 'timestamp', null: false},
+    dateField: {type: Date, dataType: 'date', null: false},
+  });
+
   query('SELECT VERSION()', function(err, res) {
     mysqlVersion = res && res[0] && res[0]['VERSION()'];
+    var parts = mysqlVersion.split(/\./);
+    if ( parts[1] && parts[1] >= 7) {
+        mysqlVersion57Plus = true;
+    }
     blankDatabase(db, done);
   });
 }
