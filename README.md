@@ -103,7 +103,7 @@ Edit `datasources.json` to add any other additional properties that you require.
       <td>Enable this option to deal with big numbers (BIGINT and DECIMAL columns) in the database. Default is false.</td>
     </tr>
     <tr>
-      <td>timeZone</td>
+      <td>timezone</td>
       <td>String</td>
       <td>The timezone used to store local dates.  Default is ‘local’.</td>
     </tr>
