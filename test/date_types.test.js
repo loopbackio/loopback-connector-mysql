@@ -15,7 +15,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
   var timezone = getTimeZone();
 
   before(function(done) {
-    prepareModel('local', true, done);
+    prepareModel('local', done);
   });
 
   it('should set local timezone in mysql ' + timezone, function(done) {
@@ -112,7 +112,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
   var dateOnly = new Date(2016, 11, 22); //2015-12-25
 
   before(function(done) {
-    prepareModel(timezone, true, done);
+    prepareModel(timezone, done);
   });
 
   it('should set session timezone to ' + timezone, function(done) {
@@ -150,6 +150,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       done();
     });
   });
+
   it('timestampField shoud equal DEFAULT CURRENT_TIMESTAMP field', function(done) {
     DateModel.findOne({
       where: {
@@ -161,6 +162,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       done();
     });
   });
+
   it('should find model instance by datetime field', function(done) {
     DateModel.findOne({
       where: {
@@ -173,6 +175,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       done();
     });
   });
+
   it('should find model instance by timestamp field', function(done) {
     DateModel.findOne({
       where: {
@@ -185,6 +188,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       done();
     });
   });
+
   it('should find model instance by date field', function(done) {
     DateModel.findOne({
       where: {
@@ -197,12 +201,14 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       done();
     });
   });
+
   it('set timezone to UTC +00:00', function(done) {
     query("SET @@session.time_zone = '+00:00'", function(err) {
       assert.ok(!err);
       done();
     });
   });
+
   it('now datetime and timestamp field should be different in 330 minutes 5:30 - 0:00', function(done) {
     DateModel.findOne({
       where: {
@@ -219,9 +225,10 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
   it('should disconnect when done', function(done) {
     db.disconnect();
     done();
-  }); });
+  });
+});
 
-var prepareModel = function(tz, migrate, done) {
+var prepareModel = function(tz, done) {
   db = getSchema({timezone: tz});
   DateModel = db.define('DateModel', {
     id: {type: Number, id: 1, generated: true},
@@ -230,15 +237,18 @@ var prepareModel = function(tz, migrate, done) {
     timestampDefaultField: {type: Date, dataType: 'timestamp', null: false},
     dateField: {type: Date, dataType: 'date', null: false},
   });
-  if (migrate) {
-    db.automigrate('DateModel', function() {
+  // set sql_mode to empty to zero's on date for CURRENT_TIMESTAMP
+  query("SET sql_mode = ''", function(err) {
+    if (err) done(err);
+    db.automigrate(function() {
       //SET DEFAULT CURRENT_TIMESTAMP for timestampDefaultField
       query('ALTER TABLE `DateModel` CHANGE COLUMN `timestampDefaultField` ' +
-      '`timestampDefaultField` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;', done);
+      '`timestampDefaultField` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;', function(err, result) {
+        if (err) done(err);
+        done();
+      });
     });
-  } else {
-    done();
-  }
+  });
 };
 
 var query = function(sql, cb) {
