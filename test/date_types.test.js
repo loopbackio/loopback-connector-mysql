@@ -12,6 +12,7 @@ var db, DateModel;
 describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', function() {
   var date;
   var dateOnly = new Date(2015, 10, 25); //2015-12-25
+  var dateOnlyString = '2015-11-25';
   var timezone = getTimeZone();
 
   before(function(done) {
@@ -72,6 +73,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
     }, function(err, found) {
       assert.ok(!err);
       assert.ok(found);
+      assert.equal(found.id, 1);
       done();
     });
   });
@@ -83,7 +85,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
       },
     }, function(err, found) {
       assert.ok(!err);
-      assert.ok(found);
+      assert.equal(found.id, 1);
       done();
     });
   });
@@ -95,7 +97,19 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
       },
     }, function(err, found) {
       assert.ok(!err);
-      assert.ok(found);
+      assert.equal(found.id, 1);
+      done();
+    });
+  });
+
+  it('should find model instance by date field passing string', function(done) {
+    DateModel.findOne({
+      where: {
+        dateField: dateOnlyString,
+      },
+    }, function(err, found) {
+      assert.ok(!err);
+      assert.equal(found.id, 1);
       done();
     });
   });
@@ -110,6 +124,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
   var timezone = '+05:30';
   var date;
   var dateOnly = new Date(2016, 11, 22); //2015-12-25
+  var dateOnlyString = '2016-12-22';
 
   before(function(done) {
     prepareModel(timezone, done);
@@ -197,6 +212,18 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
     }, function(err, found) {
       assert.ok(!err);
       assert.ok(found);
+      assert.equal(found.id, 1);
+      done();
+    });
+  });
+
+  it('should find model instance by date field passing string', function(done) {
+    DateModel.findOne({
+      where: {
+        dateField: dateOnlyString,
+      },
+    }, function(err, found) {
+      assert.ok(!err);
       assert.equal(found.id, 1);
       done();
     });
