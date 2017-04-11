@@ -85,6 +85,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
       },
     }, function(err, found) {
       assert.ok(!err);
+      assert.ok(found);
       assert.equal(found.id, 1);
       done();
     });
@@ -97,6 +98,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
       },
     }, function(err, found) {
       assert.ok(!err);
+      assert.ok(found);
       assert.equal(found.id, 1);
       done();
     });
@@ -109,6 +111,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with local TZ', funct
       },
     }, function(err, found) {
       assert.ok(!err);
+      assert.ok(found);
       assert.equal(found.id, 1);
       done();
     });
@@ -224,6 +227,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
       },
     }, function(err, found) {
       assert.ok(!err);
+      assert.ok(found);
       assert.equal(found.id, 1);
       done();
     });
