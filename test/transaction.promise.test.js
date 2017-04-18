@@ -30,6 +30,13 @@ describe('transactions with promise', function() {
     });
   });
 
+  after(function(done) {
+    // disconnect from this db to avoid too many connection error
+    // due to multiple instance of connection pool
+    db.disconnect();
+    done();
+  });
+
   var currentTx;
   var hooks = [];
   // Return an async function to start a transaction and create a post
