@@ -232,7 +232,7 @@ describe('MySQL DATE, DATETTIME, TIMESTAMP types on server with non local TZ (+0
 });
 
 var prepareModel = function(tz, done) {
-  db = getSchema({timezone: tz});
+  db = getSchema({timezone: tz, legacyDateTypeProcessing:false});
   DateModel = db.define('DateModel', {
     id: {type: Number, id: 1, generated: true},
     datetimeField: {type: Date, dataType: 'datetime', null: false},
