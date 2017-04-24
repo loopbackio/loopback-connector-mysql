@@ -333,6 +333,31 @@ describe('mysql', function() {
       });
     });
 
+  it('should support order with random sorting', function(done) {
+    Post.create({id: '1', title: 'c', content: 'CCC'}, function(err) {
+      Post.create({id: '2', title: 'd', content: 'DDD'}, function(err) {
+        Post.create({id: '3', title: 'e', content: 'EEE'}, function(err) {
+          Post.find({order: 'rand'}, function(err, randomPosts1) {
+            should.not.exist(err);
+            var order1 = randomPosts1.map(function(u) { return u.id; });
+            (order1.length).should.eql(randomPosts1.length);
+            order1.should.containEql(1, 2, 3);
+            Post.find({order: 'rand'}, function(err, randomPosts2) {
+              should.not.exist(err);
+              var order2 = randomPosts2.map(function(u) { return u.id; });
+              (order2.length).should.eql(randomPosts2.length);
+              order2.should.containEql(1, 2, 3);
+              // Though it is a possibility that both order1 and order2 are equak,
+              // but probability is very low.
+              should(order1).not.eql(order2);
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
   it('should allow to find using like', function(done) {
     Post.create({title: 'My Post', content: 'Hello'}, function(err, post) {
       Post.find({where: {title: {like: 'M%st'}}}, function(err, posts) {
