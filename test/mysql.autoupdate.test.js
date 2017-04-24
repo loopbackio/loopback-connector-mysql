@@ -222,12 +222,6 @@ describe('MySQL connector', function() {
 
   it('should update the nullable property of "first_name" to false', function(done) {
     // update the model "required" property
-    updateSchemaColRenameTest();
-    // nullable should be updated to false
-    updateProperty(done);
-  });
-
-  function updateSchemaColRenameTest() {
     var schema = {
       name: 'ColRenameTest',
       options: {
@@ -257,9 +251,8 @@ describe('MySQL connector', function() {
     };
 
     ds.createModel(schema.name, schema.properties, schema.options);
-  }
 
-  function updateProperty(done) {
+    // nullable should be updated to false
     ds.autoupdate('ColRenameTest', function(err) {
       assert.ifError(err);
       ds.discoverModelProperties('col_rename_test', function(err, props) {
@@ -268,7 +261,7 @@ describe('MySQL connector', function() {
         done();
       });
     });
-  }
+  });
 
   function verifyMysqlColumnNameAutoupdate(done) {
     ds.autoupdate('ColRenameTest', function(err) {
