@@ -337,12 +337,12 @@ describe('mysql', function() {
     Post.create({id: '1', title: 'c', content: 'CCC'}, function(err) {
       Post.create({id: '2', title: 'd', content: 'DDD'}, function(err) {
         Post.create({id: '3', title: 'e', content: 'EEE'}, function(err) {
-          Post.find({order: 'rand'}, function(err, randomPosts1) {
+          Post.find({order: '${random}'}, function(err, randomPosts1) {
             should.not.exist(err);
             var order1 = randomPosts1.map(function(u) { return u.id; });
             (order1.length).should.eql(randomPosts1.length);
             order1.should.containEql(1, 2, 3);
-            Post.find({order: 'rand'}, function(err, randomPosts2) {
+            Post.find({order: '${random}'}, function(err, randomPosts2) {
               should.not.exist(err);
               var order2 = randomPosts2.map(function(u) { return u.id; });
               (order2.length).should.eql(randomPosts2.length);
