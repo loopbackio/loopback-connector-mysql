@@ -528,6 +528,49 @@ describe('MySQL connector', function() {
     // second autoupdate call uses alter table
     verifyMysqlColumnNameAutoupdate(done);
   });
+  
+  it('should update the nullable property of "first_name" to false', function(done) {
+    // update the model "required" property
+    var schema = {
+      name: 'ColRenameTest',
+      options: {
+        idInjection: false,
+        mysql: {
+          schema: 'myapp_test',
+          table: 'col_rename_test',
+        },
+      },
+      properties: {
+        firstName: {
+          type: 'String',
+          required: true,
+          length: 40,
+          mysql: {
+            columnName: 'first_name',
+            dataType: 'varchar',
+            dataLength: 40,
+          },
+        },
+        lastName: {
+          type: 'String',
+          required: false,
+          length: 40,
+        },
+      },
+    };
+
+    ds.createModel(schema.name, schema.properties, schema.options);
+
+    // nullable should be updated to false
+    ds.autoupdate('ColRenameTest', function(err) {
+      assert.ifError(err);
+      ds.discoverModelProperties('col_rename_test', function(err, props) {
+        assert.equal(props[0].nullable, 'N');
+        assert.equal(props[0].columnName, 'first_name');
+        done();
+      });
+    });
+  });
 
   function verifyMysqlColumnNameAutoupdate(done) {
     ds.autoupdate('ColRenameTest', function(err) {
