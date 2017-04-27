@@ -528,7 +528,7 @@ describe('MySQL connector', function() {
     // second autoupdate call uses alter table
     verifyMysqlColumnNameAutoupdate(done);
   });
-  
+
   it('should update the nullable property of "first_name" to false', function(done) {
     // update the model "required" property
     var schema = {
