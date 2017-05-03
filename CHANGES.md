@@ -1,3 +1,23 @@
+2017-05-02, Version 4.1.0
+=========================
+
+ * Tests for datetime types (Kevin Delisle)
+
+ * Add new type DateString to fromColumnValue (Buck Bito)
+
+ * Remove String manipulations of Date objects (Buck Bito)
+
+ * Properties with mysql custom "columnName" don't get autoupdated (#273) (Sergey Nosenko)
+
+ * Revert PR #257 (#266) (Sakib Hasan)
+
+ * Fix async.each in migration (#262) (Benjamin Schuster-Boeckler)
+
+ * refactor date, timestamp and datetime data types handling (#257) (Sergey Nosenko)
+
+ * Fix too many connection error (#261) (Sakib Hasan)
+
+
 2017-03-31, Version 4.0.0
 =========================
 
