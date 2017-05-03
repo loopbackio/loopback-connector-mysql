@@ -17,6 +17,7 @@ describe('MySQL datetime handling', function() {
     married: Boolean,
     dob: {type: 'DateString'},
     createdAt: {type: Date, default: Date},
+    lastLogon: {type: Date, precision: 3, default: Date},
   };
 
   // Modifying the connection timezones mid-flight is a pain,
@@ -91,5 +92,23 @@ describe('MySQL datetime handling', function() {
         });
       });
     }
+  });
+
+  it('should allow use of fractional seconds', function(done) {
+    var d = new Date('1971-06-22T12:34:56.789Z');
+    return Person.create({
+      name: 'Mr. Pink',
+      gender: 'M',
+      lastLogon: d,
+    }).then(function(inst) {
+      return Person.findById(inst.id);
+    }).then(function(inst) {
+      inst.should.not.eql(null);
+      var lastLogon = new Date(inst.lastLogon);
+      lastLogon.toJSON().should.eql(d.toJSON());
+      return done();
+    }).catch(function(err) {
+      return done(err);
+    });
   });
 });
