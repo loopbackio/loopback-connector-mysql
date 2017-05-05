@@ -444,7 +444,7 @@ describe('MySQL connector', function() {
                   assert(updatedForeignKeys);
                   assert(updatedForeignKeys.length.should.be.equal(1));
                   assert.equal(updatedForeignKeys[0].REFERENCED_TABLE_NAME, 'customer_test2');
-                  //assert.equal(updatedForeignKeys[0].COLUMN_NAME, 'customer_id');
+                  assert.equal(updatedForeignKeys[0].COLUMN_NAME, 'customer_id');
                   assert.equal(updatedForeignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
                   assert.equal(updatedForeignKeys[0].REFERENCED_COLUMN_NAME, 'id');
 
