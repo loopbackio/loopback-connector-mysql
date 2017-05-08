@@ -328,6 +328,38 @@ describe('migrations', function() {
     });
   });
 
+  // Reference: http://dev.mysql.com/doc/refman/5.7/en/out-of-range-and-overflow.html
+  it('rejects out-of-range and overflow values', function(done) {
+    async.series([
+      function(next) {
+        NumberData.create({number: 1.1234567, tinyInt: 128, mediumInt: 16777215}, function(err, obj) {
+          assert(err);
+          assert.equal(err.code, 'ER_WARN_DATA_OUT_OF_RANGE');
+          next();
+        });
+      }, function(next) {
+        NumberData.create({number: 1.1234567, mediumInt: 16777215 + 1}, function(err, obj) {
+          assert(err);
+          assert.equal(err.code, 'ER_WARN_DATA_OUT_OF_RANGE');
+          next();
+        });
+      }, function(next) {
+        //Minimum value for unsigned mediumInt is 0
+        NumberData.create({number: 1.1234567, mediumInt: -8388608}, function(err, obj) {
+          assert(err);
+          assert.equal(err.code, 'ER_WARN_DATA_OUT_OF_RANGE');
+          next();
+        });
+      }, function(next) {
+        NumberData.create({number: 1.1234567, tinyInt: -129, mediumInt: 0}, function(err, obj) {
+          assert(err);
+          assert.equal(err.code, 'ER_WARN_DATA_OUT_OF_RANGE');
+          next();
+        });
+      },
+    ], done);
+  });
+
   it('should allow both kinds of date columns', function(done) {
     DateData.create({
       dateTime: new Date('Aug 9 1996 07:47:33 GMT'),
@@ -368,6 +400,37 @@ describe('migrations', function() {
           done();
         });
       });
+  });
+  it('rejects out of range datetime', function(done) {
+    if (platform.isWindows) {
+      return done();
+    }
+
+    query('INSERT INTO `DateData` ' +
+      '(`dateTime`, `timestamp`) ' +
+      'VALUES("0000-00-00 00:00:00", "0000-00-00 00:00:00") ', function(err) {
+      var errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+          '\'0000-00-00 00:00:00\' for column \'dateTime\' at row 1';
+      assert(err);
+      assert.equal(err.message, errMsg);
+      done();
+    });
+  });
+
+  it('rejects out of range timestamp', function(done) {
+    if (platform.isWindows) {
+      return done();
+    }
+
+    query('INSERT INTO `DateData` ' +
+      '(`dateTime`, `timestamp`) ' +
+      'VALUES("1000-01-01 00:00:00", "0000-00-00 00:00:00") ', function(err) {
+      var errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+            '\'0000-00-00 00:00:00\' for column \'timestamp\' at row 1';
+      assert(err);
+      assert.equal(err.message, errMsg);
+      done();
+    });
   });
 
   it('should report errors for automigrate', function() {
