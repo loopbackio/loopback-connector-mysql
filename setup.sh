@@ -38,7 +38,11 @@ printf "\n${CYAN}Image successfully built.${PLAIN}\n"
 
 ## run the mysql container
 printf "\n${RED}>> Starting the mysql container${PLAIN} ${GREEN}...${PLAIN}"
-docker run --name $MYSQL_CONTAINER -e MYSQL_ROOT_USER=$USER -e MYSQL_ROOT_PASSWORD=$PASSWORD -p $PORT:3306 -d mysql:latest > /dev/null 2>&1
+CONTAINER_STATUS=$(docker run --name $MYSQL_CONTAINER -e MYSQL_ROOT_USER=$USER -e MYSQL_ROOT_PASSWORD=$PASSWORD -p $PORT:3306 -d mysql:latest 2>&1)
+if [[ "$CONTAINER_STATUS" == *"Error"* ]]; then
+    printf "\n${CYAN}Status: ${PLAIN}${RED}Error starting container. Terminating setup.${PLAIN}\n"
+    exit 1
+fi
 docker cp ./test/schema.sql $MYSQL_CONTAINER:/home/ > /dev/null 2>&1
 printf "\n${CYAN}Container is up and running.${PLAIN}\n"
 
@@ -60,8 +64,8 @@ while [ "$OUTPUT" -ne 0 ] && [ "$TIMEOUT" -gt 0 ]
         docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -uroot -ppass < /home/schema.sql" > /dev/null 2>&1
         OUTPUT=$?
         sleep 1s
-        let "TIMEOUT = $TIMEOUT - 1"
-        let "TIME_PASSED = $TIME_PASSED + 1"
+        TIMEOUT=$((TIMEOUT - 1))
+        TIME_PASSED=$((TIME_PASSED + 1))
 
         if [ "$TIME_PASSED" -eq 5 ]; then
             printf "${GREEN}.${PLAIN}"
