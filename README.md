@@ -356,7 +356,25 @@ Destroying models may result in errors due to foreign key integrity. First delet
 
 ## Running tests
 
-The tests in this repository are mainly integration tests, meaning you will need to run them using our preconfigured test server.
+### Own instance
+If you have a local or remote MySQL instance and would like to use that to run the test suite, use the following command:
+- Linux
+```bash
+MYSQL_HOST=<HOST> MYSQL_USER=<USER> MYSQL_PASSWORD=<PASSWORD> MYSQL_PORT=<PORT> CI=true npm test
+```
+- Windows
+```bash
+SET MYSQL_HOST=<HOST> SET MYSQL_USER=<USER> SET MYSQL_PASSWORD=<PASSWORD> SET MYSQL_PORT=<PORT> SET CI=true npm test
+```
 
-1. Ask a core developer for instructions on how to set up test server credentials on your machine
-2. `npm test`
+### Docker
+If you do not have a local MySQL instance, you can also run the test suite with very minimal requirements.
+- Assuming you have [Docker](https://docs.docker.com/engine/installation/) installed, run the following script which would spawn a MySQL instance on your local:
+```bash
+source setup.sh <USER> <PASSWORD> <PORT>
+```
+where `<USER>`, `<PASSWORD>` and `<PORT>` are optional parameters. The default values are `root`, `pass` and `3306`.
+- Run the test:
+```bash
+npm test
+```
