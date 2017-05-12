@@ -358,8 +358,13 @@ Destroying models may result in errors due to foreign key integrity. First delet
 
 ### Own instance
 If you have a local or remote MySQL instance and would like to use that to run the test suite, use the following command:
+- Linux
 ```bash
 MYSQL_HOST=<HOST> MYSQL_USER=<USER> MYSQL_PASSWORD=<PASSWORD> MYSQL_PORT=<PORT> CI=true npm test
+```
+- Windows
+```bash
+SET MYSQL_HOST=<HOST> SET MYSQL_USER=<USER> SET MYSQL_PASSWORD=<PASSWORD> SET MYSQL_PORT=<PORT> SET CI=true npm test
 ```
 
 ### Docker
