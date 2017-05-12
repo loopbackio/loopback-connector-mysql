@@ -1,8 +1,6 @@
 'use strict';
 
-if (!process.env.TEST_MYSQL_USER &&
-    !process.env.MYSQL_USER &&
-    !process.env.CI) {
+if (!process.env.CI) {
   return console.log('Not seeding DB with test db');
 }
 
