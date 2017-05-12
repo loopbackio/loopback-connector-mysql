@@ -14,6 +14,15 @@ MYSQL_CONTAINER="mysql_c"
 USER="root"
 PASSWORD="pass"
 PORT=3306
+if [ "$1" ]; then
+    USER=$1
+fi
+if [ "$2" ]; then
+    PASSWORD=$2
+fi
+if [ "$3" ]; then
+    PORT=$3
+fi
 
 ## check if docker exists
 printf "\n${RED}>> Checking for docker${PLAIN} ${GREEN}...${PLAIN}"
@@ -50,7 +59,7 @@ printf "\n${CYAN}Container is up and running.${PLAIN}\n"
 printf "\n${RED}>> Exporting schema to database${PLAIN} ${GREEN}...${PLAIN}\n"
 
 ## command to export schema
-docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -uroot -ppass < /home/schema.sql" > /dev/null 2>&1
+docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD < /home/schema.sql" > /dev/null 2>&1
 
 ## variables needed to health check export schema
 OUTPUT=$?
@@ -61,7 +70,7 @@ WAIT_STRING="."
 printf "\n${GREEN}Waiting for database to respond with updated schema $WAIT_STRING${PLAIN}"
 while [ "$OUTPUT" -ne 0 ] && [ "$TIMEOUT" -gt 0 ]
     do
-        docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -uroot -ppass < /home/schema.sql" > /dev/null 2>&1
+        docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD < /home/schema.sql" > /dev/null 2>&1
         OUTPUT=$?
         sleep 1s
         TIMEOUT=$((TIMEOUT - 1))

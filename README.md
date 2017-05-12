@@ -366,8 +366,9 @@ MYSQL_HOST=<HOST> MYSQL_USER=<USER> MYSQL_PASSWORD=<PASSWORD> MYSQL_PORT=<PORT> 
 If you do not have a local MySQL instance, you can also run the test suite with very minimal requirements.
 - Assuming you have [Docker](https://docs.docker.com/engine/installation/) installed, run the following script which would spawn a MySQL instance on your local:
 ```bash
-source setup.sh
+source setup.sh <USER> <PASSWORD> <PORT>
 ```
+where `<USER>`, `<PASSWORD>` and `<PORT>` are optional parameters. The default values are `root`, `pass` and `3306`.
 - Run the test:
 ```bash
 npm test
