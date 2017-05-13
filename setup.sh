@@ -11,17 +11,25 @@ PLAIN='\033[0m'
 
 ## variables
 MYSQL_CONTAINER="mysql_c"
+HOST=localhost
 USER="root"
 PASSWORD="pass"
 PORT=3306
+DATABASE="testdb"
 if [ "$1" ]; then
-    USER=$1
+    HOST=$1
 fi
 if [ "$2" ]; then
-    PASSWORD=$2
+    USER=$2
 fi
 if [ "$3" ]; then
-    PORT=$3
+    PASSWORD=$3
+fi
+if [ "$4" ]; then
+    PORT=$4
+fi
+if [ "$5" ]; then
+    DATABASE=$5
 fi
 
 ## check if docker exists
@@ -90,11 +98,13 @@ printf "\n${CYAN}Successfully exported schema to database.${PLAIN}\n"
 
 ## set env variables for running test
 printf "\n${RED}>> Setting env variables to run test${PLAIN} ${GREEN}...${PLAIN}"
-export MYSQL_HOST=0.0.0.0
+export MYSQL_HOST=$HOST
 export MYSQL_PORT=$PORT
 export MYSQL_USER=$USER
 export MYSQL_PASSWORD=$PASSWORD
+export MYSQL_DATABASE=$DATABASE
 printf "\n${CYAN}Env variables set.${PLAIN}\n"
 
 printf "\n${CYAN}Status: ${PLAIN}${GREEN}Set up completed successfully.${PLAIN}\n"
+printf "\n${CYAN}Instance url: ${YELLOW}mysql://$USER:$PASSWORD@$HOST/$DATABASE${PLAIN}\n"
 printf "\n${CYAN}To run the test suite:${PLAIN} ${YELLOW}npm test${PLAIN}\n\n"
