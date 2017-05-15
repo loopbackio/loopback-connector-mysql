@@ -360,20 +360,20 @@ Destroying models may result in errors due to foreign key integrity. First delet
 If you have a local or remote MySQL instance and would like to use that to run the test suite, use the following command:
 - Linux
 ```bash
-MYSQL_HOST=<HOST> MYSQL_USER=<USER> MYSQL_PASSWORD=<PASSWORD> MYSQL_PORT=<PORT> MYSQL_DATABASE=<DATABASE> CI=true npm test
+MYSQL_HOST=<HOST> MYSQL_PORT=<PORT> MYSQL_USER=<USER> MYSQL_PASSWORD=<PASSWORD> MYSQL_DATABASE=<DATABASE> CI=true npm test
 ```
 - Windows
 ```bash
-SET MYSQL_HOST=<HOST> SET MYSQL_USER=<USER> SET MYSQL_PASSWORD=<PASSWORD> SET MYSQL_PORT=<PORT> SET MYSQL_DATABASE=<DATABASE> SET CI=true npm test
+SET MYSQL_HOST=<HOST> SET MYSQL_PORT=<PORT> SET MYSQL_USER=<USER> SET MYSQL_PASSWORD=<PASSWORD> SET MYSQL_DATABASE=<DATABASE> SET CI=true npm test
 ```
 
 ### Docker
 If you do not have a local MySQL instance, you can also run the test suite with very minimal requirements.
 - Assuming you have [Docker](https://docs.docker.com/engine/installation/) installed, run the following script which would spawn a MySQL instance on your local:
 ```bash
-source setup.sh <HOST> <USER> <PASSWORD> <PORT> <DATABASE>
+source setup.sh <HOST> <PORT> <USER> <PASSWORD> <DATABASE>
 ```
-where `<HOST>`, `<USER>`, `<PASSWORD>`, `<PORT>` and `<DATABASE>` are optional parameters. The default values are `localhost`, `root`, `pass`, `3306` and `testdb` respectively.
+where `<HOST>`, `<PORT>`, `<USER>`, `<PASSWORD>` and `<DATABASE>` are optional parameters. The default values are `localhost`, `3306`, `root`, `pass` and `testdb` respectively.
 - Run the test:
 ```bash
 npm test

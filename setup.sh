@@ -11,7 +11,7 @@ PLAIN='\033[0m'
 
 ## variables
 MYSQL_CONTAINER="mysql_c"
-HOST=localhost
+HOST="localhost"
 USER="root"
 PASSWORD="pass"
 PORT=3306
@@ -20,13 +20,13 @@ if [ "$1" ]; then
     HOST=$1
 fi
 if [ "$2" ]; then
-    USER=$2
+    PORT=$2
 fi
 if [ "$3" ]; then
-    PASSWORD=$3
+    USER=$3
 fi
 if [ "$4" ]; then
-    PORT=$4
+    PASSWORD=$4
 fi
 if [ "$5" ]; then
     DATABASE=$5
@@ -37,7 +37,7 @@ printf "\n${RED}>> Checking for docker${PLAIN} ${GREEN}...${PLAIN}"
 docker -v > /dev/null 2>&1
 DOCKER_EXISTS=$?
 if [ "$DOCKER_EXISTS" -ne 0 ]; then
-    printf "\n${CYAN}Status: ${PLAIN}${RED}Docker not found. Terminating setup.${PLAIN}\n"
+    printf "\n\n${CYAN}Status: ${PLAIN}${RED}Docker not found. Terminating setup.${PLAIN}\n\n"
     exit 1
 fi
 printf "\n${CYAN}Found docker. Moving on with the setup.${PLAIN}\n"
@@ -57,7 +57,7 @@ printf "\n${CYAN}Image successfully built.${PLAIN}\n"
 printf "\n${RED}>> Starting the mysql container${PLAIN} ${GREEN}...${PLAIN}"
 CONTAINER_STATUS=$(docker run --name $MYSQL_CONTAINER -e MYSQL_ROOT_USER=$USER -e MYSQL_ROOT_PASSWORD=$PASSWORD -p $PORT:3306 -d mysql:latest 2>&1)
 if [[ "$CONTAINER_STATUS" == *"Error"* ]]; then
-    printf "\n${CYAN}Status: ${PLAIN}${RED}Error starting container. Terminating setup.${PLAIN}\n"
+    printf "\n\n${CYAN}Status: ${PLAIN}${RED}Error starting container. Terminating setup.${PLAIN}\n\n"
     exit 1
 fi
 docker cp ./test/schema.sql $MYSQL_CONTAINER:/home/ > /dev/null 2>&1
@@ -91,7 +91,7 @@ while [ "$OUTPUT" -ne 0 ] && [ "$TIMEOUT" -gt 0 ]
     done
 
 if [ "$TIMEOUT" -le 0 ]; then
-    printf "\n\n${CYAN}Status: ${PLAIN}${RED}Failed to export schema. Terminating setup.${PLAIN}\n"
+    printf "\n\n${CYAN}Status: ${PLAIN}${RED}Failed to export schema. Terminating setup.${PLAIN}\n\n"
     exit 1
 fi
 printf "\n${CYAN}Successfully exported schema to database.${PLAIN}\n"
