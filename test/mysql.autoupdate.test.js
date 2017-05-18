@@ -17,6 +17,56 @@ describe('MySQL connector', function() {
     setupAltColNameData();
   });
 
+  describe('escape index names upon automigrate', function() {
+    before (function(done) {
+      var messageSchema = {
+        'name': 'Message',
+        'options': {
+          'idInjection': false,
+          'indexes': {
+            'id_index': {
+              'keys': {
+                'id': 1,
+              },
+            },
+            'from_index': {
+              'keys': {
+                'from': 1,
+              },
+            },
+          },
+        },
+        'properties': {
+          'id': {
+            'type': 'number',
+            'id': true,
+            'generated': false,
+          },
+          'conversation': {
+            'type': 'string',
+          },
+          'from': {
+            'type': 'number',
+          },
+          'sent': {
+            'type': 'date',
+          },
+        },
+      };
+      ds.createModel(messageSchema.name, messageSchema.properties, messageSchema.options);
+      done();
+    });
+    it('should escape index names', function(done) {
+      // please note `from` is a keyword in mysql https://dev.mysql.com/doc/refman/5.7/en/keywords.html
+      // hence it needs to be escaped in order for it to work
+      // instead of escaping the special keywords, we escape all index names
+      ds.automigrate('Message', function(err) {
+        assert(!err);
+        done();
+      });
+    });
+  });
+
   it('should auto migrate/update tables', function(done) {
     var schema_v1 = {
       'name': 'CustomerTest',
