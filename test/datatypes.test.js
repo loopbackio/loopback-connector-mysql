@@ -6,12 +6,105 @@
 'use strict';
 require('./init.js');
 var assert = require('assert');
+var _ = require('lodash');
 
-var db, BlobModel, EnumModel, ANIMAL_ENUM;
+var db, BlobModel, EnumModel, ANIMAL_ENUM, City, Account;
 var mysqlVersion;
 
 describe('MySQL specific datatypes', function() {
   before(setup);
+
+  describe('Support explicit datatypes on a property', function() {
+    var dateString1 = '2017-04-01';
+    var dateString2 = '2016-01-30';
+    var dateForTransactions = [new Date(dateString1).toString(), new Date(dateString2).toString()];
+    var data = [
+      {
+        type: 'Student - Basic',
+        amount: 1000,
+        lastTransaction: dateString1,
+      },
+      {
+        type: 'Professional',
+        amount: 1999.99,
+        lastTransaction: dateString2,
+      },
+    ];
+    before(function(done) {
+      require('./init.js');
+      db = getSchema();
+      Account = db.define('Account', {
+        type: {type: String},
+        amount: {
+          type: Number,
+          mysql: {
+            dataType: 'DECIMAL',
+            dataPrecision: 10,
+            dataScale: 2,
+          },
+        },
+        lastTransaction: {
+          type: String,
+          mysql: {
+            dataType: 'DATE',
+          },
+        },
+      });
+      db.automigrate(done);
+    });
+    after(function(done) {
+      Account.destroyAll(done);
+    });
+
+    it('create an instance', function(done) {
+      Account.create(data, function(err, result) {
+        assert(!err);
+        assert(result);
+        assert(_.isEqual(data.length, result.length));
+        assert(_.isEqual(data[0].amount, result[0].amount));
+        assert(_.isEqual(data[1].amount, result[1].amount));
+        done();
+      });
+    });
+
+    it('find an instance', function(done) {
+      Account.find(function(err, result) {
+        assert(!err);
+        assert(result);
+        assert(_.isEqual(data.length, result.length));
+        assert(_.isEqual(data[0].amount, result[0].amount));
+        assert(_.isEqual(data[1].amount, result[1].amount));
+        assert(_.isEqual(dateForTransactions[0], result[0].lastTransaction));
+        assert(_.isEqual(dateForTransactions[1], result[1].lastTransaction));
+        done();
+      });
+    });
+
+    it('find an instance by id', function(done) {
+      Account.findById(1, function(err, result) {
+        assert(!err);
+        assert(result);
+        assert(_.isEqual(data[0].amount, result.amount));
+        assert(_.isEqual(dateForTransactions[0], result.lastTransaction));
+        done();
+      });
+    });
+
+    it('update an instance', function(done) {
+      var updatedData = {
+        type: 'Student - Basic',
+        amount: 1155.77,
+        users: {},
+      };
+      Account.update({id: 1}, updatedData, function(err, result) {
+        assert(!err);
+        assert(result);
+        assert(result.count);
+        assert.equal(1, result.count);
+        done();
+      });
+    });
+  });
 
   it('should run migration', function(done) {
     db.automigrate(function() {
