@@ -7,7 +7,7 @@
 require('./init.js');
 var assert = require('assert');
 
-var db, BlobModel, EnumModel, ANIMAL_ENUM, City;
+var db, BlobModel, EnumModel, ANIMAL_ENUM;
 var mysqlVersion;
 
 describe('MySQL specific datatypes', function() {
@@ -86,26 +86,6 @@ describe('MySQL specific datatypes', function() {
       });
     });
   });
-  it('should create a model instance with geopoint type', function(done) {
-    var city1 = {
-      name: 'North York',
-      loc: {
-        lat: 43.761539,
-        lng: -79.411079,
-      },
-    };
-    City.create(city1, function(err, res) {
-      assert.ok(!err);
-      res.loc.should.deepEqual(city1.loc);
-      res.name.should.equal(city1.name);
-      City.find({where: {name: city1.name}}, function(err, found) {
-        assert.ok(!err);
-        found[0].name.should.equal(city1.name);
-        found[0].loc.should.deepEqual(city1.loc);
-        done();
-      });
-    });
-  });
   it('should disconnect when done', function(done) {
     db.disconnect();
     done();
@@ -129,11 +109,6 @@ function setup(done) {
   BlobModel = db.define('BlobModel', {
     bin: {type: Buffer, dataType: 'blob', null: false},
     name: {type: String},
-  });
-
-  City = db.define('City', {
-    name: {type: String},
-    loc: {type: 'GeoPoint'},
   });
   query('SELECT VERSION()', function(err, res) {
     mysqlVersion = res && res[0] && res[0]['VERSION()'];
