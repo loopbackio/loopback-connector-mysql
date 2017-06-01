@@ -1,3 +1,27 @@
+2017-06-01, Version 4.1.1
+=========================
+
+ * Add http status code translations for errors (Kevin Delisle)
+
+ * Allow explicit data types (ssh24)
+
+ * Revert "switch long and lat for geopoint type" (biniam)
+
+ * switch long and lat for geopoint type (biniam)
+
+ * Escape index names (#280) (Sakib Hasan)
+
+ * Fix docker setup (#279) (Sakib Hasan)
+
+ * Add docker setup (#278) (Sakib Hasan)
+
+ * Adding support for fractional seconds. (Joost de Bruijn)
+
+ * fix compare of foreign keys for autoupdate (#272) (Sergey Nosenko)
+
+ * Update README.md (Antoine LA)
+
+
 2017-05-02, Version 4.1.0
 =========================
 
