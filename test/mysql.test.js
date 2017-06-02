@@ -81,6 +81,23 @@ describe('mysql', function() {
     });
   });
 
+  it('return null if JSON parsing fails', function(done) {
+    Post.create({title: 'a', history: {a: 1, b: 'b'}}, function(err, post) {
+      if (err) return done(err);
+      should.not.exist(err);
+      
+      // break the content
+      var statement = 'UPDATE ' + global.getConfig().database + '.PostWithDefaultId SET history = \'{corrupted,\' where title=\'a\'';
+      db.connector.query(statement, function(err, res) {
+        Post.findById(post.id, function(err, post) {
+          if (err) return done(err);
+          should.not.exist(post.history);
+          done();
+        });
+      });
+    });
+  });
+
   it('should allow ObjectID', function(done) {
     var uid = new ObjectID('123');
     Post.create({title: 'a', content: 'AAA', userId: uid},
