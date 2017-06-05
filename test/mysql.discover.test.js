@@ -11,11 +11,12 @@ var assert = require('assert');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 var db, config;
 
-before(function() {
+before(function(done) {
   require('./init');
   config = getConfig();
   config.database = 'STRONGLOOP';
   db = new DataSource(require('../'), config);
+  db.once('connected', done);
 });
 
 describe('discoverModels', function() {
@@ -33,6 +34,7 @@ describe('discoverModels', function() {
   describe('Discover models including views', function() {
     it('should return an array of tables and views', function(done) {
       db.discoverModelDefinitions({
+        schema: config.database,
         views: true,
         limit: 3,
       }, function(err, models) {
@@ -41,8 +43,8 @@ describe('discoverModels', function() {
           done(err);
         } else {
           var views = false;
+          should.assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
-            // console.dir(m);
             if (m.type === 'view') {
               views = true;
             }
@@ -54,18 +56,20 @@ describe('discoverModels', function() {
     });
   });
 
-  describe('Discover current user\'s tables', function() {
-    it('should return an array of tables for the current user', function(done) {
+  describe('Discover model tables', function() {
+    it('should return an array of tables for a given schema', function(done) {
       db.discoverModelDefinitions({
-        limit: 3,
+        schema: config.database,
+        limit: 50,
       }, function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
           var views = false;
+          should.assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
-            assert.equal(m.owner, config.username);
+            assert.equal(m.schema.toLowerCase(), config.database.toLowerCase());
           });
           done(null, models);
         }
@@ -74,25 +78,20 @@ describe('discoverModels', function() {
   });
 
   describe('Discover models excluding views', function() {
-    // TODO: this test assumes the current user owns the tables
-    it.skip('should return an array of only tables', function(done) {
+    it('should return an array of only tables', function(done) {
       db.discoverModelDefinitions({
+        schema: config.database,
         views: false,
-        limit: 3,
+        limit: 50,
       }, function(err, models) {
         if (err) {
           console.error(err);
           done(err);
         } else {
-          var views = false;
+          should.assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
-            // console.dir(m);
-            if (m.type === 'view') {
-              views = true;
-            }
+            should.not.equal(m.type, 'view', 'model type should not be a view');
           });
-          models.should.have.length(3);
-          assert(!views, 'Should not have views');
           done(null, models);
         }
       });
@@ -111,8 +110,8 @@ describe('Discover models including other users', function() {
         done(err);
       } else {
         var others = false;
+        assert.equal(3, models.length);
         models.forEach(function(m) {
-          // console.dir(m);
           if (m.owner !== 'STRONGLOOP') {
             others = true;
           }
@@ -133,7 +132,6 @@ describe('Discover model properties', function() {
           done(err);
         } else {
           models.forEach(function(m) {
-            // console.dir(m);
             assert(m.tableName === 'product');
           });
           done(null, models);
@@ -151,7 +149,6 @@ describe('Discover model primary keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          // console.dir(m);
           assert(m.tableName === 'product');
         });
         done(null, models);
@@ -166,7 +163,6 @@ describe('Discover model primary keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          // console.dir(m);
           assert(m.tableName === 'product');
         });
         done(null, models);
@@ -183,7 +179,6 @@ describe('Discover model foreign keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          // console.dir(m);
           assert(m.fkTableName === 'INVENTORY');
         });
         done(null, models);
@@ -197,7 +192,6 @@ describe('Discover model foreign keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          // console.dir(m);
           assert(m.fkTableName === 'INVENTORY');
         });
         done(null, models);
@@ -242,7 +236,6 @@ describe('Discover LDL schema from a table', function() {
   it('should return an LDL schema for INVENTORY', function() {
     var productId = 'productId' in schema.properties ? 'productId' : 'productid';
     var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
-    console.error('schema:', schema);
     assert.strictEqual(schema.name, 'Inventory');
     assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
     assert.strictEqual(schema.options.mysql.table, 'INVENTORY');
