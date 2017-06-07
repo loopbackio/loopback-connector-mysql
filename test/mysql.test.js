@@ -117,6 +117,38 @@ describe('mysql', function() {
       });
     });
   });
+  
+  it('updateOrCreate should allow updating the instance property value with arrays of nested objects', function (done) {
+    Post.create({title: 'a',
+      content: [
+        {
+          id: 1, subcontent: [
+            { id:1, content: 'AAA' },
+            { id:2, content: 'BBB' }
+		      ]
+        }
+	  ]}, function (err, post) {
+      post.content = [
+        {
+          id: 1, subcontent: [
+            { id:1, content: 'XXX' },
+            { id:2, content: 'YYY' }
+		      ]
+		    }
+      ];
+      Post.updateOrCreate(post, function (err, p) {
+        should.not.exist(err);
+        p.id.should.be.equal(post.id);
+        p.title.should.be.equal(post.title);
+        Post.findById(post.id, function (err, p) {
+          p.id.should.be.equal(post.id);
+          p.content[0].subcontent[0].content.should.be.equal('XXX');
+          p.content[0].subcontent[1].content.should.be.equal('YYY');
+          done();
+        });
+      });
+    });
+  });
 
   it('updateOrCreate should update the instance without removing existing properties', function(done) {
     Post.create({title: 'a', content: 'AAA'}, function(err, post) {
