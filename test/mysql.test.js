@@ -633,6 +633,15 @@ describe('mysql', function() {
               });
             });
       });
+
+      it('filter with case sensitive regex string', function(done) {
+        Post.find({where: {content: {regexp: '^a'}}}, function(err, posts) {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(0);
+          done();
+        });
+      });
     });
 
     context('with regex literals', function() {
@@ -687,6 +696,16 @@ describe('mysql', function() {
                 done();
               });
             });
+      });
+
+      it('filter with case sensitive regex literal', function(done) {
+        Post.find({where: {content: {regexp: /^B/}}}, function(err, posts) {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(1);
+          posts[0].content.should.equal('BBB');
+          done();
+        });
       });
     });
 
@@ -746,6 +765,15 @@ describe('mysql', function() {
                 done();
               });
             });
+
+        it('filter with case sensitive regex object', function(done) {
+          Post.find({where: {content: {regexp: new RegExp(/^a/)}}}, function(err, posts) {
+            should.not.exist(err);
+            should.exist(posts);
+            posts.length.should.equal(0);
+            done();
+          });
+        });
       });
     });
   });
