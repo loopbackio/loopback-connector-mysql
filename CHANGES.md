@@ -1,3 +1,11 @@
+2017-06-13, Version 4.2.0
+=========================
+
+ * Allow case sensitive regex operation (ssh24)
+
+ * discovery.test: fix discoverModels tests (Kevin Delisle)
+
+
 2017-06-01, Version 4.1.1
 =========================
 
