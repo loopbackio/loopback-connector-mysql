@@ -6,7 +6,7 @@
 'use strict';
 var should = require('./init.js');
 
-var Post, PostWithStringId, PostWithUniqueTitle, db;
+var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, db;
 
 // Mock up mongodb ObjectID
 function ObjectID(id) {
@@ -41,13 +41,22 @@ describe('mysql', function() {
       title: {type: String, length: 255, index: true},
       content: {type: String},
     });
-
+    PostWithNumId = db.define('PostWithNumId', {
+      id: {type: Number, id: true, null: false},
+      title: {type: String, length: 255, null: false, index: true},
+      content: {type: String, null: false},
+      buffProp: {type: Buffer, null: false},
+      objProp: {type: Object, null: false},
+      arrProp: {type: [Number], null: false},
+      dateProp: {type: Date, null: false},
+      pointProp: {type: 'GeoPoint', null: false},
+    });
     PostWithUniqueTitle = db.define('PostWithUniqueTitle', {
       title: {type: String, length: 255, index: {unique: true}},
       content: {type: String},
     });
 
-    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle'], function(err) {
+    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle', 'PostWithNumId'], function(err) {
       should.not.exist(err);
       done(err);
     });
@@ -56,9 +65,7 @@ describe('mysql', function() {
   beforeEach(function(done) {
     Post.destroyAll(function() {
       PostWithStringId.destroyAll(function() {
-        PostWithUniqueTitle.destroyAll(function() {
-          done();
-        });
+        PostWithUniqueTitle.destroyAll(done);
       });
     });
   });
@@ -421,6 +428,96 @@ describe('mysql', function() {
         should.not.exist(err);
         posts.should.have.property('length', 0);
         done();
+      });
+    });
+  });
+  context('null vals in different operators', function() {
+    var defaultPost = {
+      id: 3,
+      title: 'defTitle',
+      content: 'defContent',
+      buffProp: new Buffer('defBuffer'),
+      objProp: {defKey: 'defVal'},
+      arrProp: [0],
+      dateProp: new Date('2017-06-14'),
+      pointProp: {lng: 4.51515, lat: 57.2314},
+    };
+    beforeEach(function(done) {
+      PostWithNumId.destroyAll(done);
+    });
+    after(function(done) {
+      PostWithNumId.destroyAll(done);
+    });
+    it('should handle null in inq operator', function(done) {
+      defaultPost.id = 1;
+      defaultPost.title = 'Foo';
+      defaultPost.content = 'Bar';
+      PostWithNumId.create(defaultPost, function(err, post) {
+        should.not.exist(err);
+        post.id.should.equal(defaultPost.id);
+        PostWithNumId.find({where: {id: {inq: [null, 1]}}}, function(err, posts) {
+          should.not.exist(err);
+          posts.length.should.equal(1);
+          posts[0].title.should.equal('Foo');
+          posts[0].id.should.equal(1);
+          done();
+        });
+      });
+    });
+
+    it('should handle null in nin operator', function(done) {
+      defaultPost.id = 2;
+      defaultPost.title = 'Make';
+      defaultPost.content = 'Toyota';
+      PostWithNumId.create(defaultPost, function(err, post) {
+        should.not.exist(err);
+        post.id.should.equal(defaultPost.id);
+        PostWithNumId.find({where: {id: {nin: [null, 3]}}}, function(err, posts) {
+          should.not.exist(err);
+          posts.length.should.equal(1);
+          posts[0].content.should.equal('Toyota');
+          posts[0].id.should.equal(2);
+          done();
+        });
+      });
+    });
+
+    it('should handle null in neq operator', function(done) {
+      defaultPost.id = 3;
+      defaultPost.title = 'Model';
+      defaultPost.content = 'Corolla';
+      PostWithNumId.create(defaultPost, function(err, post) {
+        should.not.exist(err);
+        post.id.should.equal(defaultPost.id);
+        PostWithNumId.find({where: {id: {neq: null}}}, function(err, posts) {
+          should.not.exist(err);
+          posts.length.should.equal(1);
+          posts[0].content.should.equal('Corolla');
+          posts[0].id.should.equal(3);
+          done();
+        });
+      });
+    });
+
+    it('should handle null in nin op for different datatypes', function(done) {
+      PostWithNumId.create(defaultPost, function(err, post) {
+        should.not.exist(err);
+        post.id.should.equal(defaultPost.id);
+        PostWithNumId.find({where: {and: [
+        {id: {nin: [null]}},
+        {title: {nin: [null]}},
+        {content: {nin: [null]}},
+        {buffProp: {nin: [null]}},
+        {objProp: {nin: [null]}},
+        {arrProp: {nin: [null]}},
+        {dateProp: {nin: [null]}},
+        {pointProp: {nin: [null]}},
+        ]}}, function(err, posts) {
+          should.not.exist(err);
+          posts.length.should.equal(1);
+          posts[0].toObject().should.deepEqual(defaultPost);
+          done();
+        });
       });
     });
   });
