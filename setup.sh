@@ -64,7 +64,7 @@ docker cp ./test/schema.sql $MYSQL_CONTAINER:/home/ > /dev/null 2>&1
 printf "\n${CYAN}Container is up and running.${PLAIN}\n"
 
 ## export the schema to the mysql database
-printf "\n${RED}>> Exporting schema to database${PLAIN} ${GREEN}...${PLAIN}\n"
+printf "\n${RED}>> Exporting default schema${PLAIN} ${GREEN}...${PLAIN}\n"
 
 ## command to export schema
 docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD < /home/schema.sql" > /dev/null 2>&1
@@ -75,7 +75,7 @@ TIMEOUT=120
 TIME_PASSED=0
 WAIT_STRING="."
 
-printf "\n${GREEN}Waiting for database to respond with updated schema $WAIT_STRING${PLAIN}"
+printf "\n${GREEN}Waiting for mysql to respond with updated schema $WAIT_STRING${PLAIN}"
 while [ "$OUTPUT" -ne 0 ] && [ "$TIMEOUT" -gt 0 ]
     do
         docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD < /home/schema.sql" > /dev/null 2>&1
@@ -95,6 +95,17 @@ if [ "$TIMEOUT" -le 0 ]; then
     exit 1
 fi
 printf "\n${CYAN}Successfully exported schema to database.${PLAIN}\n"
+
+## create the database
+printf "\n${RED}>> Creating the database${PLAIN} ${GREEN}...${PLAIN}"
+docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD -e \"DROP DATABASE IF EXISTS $DATABASE\"" > /dev/null 2>&1
+docker exec -it $MYSQL_CONTAINER /bin/sh -c "mysql -u$USER -p$PASSWORD -e \"CREATE DATABASE $DATABASE\"" > /dev/null 2>&1
+DATABASE_CREATED=$?
+if [ "$DATABASE_CREATED" -ne 0 ]; then
+    printf "\n\n${CYAN}Status: ${PLAIN}${RED}Database could not be created. Terminating setup.${PLAIN}\n\n"
+    exit 1
+fi
+printf "\n${CYAN}Successfully created the database.${PLAIN}\n"
 
 ## set env variables for running test
 printf "\n${RED}>> Setting env variables to run test${PLAIN} ${GREEN}...${PLAIN}"
