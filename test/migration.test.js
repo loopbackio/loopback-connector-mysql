@@ -10,7 +10,7 @@ var platform = require('./helpers/platform');
 var should = require('./init');
 var Schema = require('loopback-datasource-juggler').Schema;
 
-var db, UserData, StringData, NumberData, DateData;
+var db, UserData, StringData, NumberData, DateData, SimpleEmployee;
 var mysqlVersion;
 
 describe('migrations', function() {
@@ -18,6 +18,16 @@ describe('migrations', function() {
 
   it('should run migration', function(done) {
     db.automigrate(function() {
+      done();
+    });
+  });
+
+  it('allow user specified datatype on PK', function(done) {
+    query('describe SimpleEmployee', function(err, result) {
+      should.not.exist(err);
+      should.exist(result);
+      result[0].Key.should.equal('PRI');
+      result[0].Type.should.equal('bigint(20)');
       done();
     });
   });
@@ -496,6 +506,11 @@ function setup(done) {
   DateData = db.define('DateData', {
     dateTime: {type: Date, dataType: 'datetime'},
     timestamp: {type: Date, dataType: 'timestamp'},
+  });
+
+  SimpleEmployee = db.define('SimpleEmployee', {
+    eId: {type: Number, generated: true, id: true, mysql: {dataType: 'bigint', dataLength: 20}},
+    name: {type: String},
   });
 
   query('SELECT VERSION()', function(err, res) {
