@@ -442,7 +442,63 @@ module.exports = function(app) {
   });
 };
 ```
+#### Breaking Changes with GeoPoint since 5.x
+Prior to `loopback-connector-mysql@5.x`, MySQL connector was saving and loading GeoPoint properties from the MySQL database in reverse.
+MySQL expects values to be POINT(X, Y) or POINT(lng, lat), but the connector was saving them in the opposite order(i.e. POINT(lat,lng)).
+If you have an application with a model that has a GeoPoint property using previous versions of this connector, you can migrate your models
+using the following programmatic approach:
+**NOTE** Please back up the database tables that have your application data before performing any of the steps.
+1. Create a boot script under `server/boot/` directory with the following:
+```js
+'use strict';
+module.exports = function(app) {
+  function findAndUpdate() {
+    var teashop = app.models.teashop;
+    //find all instances of the model we'd like to migrate
+    teashop.find({}, function(err, teashops) {
+      teashops.forEach(function(teashopInstance) {
+        //what we fetch back from the db is wrong, so need to revert it here
+        var newLocation = {lng: teashopInstance.location.lat, lat: teashopInstance.location.lng};
+        //only update the GeoPoint property for the model
+        teashopInstance.updateAttribute('location', newLocation, function(err, inst) {
+          if (err)
+            console.log('update attribute failed ', err);
+          else
+        console.log('updateAttribute successful');
+        });
+      });
+    });
+  }
 
+  findAndUpdate();
+};
+```
+2. Run the boot script by simply running your application or `node .`
+
+For the above example, the model definition is as follows:
+```json
+{
+  "name": "teashop",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "default": "storename"
+    },
+    "location": {
+      "type": "geopoint"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
+```
 
 ## Running tests
 
