@@ -363,21 +363,26 @@ Example:
 {
   "name": "Book",
   "base": "PersistedModel",
-  "idInjection": true,
+  "idInjection": false,
   "properties": {
+    "bId": {
+      "type": "number",
+      "id": true,
+      "required": true
+    },
     "name": {
       "type": "string"
-    }, "isbn": {
-      "type": "string"
     },
+    "isbn": {
+      "type": "string"
+    }
   },
   "validations": [],
   "relations": {
     "author": {
       "type": "belongsTo",
       "model": "Author",
-      "foreignKey": "authorId",
-      "primaryKey": "id"
+      "foreignKey": "authorId"
     }
   },
   "acls": [],
@@ -386,7 +391,7 @@ Example:
     "authorId": {
       "name": "authorId",
       "foreignKey": "authorId",
-      "entityKey": "id",
+      "entityKey": "aId",
       "entity": "Author"
     }
   }
@@ -397,33 +402,24 @@ Example:
 {
   "name": "Author",
   "base": "PersistedModel",
-  "idInjection": true,
+  "idInjection": false,
   "properties": {
+    "aId": {
+      "type": "number",
+      "id": true,
+      "required": true
+    },
     "name": {
       "type": "string"
-    }, "dob": {
+    },
+    "dob": {
       "type": "date"
     }
   },
   "validations": [],
-  "relations": {
-    "books": {
-      "type": "hasMany",
-      "model": "Book",
-      "foreignKey": "bookId",
-      "primaryKey": "id"
-    }
-  },
+  "relations": {},
   "acls": [],
-  "methods": {},
-  "foreignKeys": {
-    "bookId": {
-      "name": "bookId",
-      "foreignKey": "bookId",
-      "entityKey": "id",
-      "entity": "Book"
-    }
-  }
+  "methods": {}
 }
 ```
 
@@ -434,11 +430,16 @@ module.exports = function(app) {
   var Book = app.models.Book;
   var Author = app.models.Author;
 
-  mysqlDs.automigrate(function(err) {
+  // first autoupdate the `Author` model to avoid foreign key constraint failure
+  mysqlDs.autoupdate('Author', function(err) {
     if (err) throw err;
+    console.log('\nAutoupdated table `Author`.');
 
-    // at this point the database tables `Book` and `Author`
-    // should have the foreign keys (`bookId` and `authorId`) integrated
+    mysqlDs.autoupdate('Book', function(err) {
+      if (err) throw err;
+      console.log('\nAutoupdated table `Book`.');
+      // at this point the database table `Book` should have one foreign key `authorId` integrated
+    });
   });
 };
 ```
