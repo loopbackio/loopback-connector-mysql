@@ -57,6 +57,22 @@ describe('MySQL specific datatypes', function() {
       Account.destroyAll(done);
     });
 
+    it('discover type of amount', function(done) {
+      db.discoverModelProperties('Account', {})
+        .then(function(defs) {
+          defs.forEach(function(props) {
+            if (props.columnName === 'amount') {
+              assert.deepEqual(props.dataType, 'decimal');
+              assert.deepEqual(props.type, 'Number');
+              done();
+            }
+          });
+        })
+        .catch(function(err) {
+          done(err);
+        });
+    });
+
     it('create an instance', function(done) {
       Account.create(data, function(err, result) {
         if (err) return done(err);
