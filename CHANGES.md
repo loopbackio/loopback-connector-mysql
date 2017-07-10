@@ -1,3 +1,29 @@
+2017-07-10, Version 5.0.0
+=========================
+
+ * Add DECIMAL to Number prop type (Tetsuo Seto)
+
+ * Fix fk docs to avoid constraint errors (ssh24)
+
+ * Document GeoPoint migration (biniam)
+
+ * Honor user specified datatype on PKs (ssh24)
+
+ * Require init on mocha args (ssh24)
+
+ * Add docs on FK integrity (ssh24)
+
+ * Create database on the docker script (ssh24)
+
+ * Handle null vals properly (biniam)
+
+ * Allow case sensitive regex operation (ssh24)
+
+ * switch long and lat for geopoint type (biniam)
+
+ * discovery.test: fix discoverModels tests (Kevin Delisle)
+
+
 2017-06-01, Version 4.1.1
 =========================
 
