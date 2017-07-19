@@ -4,10 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
+var async = require('async');
 var should = require('./init.js');
 var sinon = require('sinon');
 
-var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, db;
+var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student, db;
 
 // Mock up mongodb ObjectID
 function ObjectID(id) {
@@ -57,18 +58,24 @@ describe('mysql', function() {
       content: {type: String},
     });
 
-    db.automigrate(['PostWithDefaultId', 'PostWithStringId', 'PostWithUniqueTitle', 'PostWithNumId'], function(err) {
-      should.not.exist(err);
-      done(err);
+    Student = db.define('Student', {
+      name: {type: String, length: 255},
+      age: {type: Number},
+    }, {
+      forceId: false,
     });
+
+    db.automigrate(
+      ['PostWithDefaultId', 'PostWithStringId',
+        'PostWithUniqueTitle', 'PostWithNumId', 'Student'],
+      function(err) {
+        should.not.exist(err);
+        done(err);
+      });
   });
 
-  beforeEach(function(done) {
-    Post.destroyAll(function() {
-      PostWithStringId.destroyAll(function() {
-        PostWithUniqueTitle.destroyAll(done);
-      });
-    });
+  beforeEach(function() {
+    return deleteAllModelInstances();
   });
 
   it('should allow array or object', function(done) {
@@ -232,6 +239,33 @@ describe('mysql', function() {
           should.not.exist(p._id);
           p.title.should.equal(post.title);
           p.content.should.equal(post.content);
+          done();
+        });
+      });
+    });
+
+    it('isNewInstance should be undefined for after save hook', function(done) {
+      var student = {name: 'Joe', age: 20};
+      var newStudent = {};
+      var isNewInstanceBefore = false;
+      var isNewInstanceAfter = false;
+      Student.create(student, function(err, createdStudent) {
+        if (err) return done(err);
+        newStudent.id = createdStudent.id;
+        newStudent.name = 'Hannah';
+        newStudent.age = 25;
+        Student.observe('before save', function(ctx, next) {
+          isNewInstanceBefore = ctx.isNewInstance;
+          next();
+        });
+        Student.observe('after save', function(ctx, next) {
+          isNewInstanceAfter = ctx.isNewInstance;
+          next();
+        });
+        Student.replaceOrCreate(newStudent, function(err, s) {
+          if (err) return done(err);
+          should.not.exist(isNewInstanceBefore);
+          should.not.exist(isNewInstanceAfter);
           done();
         });
       });
@@ -876,11 +910,14 @@ describe('mysql', function() {
     });
   });
 
-  after(function(done) {
-    Post.destroyAll(function() {
-      PostWithStringId.destroyAll(function() {
-        PostWithUniqueTitle.destroyAll(done);
-      });
-    });
+  function deleteAllModelInstances() {
+    const models = [
+      Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student,
+    ];
+    return Promise.all(models.map(m => m.destroyAll()));
+  }
+
+  after(function() {
+    return deleteAllModelInstances();
   });
 });
