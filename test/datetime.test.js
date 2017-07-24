@@ -28,7 +28,7 @@ describe('MySQL datetime handling', function() {
     });
   }
   before(function(done) {
-    db = getSchema({
+    db = global.getSchema({
       dateStrings: true,
     });
     Person = db.define('Person', personDefinition, {forceId: true, strict: true});

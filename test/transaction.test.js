@@ -12,7 +12,8 @@ var db, Post, Review;
 
 describe('transactions', function() {
   before(function(done) {
-    db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
+    db = global.getDataSource({collation: 'utf8_general_ci',
+      createDatabase: true});
     db.once('connected', function() {
       Post = db.define('PostTX', {
         title: {type: String, length: 255, index: true},
@@ -37,42 +38,42 @@ describe('transactions', function() {
         isolationLevel: Transaction.READ_COMMITTED,
         timeout: timeout,
       },
-        function(err, tx) {
-          if (err) return done(err);
-          (typeof tx.id).should.be.eql('string');
-          hooks = [];
-          tx.observe('before commit', function(context, next) {
-            hooks.push('before commit');
-            next();
-          });
-          tx.observe('after commit', function(context, next) {
-            hooks.push('after commit');
-            next();
-          });
-          tx.observe('before rollback', function(context, next) {
-            hooks.push('before rollback');
-            next();
-          });
-          tx.observe('after rollback', function(context, next) {
-            hooks.push('after rollback');
-            next();
-          });
-          currentTx = tx;
-          Post.create(post, {transaction: tx},
-            function(err, p) {
-              if (err) {
-                done(err);
-              } else {
-                p.reviews.create({
-                  author: 'John',
-                  content: 'Review for ' + p.title,
-                }, {transaction: tx},
-                  function(err, c) {
-                    done(err);
-                  });
-              }
-            });
+      function(err, tx) {
+        if (err) return done(err);
+        (typeof tx.id).should.be.eql('string');
+        hooks = [];
+        tx.observe('before commit', function(context, next) {
+          hooks.push('before commit');
+          next();
         });
+        tx.observe('after commit', function(context, next) {
+          hooks.push('after commit');
+          next();
+        });
+        tx.observe('before rollback', function(context, next) {
+          hooks.push('before rollback');
+          next();
+        });
+        tx.observe('after rollback', function(context, next) {
+          hooks.push('after rollback');
+          next();
+        });
+        currentTx = tx;
+        Post.create(post, {transaction: tx},
+          function(err, p) {
+            if (err) {
+              done(err);
+            } else {
+              p.reviews.create({
+                author: 'John',
+                content: 'Review for ' + p.title,
+              }, {transaction: tx},
+              function(err, c) {
+                done(err);
+              });
+            }
+          });
+      });
     };
   }
 

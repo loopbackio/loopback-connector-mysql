@@ -5,6 +5,7 @@
 
 'use strict';
 var should = require('./init.js');
+var sinon = require('sinon');
 
 var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, db;
 
@@ -23,7 +24,7 @@ ObjectID.prototype.toJSON = function() {
 
 describe('mysql', function() {
   before(function(done) {
-    db = getDataSource();
+    db = global.getDataSource();
 
     Post = db.define('PostWithDefaultId', {
       title: {type: String, length: 255, index: true},
@@ -257,25 +258,25 @@ describe('mysql', function() {
     });
   });
 
-  it('save should update the instance without removing existing properties', function(done) {
-    Post.create({title: 'a', content: 'AAA'}, function(err, post) {
-      delete post.title;
-      post.save(function(err, p) {
-        should.not.exist(err);
-        p.id.should.be.equal(post.id);
-        p.content.should.be.equal(post.content);
-
-        Post.findById(post.id, function(err, p) {
+  it('save should update the instance without removing existing properties',
+    function(done) {
+      Post.create({title: 'a', content: 'AAA'}, function(err, post) {
+        delete post.title;
+        post.save(function(err, p) {
+          should.not.exist(err);
           p.id.should.be.equal(post.id);
-
           p.content.should.be.equal(post.content);
-          p.title.should.be.equal('a');
 
-          done();
+          Post.findById(post.id, function(err, p) {
+            p.id.should.be.equal(post.id);
+
+            p.content.should.be.equal(post.content);
+            p.title.should.be.equal('a');
+            done();
+          });
         });
       });
     });
-  });
 
   it('save should create a new instance if it does not exist', function(done) {
     var post = new Post({id: 123, title: 'a', content: 'AAA'});
@@ -504,14 +505,14 @@ describe('mysql', function() {
         should.not.exist(err);
         post.id.should.equal(defaultPost.id);
         PostWithNumId.find({where: {and: [
-        {id: {nin: [null]}},
-        {title: {nin: [null]}},
-        {content: {nin: [null]}},
-        {buffProp: {nin: [null]}},
-        {objProp: {nin: [null]}},
-        {arrProp: {nin: [null]}},
-        {dateProp: {nin: [null]}},
-        {pointProp: {nin: [null]}},
+          {id: {nin: [null]}},
+          {title: {nin: [null]}},
+          {content: {nin: [null]}},
+          {buffProp: {nin: [null]}},
+          {objProp: {nin: [null]}},
+          {arrProp: {nin: [null]}},
+          {dateProp: {nin: [null]}},
+          {pointProp: {nin: [null]}},
         ]}}, function(err, posts) {
           should.not.exist(err);
           posts.length.should.equal(1);
@@ -707,28 +708,28 @@ describe('mysql', function() {
         });
 
         it('should print a warning when the ignore flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: '^a/i'}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
 
         it('should print a warning when the global flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: '^a/g'}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: '^a/g'}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
 
         it('should print a warning when the multiline flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: '^a/m'}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: '^a/m'}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
       });
 
       it('filter with case sensitive regex string', function(done) {
@@ -771,28 +772,28 @@ describe('mysql', function() {
         });
 
         it('should print a warning when the ignore flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: /^a/i}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
 
         it('should print a warning when the global flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: /^a/g}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: /^a/g}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
 
         it('should print a warning when the multiline flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: /^a/m}}}, function(err, posts) {
-                console.warn.calledOnce.should.be.ok;
-                done();
-              });
+          function(done) {
+            Post.find({where: {content: {regexp: /^a/m}}}, function(err, posts) {
+              console.warn.calledOnce.should.be.ok;
+              done();
             });
+          });
       });
 
       it('filter with case sensitive regex literal', function(done) {
@@ -817,51 +818,51 @@ describe('mysql', function() {
       context('using no flags', function() {
         it('should work', function(done) {
           Post.find({where: {content: {regexp: new RegExp(/^A/)}}},
-              function(err, posts) {
-                should.not.exist(err);
-                posts.length.should.equal(1);
-                posts[0].content.should.equal('AAA');
-                done();
-              });
+            function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
         });
       });
 
       context('using flags', function() {
         it('should work', function(done) {
           Post.find({where: {content: {regexp: new RegExp(/^a/i)}}},
-              function(err, posts) {
-                should.not.exist(err);
-                posts.length.should.equal(1);
-                posts[0].content.should.equal('AAA');
-                done();
-              });
+            function(err, posts) {
+              should.not.exist(err);
+              posts.length.should.equal(1);
+              posts[0].content.should.equal('AAA');
+              done();
+            });
         });
         it('should print a warning when the ignore flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: new RegExp(/^a/i)}}},
+          function(done) {
+            Post.find({where: {content: {regexp: new RegExp(/^a/i)}}},
               function(err, posts) {
                 console.warn.calledOnce.should.be.ok;
                 done();
               });
-            });
+          });
 
         it('should print a warning when the global flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: new RegExp(/^a/g)}}},
+          function(done) {
+            Post.find({where: {content: {regexp: new RegExp(/^a/g)}}},
               function(err, posts) {
                 console.warn.calledOnce.should.be.ok;
                 done();
               });
-            });
+          });
 
         it('should print a warning when the multiline flag is set',
-            function(done) {
-              Post.find({where: {content: {regexp: new RegExp(/^a/m)}}},
+          function(done) {
+            Post.find({where: {content: {regexp: new RegExp(/^a/m)}}},
               function(err, posts) {
                 console.warn.calledOnce.should.be.ok;
                 done();
               });
-            });
+          });
 
         it('filter with case sensitive regex object', function(done) {
           Post.find({where: {content: {regexp: new RegExp(/^a/)}}}, function(err, posts) {

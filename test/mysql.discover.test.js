@@ -5,7 +5,7 @@
 
 'use strict';
 process.env.NODE_ENV = 'test';
-require('should');
+var should = require('should');
 
 var assert = require('assert');
 var DataSource = require('loopback-datasource-juggler').DataSource;
@@ -13,7 +13,7 @@ var db, config;
 
 before(function(done) {
   require('./init');
-  config = getConfig();
+  config = global.getConfig();
   config.database = 'STRONGLOOP';
   db = new DataSource(require('../'), config);
   db.once('connected', done);
@@ -43,7 +43,7 @@ describe('discoverModels', function() {
           done(err);
         } else {
           var views = false;
-          should.assert(models.length > 0, 'some models returned');
+          assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
             if (m.type === 'view') {
               views = true;
@@ -67,7 +67,7 @@ describe('discoverModels', function() {
           done(err);
         } else {
           var views = false;
-          should.assert(models.length > 0, 'some models returned');
+          assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
             assert.equal(m.schema.toLowerCase(), config.database.toLowerCase());
           });
@@ -88,9 +88,9 @@ describe('discoverModels', function() {
           console.error(err);
           done(err);
         } else {
-          should.assert(models.length > 0, 'some models returned');
+          assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
-            should.not.equal(m.type, 'view', 'model type should not be a view');
+            should.notEqual(m.type, 'view', 'model type should not be a view');
           });
           done(null, models);
         }
@@ -259,10 +259,10 @@ describe('Discover and build models', function() {
   var models;
   before(function(done) {
     db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true},
-     function(err, models_) {
-       models = models_;
-       done(err);
-     });
+      function(err, models_) {
+        models = models_;
+        done(err);
+      });
   });
   it('should discover and build models', function() {
     assert(models.Inventory, 'Inventory model should be discovered and built');

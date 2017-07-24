@@ -357,7 +357,7 @@ describe('migrations', function() {
           next();
         });
       }, function(next) {
-        //Minimum value for unsigned mediumInt is 0
+        // Minimum value for unsigned mediumInt is 0
         NumberData.create({number: 1.1234567, mediumInt: -8388608}, function(err, obj) {
           assert(err);
           assert.equal(err.code, 'ER_WARN_DATA_OUT_OF_RANGE');
@@ -403,16 +403,16 @@ describe('migrations', function() {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("0000-00-00 00:00:00", "0000-00-00 00:00:00") ',
-      function(err, ret) {
-        should.not.exists(err);
-        DateData.findById(ret.insertId, function(err, dateData) {
-          should(dateData.dateTime)
-            .be.null();
-          should(dateData.timestamp)
-            .be.null();
-          done();
-        });
+    function(err, ret) {
+      should.not.exists(err);
+      DateData.findById(ret.insertId, function(err, dateData) {
+        should(dateData.dateTime)
+          .be.null();
+        should(dateData.timestamp)
+          .be.null();
+        done();
       });
+    });
   });
 
   it('rejects out of range datetime', function(done) {
@@ -468,7 +468,7 @@ describe('migrations', function() {
 function setup(done) {
   require('./init.js');
 
-  db = getSchema();
+  db = global.getSchema();
 
   UserData = db.define('UserData', {
     email: {type: String, null: false, index: true},

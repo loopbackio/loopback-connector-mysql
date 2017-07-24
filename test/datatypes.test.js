@@ -33,7 +33,7 @@ describe('MySQL specific datatypes', function() {
     ];
     before(function(done) {
       require('./init.js');
-      db = getSchema();
+      db = global.getSchema();
       Account = db.define('Account', {
         type: {type: String},
         amount: {
@@ -233,7 +233,7 @@ describe('MySQL specific datatypes', function() {
 function setup(done) {
   require('./init.js');
 
-  db = getSchema();
+  db = global.getSchema();
 
   ANIMAL_ENUM = db.EnumFactory('dog', 'cat', 'mouse');
 

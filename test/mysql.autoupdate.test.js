@@ -9,7 +9,7 @@ require('./init');
 var ds;
 
 before(function() {
-  ds = getDataSource();
+  ds = global.getDataSource();
 });
 
 describe('MySQL connector', function() {
@@ -18,7 +18,7 @@ describe('MySQL connector', function() {
   });
 
   describe('escape index names upon automigrate', function() {
-    before (function(done) {
+    before(function(done) {
       var messageSchema = {
         'name': 'Message',
         'options': {
@@ -260,7 +260,7 @@ describe('MySQL connector', function() {
                 assert.equal(updatedindexes[1].Key_name, 'customer_code');
                 assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
                 assert.equal(updatedindexes[3].Key_name, 'updated_name_index');
-                //Mysql supports only index sorting in ascending; DESC is ignored
+                // Mysql supports only index sorting in ascending; DESC is ignored
                 assert.equal(updatedindexes[1].Collation, 'A');
                 assert.equal(updatedindexes[2].Collation, 'A');
                 assert.equal(updatedindexes[3].Collation, 'A');
@@ -453,17 +453,17 @@ describe('MySQL connector', function() {
     ds.createModel(customer3_schema.name, customer3_schema.properties, customer3_schema.options);
     ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
 
-    //do initial update/creation of table
+    // do initial update/creation of table
     ds.autoupdate(function(err) {
       assert(!err, err);
       ds.discoverModelProperties('order_test', function(err, props) {
-        //validate that we have the correct number of properties
+        // validate that we have the correct number of properties
         assert.equal(props.length, 3);
 
-        //get the foreign keys for this table
+        // get the foreign keys for this table
         ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
           if (err) return done(err);
-          //validate that the foreign key exists and points to the right column
+          // validate that the foreign key exists and points to the right column
           assert(foreignKeys);
           assert(foreignKeys.length.should.be.equal(1));
           assert.equal(foreignKeys[0].REFERENCED_TABLE_NAME, 'customer_test3');
@@ -471,26 +471,26 @@ describe('MySQL connector', function() {
           assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
           assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
 
-          //update our model (move foreign key) and run autoupdate to migrate
+          // update our model (move foreign key) and run autoupdate to migrate
           ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
           ds.autoupdate(function(err, result) {
             if (err) return done(err);
 
-            //should be actual after autoupdate
+            // should be actual after autoupdate
             ds.isActual(function(err, isEqual) {
               if (err) return done(err);
               assert(!isEqual);
 
-              //get and validate the properties on this model
+              // get and validate the properties on this model
               ds.discoverModelProperties('order_test', function(err, props) {
                 if (err) return done(err);
 
                 assert.equal(props.length, 3);
 
-                //get the foreign keys that exist after the migration
+                // get the foreign keys that exist after the migration
                 ds.connector.execute(foreignKeySelect, function(err, updatedForeignKeys) {
                   if (err) return done(err);
-                  //validate that the foreign keys was moved to the new column
+                  // validate that the foreign keys was moved to the new column
                   assert(updatedForeignKeys);
                   assert(updatedForeignKeys.length.should.be.equal(1));
                   assert.equal(updatedForeignKeys[0].REFERENCED_TABLE_NAME, 'customer_test2');
@@ -498,17 +498,17 @@ describe('MySQL connector', function() {
                   assert.equal(updatedForeignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
                   assert.equal(updatedForeignKeys[0].REFERENCED_COLUMN_NAME, 'id');
 
-                  //update model (to drop foreign key) and autoupdate
+                  // update model (to drop foreign key) and autoupdate
                   ds.createModel(schema_v3.name, schema_v3.properties, schema_v3.options);
                   ds.autoupdate(function(err, result) {
                     if (err) return done(err);
-                    //validate the properties
+                    // validate the properties
                     ds.discoverModelProperties('order_test', function(err, props) {
                       if (err) return done(err);
 
                       assert.equal(props.length, 3);
 
-                      //get the foreign keys and validate the foreign key has been dropped
+                      // get the foreign keys and validate the foreign key has been dropped
                       ds.connector.execute(foreignKeySelect, function(err, thirdForeignKeys) {
                         if (err) return done(err);
                         assert(thirdForeignKeys);
