@@ -30,7 +30,7 @@ global.getConfig = function(options) {
 };
 
 global.getDataSource = global.getSchema = function(options) {
-  var db = new DataSource(require('../'), getConfig(options));
+  var db = new DataSource(require('../'), global.getConfig(options));
   return db;
 };
 

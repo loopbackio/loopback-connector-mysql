@@ -15,7 +15,8 @@ var db, Post, Review;
 
 describe('transactions with promise', function() {
   before(function(done) {
-    db = getDataSource({collation: 'utf8_general_ci', createDatabase: true});
+    db = global.getDataSource({collation: 'utf8_general_ci',
+      createDatabase: true});
     db.once('connected', function() {
       Post = db.define('PostTX', {
         title: {type: String, length: 255, index: true},
@@ -82,8 +83,8 @@ describe('transactions with promise', function() {
     };
   }
 
-// Return an async function to find matching posts and assert number of
-// records to equal to the count
+  // Return an async function to find matching posts and assert number of
+  // records to equal to the count
   function expectToFindPosts(where, count, inTx) {
     return function(done) {
       var options = {};
