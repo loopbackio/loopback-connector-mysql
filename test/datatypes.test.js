@@ -111,7 +111,6 @@ describe('MySQL specific datatypes', function() {
       var updatedData = {
         type: 'Student - Basic',
         amount: 1155.77,
-        users: {},
       };
       Account.update({id: 1}, updatedData, function(err, result) {
         if (err) return done(err);
