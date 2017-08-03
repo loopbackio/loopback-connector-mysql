@@ -258,6 +258,26 @@ Use the `limit` option to alter the display width. Example:
 }
 ```
 
+### Default Clause/Constant
+Use the `default` property to have MySQL handle setting column `DEFAULT` value.
+```javascript
+"status": {
+  "type": "string",
+  "mysql": {
+    "default":"pending"
+  }
+}
+```
+For the date or timestamp types use `CURRENT_TIMESTAMP` or `now`:
+```javascript
+"last_modified": {
+  "type": "date",
+  "mysql": {
+    "default":"CURRENT_TIMESTAMP"
+  }
+}
+```
+
 ### Floating-point types
 
 For Float and Double data types, use the `precision` and `scale` options to specify custom precision. Default is (16,8). For example:

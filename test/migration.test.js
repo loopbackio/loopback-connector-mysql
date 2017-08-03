@@ -10,7 +10,7 @@ var platform = require('./helpers/platform');
 var should = require('./init');
 var Schema = require('loopback-datasource-juggler').Schema;
 
-var db, UserData, StringData, NumberData, DateData, SimpleEmployee;
+var db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
 var mysqlVersion;
 
 describe('migrations', function() {
@@ -373,6 +373,59 @@ describe('migrations', function() {
     ], done);
   });
 
+  it('should take on database default CURRENT_TIMESTAMP, boolean 0 and pending string for columns', function(done) {
+    DefaultData.create({}, function(err, obj) {
+      assert.ok(!err);
+      assert.ok(obj);
+      var now = new Date();
+      DefaultData.findById(obj.id, function(err, found) {
+        assert.equal(found.dateTime.toGMTString(), now.toGMTString());
+        assert.equal(found.timestamp.toGMTString(), now.toGMTString());
+        assert.equal(found.is_admin, '0');
+        assert.equal(found.status, 'pending');
+        done();
+      });
+    });
+  });
+
+  it('DefaultData should have correct columns', function(done) {
+    getFields('DefaultData', function(err, fields) {
+      fields.should.be.eql({
+        id: {Field: 'id',
+          Type: 'int(11)',
+          Null: 'NO',
+          Key: 'PRI',
+          Default: null,
+          Extra: 'auto_increment'},
+        dateTime: {Field: 'dateTime',
+          Type: 'datetime',
+          Null: 'YES',
+          Key: '',
+          Default: 'CURRENT_TIMESTAMP',
+          Extra: ''},
+        timestamp: {Field: 'timestamp',
+          Type: 'timestamp',
+          Null: 'YES',
+          Key: '',
+          Default: 'CURRENT_TIMESTAMP',
+          Extra: ''},
+        is_admin: {Field: 'is_admin',
+          Type: 'tinyint(1)',
+          Null: 'YES',
+          Key: '',
+          Default: '0',
+          Extra: ''},
+        status: {Field: 'status',
+          Type: 'varchar(512)',
+          Null: 'YES',
+          Key: '',
+          Default: 'pending',
+          Extra: ''},
+      });
+      done();
+    });
+  });
+
   it('should allow both kinds of date columns', function(done) {
     DateData.create({
       dateTime: new Date('Aug 9 1996 07:47:33 GMT'),
@@ -501,6 +554,13 @@ function setup(done) {
     mediumInt: {type: Number, dataType: 'mediumInt', unsigned: true,
       required: true},
     floater: {type: Number, dataType: 'double', precision: 14, scale: 6},
+  });
+
+  DefaultData = db.define('DefaultData', {
+    dateTime: {type: Date, dataType: 'datetime', mysql: {default: 'now'}},
+    timestamp: {type: Date, dataType: 'timestamp', mysql: {default: 'CURRENT_TIMESTAMP'}},
+    is_admin: {type: Boolean, mysql: {default: '0'}},
+    status: {type: String, dataType: 'varchar', mysql: {default: 'pending'}},
   });
 
   DateData = db.define('DateData', {
