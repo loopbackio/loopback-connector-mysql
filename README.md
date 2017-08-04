@@ -264,7 +264,13 @@ Use the `default` property to have MySQL handle setting column `DEFAULT` value.
 "status": {
   "type": "string",
   "mysql": {
-    "default":"pending"
+    "default": "pending"
+  }
+},
+"number": {
+  "type": "number",
+  "mysql": {
+    "default": 256
   }
 }
 ```

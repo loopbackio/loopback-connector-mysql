@@ -379,9 +379,16 @@ describe('migrations', function() {
       assert.ok(obj);
       var now = new Date();
       DefaultData.findById(obj.id, function(err, found) {
+        now.setSeconds(0);
+        found.dateTime.setSeconds(0);
+        found.timestamp.setSeconds(0);
+
         assert.equal(found.dateTime.toGMTString(), now.toGMTString());
         assert.equal(found.timestamp.toGMTString(), now.toGMTString());
-        assert.equal(found.is_admin, '0');
+        assert.equal(found.isAdmin, '0');
+        assert.equal(found.number, 256);
+        assert.equal(found.data, null);
+        assert.equal(found.text, null);
         assert.equal(found.status, 'pending');
         done();
       });
@@ -409,11 +416,29 @@ describe('migrations', function() {
           Key: '',
           Default: 'CURRENT_TIMESTAMP',
           Extra: ''},
-        is_admin: {Field: 'is_admin',
+        isAdmin: {Field: 'isAdmin',
           Type: 'tinyint(1)',
           Null: 'YES',
           Key: '',
           Default: '0',
+          Extra: ''},
+        number: {Field: 'number',
+          Type: 'int(10) unsigned',
+          Null: 'NO',
+          Key: 'MUL',
+          Default: '256',
+          Extra: ''},
+        data: {Field: 'data',
+          Type: 'longtext',
+          Null: 'YES',
+          Key: '',
+          Default: null,
+          Extra: ''},
+        text: {Field: 'text',
+          Type: 'varchar(1024)',
+          Null: 'YES',
+          Key: '',
+          Default: null,
           Extra: ''},
         status: {Field: 'status',
           Type: 'varchar(512)',
@@ -559,7 +584,11 @@ function setup(done) {
   DefaultData = db.define('DefaultData', {
     dateTime: {type: Date, dataType: 'datetime', mysql: {default: 'now'}},
     timestamp: {type: Date, dataType: 'timestamp', mysql: {default: 'CURRENT_TIMESTAMP'}},
-    is_admin: {type: Boolean, mysql: {default: '0'}},
+    isAdmin: {type: Boolean, mysql: {default: '0'}},
+    number: {type: Number, null: false, index: true, unsigned: true,
+      dataType: 'int', mysql: {default: 256}},
+    data: {type: Schema.JSON, dataType: 'longText', mysql: {default: 'Not Supported'}},
+    text: {type: Schema.Text, dataType: 'varchar', limit: 1024, mysql: {default: 'Not Supported'}},
     status: {type: String, dataType: 'varchar', mysql: {default: 'pending'}},
   });
 
