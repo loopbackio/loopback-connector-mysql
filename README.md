@@ -283,6 +283,11 @@ For the date or timestamp types use `CURRENT_TIMESTAMP` or `now`:
   }
 }
 ```
+**NOTE**: The follow column types do **NOT** supported [MySQL Default Values](https://dev.mysql.com/doc/refman/5.7/en/data-type-defaults.html):
+- BLOB
+- TEXT
+- GEOMETRY
+- JSON
 
 ### Floating-point types
 
