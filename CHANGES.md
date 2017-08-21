@@ -1,3 +1,21 @@
+2017-08-21, Version 5.1.0
+=========================
+
+ * Create Issue and PR Templates (#322) (Sakib Hasan)
+
+ * Use MySQL DEFAULT Clause/Constant (#319) (Eric Dowell)
+
+ * Remove unnecessary line causing validation fail (ssh24)
+
+ * isNewInstance undefined for after save hook (biniam)
+
+ * Add datatype flags to README (biniam)
+
+ * upgrade eslint deps (biniam)
+
+ * Add CODEOWNER file (Diana Lau)
+
+
 2017-07-10, Version 5.0.0
 =========================
 
