@@ -1,3 +1,15 @@
+2017-10-17, Version 5.2.0
+=========================
+
+ * revert mocha version change (Diana Lau)
+
+ * update dependencies (Diana Lau)
+
+ * update globalize string (Diana Lau)
+
+ * Add stalebot configuration (Kevin Delisle)
+
+
 2017-08-21, Version 5.1.0
 =========================
 
