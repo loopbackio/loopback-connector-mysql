@@ -48,14 +48,19 @@ printf "\n${RED}>> Finding old builds and cleaning up${PLAIN} ${GREEN}...${PLAIN
 docker rm -f $MYSQL_CONTAINER > /dev/null 2>&1
 printf "\n${CYAN}Clean up complete.${PLAIN}\n"
 
+## Pin mysql docker image to version as `mysql` node.js driver does not support v8 yet
+## See https://github.com/mysqljs/mysql/issues/2002
+DOCKER_IMAGE=mysql:5.7.22
+
 ## pull latest mysql image
-printf "\n${RED}>> Pulling latest mysql image${PLAIN} ${GREEN}...${PLAIN}"
-docker pull mysql:latest > /dev/null 2>&1
+printf "\n${RED}>> Pulling ${DOCKER_IMAGE} image${PLAIN} ${GREEN}...${PLAIN}"
+
+docker pull ${DOCKER_IMAGE} > /dev/null 2>&1
 printf "\n${CYAN}Image successfully built.${PLAIN}\n"
 
 ## run the mysql container
 printf "\n${RED}>> Starting the mysql container${PLAIN} ${GREEN}...${PLAIN}"
-CONTAINER_STATUS=$(docker run --name $MYSQL_CONTAINER -e MYSQL_ROOT_USER=$USER -e MYSQL_ROOT_PASSWORD=$PASSWORD -p $PORT:3306 -d mysql:latest 2>&1)
+CONTAINER_STATUS=$(docker run --name $MYSQL_CONTAINER -e MYSQL_ROOT_USER=$USER -e MYSQL_ROOT_PASSWORD=$PASSWORD -p $PORT:3306 -d ${DOCKER_IMAGE} 2>&1)
 if [[ "$CONTAINER_STATUS" == *"Error"* ]]; then
     printf "\n\n${CYAN}Status: ${PLAIN}${RED}Error starting container. Terminating setup.${PLAIN}\n\n"
     exit 1

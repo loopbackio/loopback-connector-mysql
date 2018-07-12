@@ -10,7 +10,6 @@ module.exports = require('should');
 var DataSource = require('loopback-datasource-juggler').DataSource;
 
 var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
-console.log(config);
 global.getConfig = function(options) {
   var dbConf = {
     host: process.env.MYSQL_HOST || config.host || 'localhost',
