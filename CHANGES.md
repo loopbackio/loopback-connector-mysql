@@ -1,3 +1,15 @@
+2018-07-12, Version 5.3.0
+=========================
+
+ * upgrade deps (Raymond Feng)
+
+ * pin mysql image to 5.7 (Raymond Feng)
+
+ * use "owner" for discovered results (Raymond Feng)
+
+ * chore: update license (Diana Lau)
+
+
 2017-10-17, Version 5.2.0
 =========================
 
