@@ -69,7 +69,7 @@ describe('discoverModels', function() {
           var views = false;
           assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
-            assert.equal(m.schema.toLowerCase(), config.database.toLowerCase());
+            assert.equal(m.owner.toLowerCase(), config.database.toLowerCase());
           });
           done(null, models);
         }
@@ -112,6 +112,7 @@ describe('Discover models including other users', function() {
         var others = false;
         assert.equal(3, models.length);
         models.forEach(function(m) {
+          assert(m.owner);
           if (m.owner !== 'STRONGLOOP') {
             others = true;
           }
