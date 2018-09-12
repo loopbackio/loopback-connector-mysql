@@ -1,3 +1,9 @@
+2018-09-12, Version 5.3.1
+=========================
+
+ * update strong-globalize version (Diana Lau)
+
+
 2018-07-12, Version 5.3.0
 =========================
 
