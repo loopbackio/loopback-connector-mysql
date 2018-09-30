@@ -527,6 +527,136 @@ describe('MySQL connector', function() {
     });
   });
 
+  it('should autoupdate foreign keys in tables without errno: 150 "Foreign key constraint is incorrectly formed"', function(done) {
+    var author_schema = {
+      "name": "Author",
+      "options": {
+        "idInjection": false
+      },
+      "properties": {
+        "aId": {
+          "type": "number",
+          "id": true,
+          "required": true,
+          "mysql": {
+            "columnName": "author_id"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "date"
+        }
+      }
+    };
+
+    var book_schema = {
+      "name": "Book",
+      "options": {
+        "idInjection": false,
+        "foreignKeys": {
+          "fk_Book_Author": {
+            "name": "fk_Book_Author",
+            "foreignKey": "authorId",
+            "entityKey": "aId",
+            "entity": "Author"
+          }
+        },
+        "relations": {
+          "author": {
+            "type": "belongsTo",
+            "model": "Author",
+            "foreignKey": "authorId"
+          }
+        }
+      },
+      "properties": {
+        "bId": {
+          "type": "number",
+          "id": true,
+          "required": true,
+          "mysql": {
+            "columnName": "book_id"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "number",
+          "required": true,
+          "mysql": {
+            "columnName": "author_id"
+          }
+        },
+        "isbn": {
+          "type": "string"
+        }
+      }
+    };
+    var book_schema_v1 = {
+      "name": "Book",
+      "options": {
+        "idInjection": false
+      },
+      "properties": {
+        "bId": {
+          "type": "number",
+          "id": true,
+          "required": true,
+          "mysql": {
+            "columnName": "book_id"
+          }
+        },
+        "name": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "number",
+          "required": true,
+          "mysql": {
+            "columnName": "author_id"
+          }
+        },
+        "isbn": {
+          "type": "string"
+        }
+      }
+    };
+
+    var foreignKeySelect =
+      'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
+      'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
+      'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
+      'AND   TABLE_NAME = "Book"';
+
+    ds.createModel(author_schema.name, author_schema.properties, author_schema.options);
+    ds.createModel(book_schema.name, book_schema.properties, book_schema.options);
+
+    // do initial update/creation of table
+    ds.autoupdate(function(err) {
+      assert(!err, err);
+
+      ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+        if (err) return done(err);
+        // validate that the foreign key exists and points to the right column
+        assert(foreignKeys);
+        assert(foreignKeys.length.should.be.equal(1));
+        assert.equal(foreignKeys[0].REFERENCED_TABLE_NAME, 'Author');
+        assert.equal(foreignKeys[0].COLUMN_NAME, 'author_id');
+        assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_Book_Author');
+        assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'author_id');
+
+        // update model (to drop foreign key) and autoupdate
+        ds.createModel(book_schema_v1.name, book_schema_v1.properties, book_schema_v1.options);
+        ds.autoupdate(function(err, result) {
+          done(err);
+        });
+      });
+    });
+  });
+
   function setupAltColNameData() {
     var schema = {
       name: 'ColRenameTest',
