@@ -479,7 +479,7 @@ describe('MySQL connector', function() {
             // should be actual after autoupdate
             ds.isActual(function(err, isEqual) {
               if (err) return done(err);
-              assert(!isEqual);
+              assert(isEqual);
 
               // get and validate the properties on this model
               ds.discoverModelProperties('order_test', function(err, props) {
@@ -523,6 +523,87 @@ describe('MySQL connector', function() {
             });
           });
         });
+      });
+    });
+  });
+
+  it('should auto migrate/update foreign keys in tables multiple times without error', function(done) {
+
+    var customer3_schema = {
+      'name': 'CustomerTest3',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'customer_test3',
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'name': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+        'email': {
+          'type': 'String',
+          'required': true,
+          'length': 40,
+        },
+        'age': {
+          'type': 'Number',
+          'required': false,
+        },
+      },
+    };
+
+    var schema_v1 = {
+      'name': 'OrderTest',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'order_test',
+        },
+        'foreignKeys': {
+          'fk_ordertest_customerId': {
+            'name': 'fk_ordertest_customerId',
+            'entity': 'CustomerTest3',
+            'entityKey': 'id',
+            'foreignKey': 'customerId',
+          },
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'customerId': {
+          'type': 'String',
+          'length': 20,
+        },
+        'description': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+      },
+    };
+
+    ds.createModel(customer3_schema.name, customer3_schema.properties, customer3_schema.options);
+    ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
+
+    // do initial update/creation of table
+    ds.autoupdate(function(err) {
+      assert(!err, err);
+      ds.autoupdate(function(err, result) {
+        return done(err);
       });
     });
   });
