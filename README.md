@@ -432,7 +432,9 @@ Example:
       "name": "authorId",
       "foreignKey": "authorId",
       "entityKey": "aId",
-      "entity": "Author"
+      "entity": "Author",
+      "onUpdate": "restrict",
+      "onDelete": "restrict"
     }
   }
 }
