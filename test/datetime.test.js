@@ -46,7 +46,7 @@ describe('MySQL datetime handling', function() {
     });
   });
 
-  it('should allow use of DateStrings', function(done) {
+  it('should allow use of DateStrings', function() {
     var d = new DateString('1971-06-22');
     return Person.create({
       name: 'Mr. Pink',
@@ -58,9 +58,6 @@ describe('MySQL datetime handling', function() {
     }).then(function(inst) {
       inst.should.not.eql(null);
       inst.dob.toString().should.eql(d.toString());
-      return done();
-    }).catch(function(err) {
-      return done(err);
     });
   });
 
@@ -72,7 +69,7 @@ describe('MySQL datetime handling', function() {
     testDateTime(d, '+12:00', '1971-06-22 12:00:00');
 
     function testDateTime(date, tz, expected) {
-      it(tz, function(done) {
+      it(tz, function() {
         setConnectionTimezones(tz);
         db.settings.legacyUtcDateProcessing = false;
         db.settings.timezone = tz;
@@ -86,15 +83,12 @@ describe('MySQL datetime handling', function() {
         }).then(function(inst) {
           inst.should.not.eql(null);
           inst.createdAt.toString().should.eql(expected);
-          return done();
-        }).catch(function(err) {
-          return done(err);
         });
       });
     }
   });
 
-  it('should allow use of fractional seconds', function(done) {
+  it('should allow use of fractional seconds', function() {
     var d = new Date('1971-06-22T12:34:56.789Z');
     return Person.create({
       name: 'Mr. Pink',
@@ -106,9 +100,6 @@ describe('MySQL datetime handling', function() {
       inst.should.not.eql(null);
       var lastLogon = new Date(inst.lastLogon);
       lastLogon.toJSON().should.eql(d.toJSON());
-      return done();
-    }).catch(function(err) {
-      return done(err);
     });
   });
 });
