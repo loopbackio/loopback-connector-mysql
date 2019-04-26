@@ -215,59 +215,69 @@ describe('MySQL connector', function() {
 
     ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
 
-    ds.automigrate(function() {
-      ds.discoverModelProperties('customer_test', function(err, props) {
-        assert.equal(props.length, 5);
-        var names = props.map(function(p) {
-          return p.columnName;
-        });
-        assert.equal(props[0].nullable, 'N');
-        assert.equal(props[1].nullable, 'Y');
-        assert.equal(props[2].nullable, 'N');
-        assert.equal(props[3].nullable, 'Y');
-        assert.equal(names[0], 'id');
-        assert.equal(names[1], 'name');
-        assert.equal(names[2], 'email');
-        assert.equal(names[3], 'age');
-        assert.equal(names[4], 'customer_discount');
+    ds.automigrate(function(err) {
+      if (err) return done(err);
+      ds.isActual(function(err, isActual) {
+        if (err) return done(err);
+        assert(isActual, 'isActual should return true after automigrate');
+        ds.discoverModelProperties('customer_test', function(err, props) {
+          assert.equal(props.length, 5);
+          var names = props.map(function(p) {
+            return p.columnName;
+          });
+          assert.equal(props[0].nullable, 'N');
+          assert.equal(props[1].nullable, 'Y');
+          assert.equal(props[2].nullable, 'N');
+          assert.equal(props[3].nullable, 'Y');
+          assert.equal(names[0], 'id');
+          assert.equal(names[1], 'name');
+          assert.equal(names[2], 'email');
+          assert.equal(names[3], 'age');
+          assert.equal(names[4], 'customer_discount');
 
-        ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, indexes) {
-          if (err) return done(err);
-          assert(indexes);
-          assert(indexes.length.should.be.above(1));
-          assert.equal(indexes[1].Key_name, 'name_index');
-          assert.equal(indexes[1].Non_unique, 0);
-          ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
-          ds.autoupdate(function(err, result) {
+          ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, indexes) {
             if (err) return done(err);
-            ds.discoverModelProperties('customer_test', function(err, props) {
+            assert(indexes);
+            assert(indexes.length.should.be.above(1));
+            assert.equal(indexes[1].Key_name, 'name_index');
+            assert.equal(indexes[1].Non_unique, 0);
+            ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
+            ds.autoupdate(function(err, result) {
               if (err) return done(err);
-              assert.equal(props.length, 7);
-              var names = props.map(function(p) {
-                return p.columnName;
-              });
-              assert.equal(names[0], 'id');
-              assert.equal(names[1], 'email');
-              assert.equal(names[2], 'customer_discount');
-              assert.equal(names[3], 'firstName');
-              assert.equal(names[4], 'lastName');
-              assert.equal(names[5], 'customer_address');
-              assert.equal(names[6], 'customer_code');
-              ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, updatedindexes) {
+              ds.isActual(function(err, isActual) {
                 if (err) return done(err);
-                assert(updatedindexes);
-                assert(updatedindexes.length.should.be.above(3));
-                assert.equal(updatedindexes[1].Key_name, 'customer_code');
-                assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
-                assert.equal(updatedindexes[3].Key_name, 'updated_name_index');
-                // Mysql supports only index sorting in ascending; DESC is ignored
-                assert.equal(updatedindexes[1].Collation, 'A');
-                assert.equal(updatedindexes[2].Collation, 'A');
-                assert.equal(updatedindexes[3].Collation, 'A');
-                assert.equal(updatedindexes[1].Non_unique, 0);
-                assert.equal(updatedindexes[2].Non_unique, 0);
-                assert.equal(updatedindexes[3].Non_unique, 0);
-                done(err, result);
+                assert(isActual, 'isActual should return true after autoupdate');
+                ds.discoverModelProperties('customer_test', function(err, props) {
+                  if (err) return done(err);
+                  assert.equal(props.length, 7);
+                  var names = props.map(function(p) {
+                    return p.columnName;
+                  });
+                  assert.equal(names[0], 'id');
+                  assert.equal(names[1], 'email');
+                  assert.equal(names[2], 'customer_discount');
+                  assert.equal(names[3], 'firstName');
+                  assert.equal(names[4], 'lastName');
+                  assert.equal(names[5], 'customer_address');
+                  assert.equal(names[6], 'customer_code');
+                  ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, updatedindexes) {
+                    if (err) return done(err);
+                    assert(updatedindexes);
+                    assert(updatedindexes.length.should.be.above(3));
+                    assert.equal(updatedindexes[1].Key_name, 'code');
+                    assert.equal(updatedindexes[1].Column_name, 'customer_code');
+                    assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
+                    assert.equal(updatedindexes[3].Key_name, 'updated_name_index');
+                    // Mysql supports only index sorting in ascending; DESC is ignored
+                    assert.equal(updatedindexes[1].Collation, 'A');
+                    assert.equal(updatedindexes[2].Collation, 'A');
+                    assert.equal(updatedindexes[3].Collation, 'A');
+                    assert.equal(updatedindexes[1].Non_unique, 0);
+                    assert.equal(updatedindexes[2].Non_unique, 0);
+                    assert.equal(updatedindexes[3].Non_unique, 0);
+                    done(err, result);
+                  });
+                });
               });
             });
           });
@@ -476,10 +486,9 @@ describe('MySQL connector', function() {
           ds.autoupdate(function(err, result) {
             if (err) return done(err);
 
-            // should be actual after autoupdate
             ds.isActual(function(err, isEqual) {
               if (err) return done(err);
-              assert(!isEqual);
+              assert(isEqual, 'Should be actual after autoupdate');
 
               // get and validate the properties on this model
               ds.discoverModelProperties('order_test', function(err, props) {
@@ -517,6 +526,258 @@ describe('MySQL connector', function() {
                         done(err, result);
                       });
                     });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should auto migrate/update foreign keys in tables multiple times without error', function(done) {
+    var customer3_schema = {
+      'name': 'CustomerTest3',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'customer_test3',
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'name': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+        'email': {
+          'type': 'String',
+          'required': true,
+          'length': 40,
+        },
+        'age': {
+          'type': 'Number',
+          'required': false,
+        },
+      },
+    };
+
+    var schema_v1 = {
+      'name': 'OrderTest',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'order_test',
+        },
+        'foreignKeys': {
+          'fk_ordertest_customerId': {
+            'name': 'fk_ordertest_customerId',
+            'entity': 'CustomerTest3',
+            'entityKey': 'id',
+            'foreignKey': 'customerId',
+          },
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'customerId': {
+          'type': 'String',
+          'length': 20,
+        },
+        'description': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+      },
+    };
+
+    ds.createModel(customer3_schema.name, customer3_schema.properties, customer3_schema.options);
+    ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
+
+    // do initial update/creation of table
+    ds.autoupdate(function(err) {
+      assert(!err, err);
+      ds.isActual(function(err, isActual) {
+        if (err) return done(err);
+        assert(isActual, 'isActual should be true after autoupdate');
+        ds.autoupdate(function(err) {
+          return done(err);
+        });
+      });
+    });
+  });
+
+  it('should auto migrate/update foreign keys with onUpdate and onDelete in tables', function(done) {
+    var customer2_schema = {
+      'name': 'CustomerTest2',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'customer_test2',
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'name': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+        'email': {
+          'type': 'String',
+          'required': true,
+          'length': 40,
+        },
+        'age': {
+          'type': 'Number',
+          'required': false,
+        },
+      },
+    };
+
+    var schema_v1 = {
+      'name': 'OrderTest',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'order_test',
+        },
+        'foreignKeys': {
+          'fk_ordertest_customerId': {
+            'name': 'fk_ordertest_customerId',
+            'entity': 'CustomerTest2',
+            'entityKey': 'id',
+            'foreignKey': 'customerId',
+            'onUpdate': 'no action',
+            'onDelete': 'cascade',
+          },
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'customerId': {
+          'type': 'String',
+          'length': 20,
+        },
+        'description': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+      },
+    };
+
+    var schema_v2 = {
+      'name': 'OrderTest',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'order_test',
+        },
+        'foreignKeys': {
+          'fk_ordertest_customerId': {
+            'name': 'fk_ordertest_customerId',
+            'entity': 'CustomerTest2',
+            'entityKey': 'id',
+            'foreignKey': 'customerId',
+            'onUpdate': 'restrict',
+            'onDelete': 'restrict',
+          },
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'customerId': {
+          'type': 'String',
+          'length': 20,
+        },
+        'description': {
+          'type': 'String',
+          'required': false,
+          'length': 40,
+        },
+      },
+    };
+
+    var foreignKeySelect =
+    'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
+    'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
+    'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
+    'AND   TABLE_NAME = "order_test"';
+    var getCreateTable = 'SHOW CREATE TABLE `myapp_test`.`order_test`';
+
+    ds.createModel(customer2_schema.name, customer2_schema.properties, customer2_schema.options);
+    ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
+
+    // do initial update/creation of table
+    ds.autoupdate(function(err) {
+      assert(!err, err);
+      ds.discoverModelProperties('order_test', function(err, props) {
+        // validate that we have the correct number of properties
+        assert.equal(props.length, 3);
+
+        // get the foreign keys for this table
+        ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+          if (err) return done(err);
+          // validate that the foreign key exists and points to the right column
+          assert(foreignKeys);
+          assert(foreignKeys.length.should.be.equal(1));
+          assert.equal(foreignKeys[0].REFERENCED_TABLE_NAME, 'customer_test2');
+          assert.equal(foreignKeys[0].COLUMN_NAME, 'customerId');
+          assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_ordertest_customerId');
+          assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
+
+          // get the create table for this table
+          ds.connector.execute(getCreateTable, function(err, createTable) {
+            if (err) return done(err);
+            // validate that the foreign key exists and points to the right column
+            assert(createTable);
+            assert(createTable.length.should.be.equal(1));
+            assert(/ON DELETE CASCADE ON UPDATE NO ACTION/.test(createTable[0]['Create Table']), 'Constraint must have correct trigger');
+
+            ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
+            ds.isActual(function(err, isActual) {
+              if (err) return done(err);
+              assert(!isActual, 'isActual should return false before autoupdate');
+              ds.autoupdate(function(err) {
+                if (err) return done(err);
+                ds.isActual(function(err, isActual) {
+                  if (err) return done(err);
+                  assert(isActual, 'isActual should be true after autoupdate');
+                  ds.connector.execute(getCreateTable, function(err, createTable) {
+                    if (err) return done(err);
+                    assert(createTable);
+                    assert(createTable.length.should.be.equal(1));
+                    assert(!/ON DELETE CASCADE ON UPDATE NO ACTION/.test(createTable[0]['Create Table']), 'Constraint must not have on delete trigger');
+                    done(err, createTable);
                   });
                 });
               });
