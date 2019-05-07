@@ -1,3 +1,15 @@
+2019-05-07, Version 5.4.0
+=========================
+
+ * Fix bug property declared index being recreate (HugoPoi)
+
+ * Add onDelete onUpdate foreign key config options (HugoPoi)
+
+ * Fix bug foreign key index being delete wrongly (HugoPoi)
+
+ * chore: update travis and CODEOWNERS (Diana Lau)
+
+
 2018-09-12, Version 5.3.1
 =========================
 
