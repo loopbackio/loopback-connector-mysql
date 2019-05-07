@@ -34,5 +34,6 @@
     "type": "git",
     "url": "https://github.com/strongloop/loopback-connector-mysql.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": "IBM Corp."
 }
