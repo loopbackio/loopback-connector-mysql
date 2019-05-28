@@ -1,3 +1,15 @@
+2019-05-28, Version 5.4.1
+=========================
+
+ * fix: allow DataSource to reconnect properly (Antonio Trapani)
+
+ * update Travis MySQL config (Agnes Lin)
+
+ * fix: update lodash (jannyHou)
+
+ * chore: update copyrights years (Agnes Lin)
+
+
 2019-05-07, Version 5.4.0
 =========================
 
