@@ -59,6 +59,41 @@ describe('connections', function() {
     });
   });
 
+  it('should disconnect then connect and ORM should work', function() {
+    var ds = new DataSource(mysqlConnector, config);
+    var Student = ds.define('Student', {
+      name: {type: String, length: 255},
+      age: {type: Number},
+    }, {
+      forceId: false,
+    });
+
+    return ds.connect()
+      .then(function(err) {
+        should.not.exist(err);
+        return ds.automigrate(['Student']);
+      })
+      .then(function(err) {
+        should.not.exist(err);
+        should(ds.connected).be.True();
+        return ds.disconnect();
+      })
+      .then(function(err) {
+        should.not.exist(err);
+        should(ds.connected).be.False();
+        return ds.connect();
+      })
+      .then(function(err) {
+        should.not.exist(err);
+        should(ds.connected).be.True();
+        return Student.count();
+      })
+      .then(function(count) {
+        should(count).be.a.Number();
+        return ds.disconnect();
+      });
+  });
+
   it('should use latin1 charset', function(done) {
     var test_set = /latin1/;
     var test_collo = /latin1_general_ci/;
