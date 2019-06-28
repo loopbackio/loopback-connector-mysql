@@ -28,9 +28,18 @@ global.getConfig = function(options) {
   return dbConf;
 };
 
-global.getDataSource = global.getSchema = function(options) {
-  var db = new DataSource(require('../'), global.getConfig(options));
+global.getDataSource = global.getSchema = function(options, customClass) {
+  const ctor = customClass || DataSource;
+  const db = new ctor(require('../'), global.getConfig(options));
+  // var db = new DataSource(require('../'), global.getConfig(options));
   return db;
+};
+
+global.resetDataSourceClass = function(ctor) {
+  DataSource = ctor || juggler.DataSource;
+  const promise = db ? db.disconnect() : Promise.resolve();
+  db = undefined;
+  return promise;
 };
 
 global.connectorCapabilities = {
