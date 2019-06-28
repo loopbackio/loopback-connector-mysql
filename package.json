@@ -3,13 +3,13 @@
   "version": "5.4.1",
   "description": "MySQL connector for loopback-datasource-juggler",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "main": "index.js",
   "scripts": {
     "pretest": "node pretest.js",
     "lint": "eslint .",
-    "test": "mocha --timeout 10000 --require test/init.js test/*.js",
+    "test": "mocha --timeout 10000  test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
     "posttest": "npm run lint"
   },
   "dependencies": {
@@ -24,7 +24,9 @@
     "bluebird": "~2.9.10",
     "eslint": "^4.3.0",
     "eslint-config-loopback": "^8.0.0",
-    "loopback-datasource-juggler": "^3.0.0",
+    "juggler-v3": "file:./deps/juggler-v3",
+    "juggler-v4": "file:./deps/juggler-v4",
+    "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
     "mocha": "^2.1.0",
     "rc": "^1.0.0",
     "should": "^8.0.2",

@@ -7,6 +7,7 @@
 var async = require('async');
 var should = require('./init.js');
 var sinon = require('sinon');
+const List = require('loopback-datasource-juggler/lib/list');
 
 var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student, db;
 
@@ -88,7 +89,7 @@ describe('mysql', function() {
 
         p.content.should.be.equal(post.content);
         p.title.should.be.equal('a');
-        p.comments.should.eql(['1', '2']);
+        p.comments.should.eql(new List(['1', '2']));
         p.history.should.eql({a: 1, b: 'b'});
 
         done();

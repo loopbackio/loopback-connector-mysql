@@ -639,7 +639,9 @@ var getFields = function(model, cb) {
       res.forEach(function(field) {
         fields[field.Field] = field;
       });
-      cb(err, fields);
+      // The returned data are in arrays of type `RowDataPacket`,
+      // which are not objects.
+      cb(err, JSON.parse(JSON.stringify(fields)));
     }
   });
 };

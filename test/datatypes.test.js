@@ -7,6 +7,7 @@
 require('./init.js');
 var assert = require('assert');
 var _ = require('lodash');
+const GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
 var db, BlobModel, EnumModel, ANIMAL_ENUM, City, Account;
 
@@ -206,7 +207,8 @@ describe('MySQL specific datatypes', function() {
     var xcor, ycor;
     City.create(city1, function(err, res) {
       if (err) return done(err);
-      res.loc.should.deepEqual(city1.loc);
+      const loc_in_geo_type = new GeoPoint(city1.loc);
+      res.loc.should.deepEqual(loc_in_geo_type);
       res.name.should.equal(city1.name);
       var sqlStmt = 'select ST_X(loc),ST_Y(loc) from City where id=1';
       db.connector.execute(sqlStmt, function(err, res) {

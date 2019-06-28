@@ -6,8 +6,8 @@
 'use strict';
 
 module.exports = require('should');
-
-var DataSource = require('loopback-datasource-juggler').DataSource;
+const juggler = require('loopback-datasource-juggler');
+let DataSource = juggler.DataSource;
 
 var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 global.getConfig = function(options) {
@@ -28,9 +28,21 @@ global.getConfig = function(options) {
   return dbConf;
 };
 
-global.getDataSource = global.getSchema = function(options) {
-  var db = new DataSource(require('../'), global.getConfig(options));
+let db;
+global.getDataSource = global.getSchema = function(options, customClass) {
+  const ctor = customClass || DataSource;
+  db = new ctor(require('../'), global.getConfig(options));
+  db.log = function(a) {
+    console.log(a);
+  };
   return db;
+};
+
+global.resetDataSourceClass = function(ctor) {
+  DataSource = ctor || juggler.DataSource;
+  const promise = db ? db.disconnect() : Promise.resolve();
+  db = undefined;
+  return promise;
 };
 
 global.connectorCapabilities = {
