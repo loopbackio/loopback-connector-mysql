@@ -28,9 +28,13 @@ global.getConfig = function(options) {
   return dbConf;
 };
 
+let db;
 global.getDataSource = global.getSchema = function(options, customClass) {
   const ctor = customClass || DataSource;
-  const db = new ctor(require('../'), global.getConfig(options));
+  db = new ctor(require('../'), global.getConfig(options));
+  db.log = function(a) {
+    console.log(a);
+  }
   // var db = new DataSource(require('../'), global.getConfig(options));
   return db;
 };

@@ -50,7 +50,7 @@ printf "\n${CYAN}Clean up complete.${PLAIN}\n"
 
 ## Pin mysql docker image to version as `mysql` node.js driver does not support v8 yet
 ## See https://github.com/mysqljs/mysql/issues/2002
-DOCKER_IMAGE=mysql:5.7.22
+DOCKER_IMAGE=mysql:latest
 
 ## pull latest mysql image
 printf "\n${RED}>> Pulling ${DOCKER_IMAGE} image${PLAIN} ${GREEN}...${PLAIN}"
