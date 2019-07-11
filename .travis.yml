@@ -2,6 +2,7 @@ language: node_js
 node_js:
   - "8"
   - "10"
+  - "12"
 # Xenial build environment comes with MySQL 5.7
 dist: xenial
 services:
