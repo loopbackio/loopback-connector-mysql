@@ -1,3 +1,11 @@
+2019-07-25, Version 5.4.2
+=========================
+
+ * chore: add node 12 (jannyHou)
+
+ * feat: run shared tests (jannyHou)
+
+
 2019-05-28, Version 5.4.1
 =========================
 
