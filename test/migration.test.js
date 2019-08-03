@@ -10,7 +10,7 @@ var platform = require('./helpers/platform');
 var should = require('./init');
 var Schema = require('loopback-datasource-juggler').Schema;
 
-var db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
+var db, UserData, ComplexData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
 var mysqlVersion;
 
 describe('migrations', function() {
@@ -144,6 +144,29 @@ describe('migrations', function() {
           Null: '',
           Index_type: 'BTREE',
           Comment: ''},
+      });
+      done();
+    });
+  });
+
+  it('ComplexData should have both id,subid columns and id should be auto_increment', function(done) {
+    getFields('ComplexData', function(err, fields) {
+      if (!fields) return done();
+      fields.should.be.eql({
+        id: {
+          Field: 'id',
+          Type: 'int(11)',
+          Null: 'NO',
+          Key: 'PRI',
+          Default: null,
+          Extra: 'auto_increment'},
+        subid: {
+          Field: 'subid',
+          Type: 'int(11)',
+          Null: 'NO',
+          Key: 'PRI',
+          Default: null,
+          Extra: ''},
       });
       done();
     });
@@ -561,6 +584,15 @@ function setup(done) {
     },
   },
   });
+
+  ComplexData = db.define('ComplexData', {
+    id: {type: Number, null: false, id: true, generated: true},
+    subid: {type: Number, null: false, id: true},
+  }, {indexes: {
+    index0: {
+      columns: 'id, subid',
+    },
+  }});
 
   StringData = db.define('StringData', {
     idString: {type: String, id: true},
