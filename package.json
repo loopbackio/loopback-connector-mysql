@@ -27,7 +27,7 @@
     "juggler-v3": "file:./deps/juggler-v3",
     "juggler-v4": "file:./deps/juggler-v4",
     "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
-    "mocha": "^2.1.0",
+    "mocha": "^6.2.2",
     "rc": "^1.0.0",
     "should": "^8.0.2",
     "sinon": "^1.15.4"
