@@ -9,7 +9,7 @@
   "scripts": {
     "pretest": "node pretest.js",
     "lint": "eslint .",
-    "test": "mocha --timeout 10000  test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
+    "test": "mocha --timeout 10000 --exit test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
     "posttest": "npm run lint"
   },
   "dependencies": {
