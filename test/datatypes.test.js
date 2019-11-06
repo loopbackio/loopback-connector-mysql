@@ -22,11 +22,13 @@ describe('MySQL specific datatypes', function() {
     var dateForTransactions = [new Date(dateString1).toString(), new Date(dateString2).toString()];
     var data = [
       {
+        id: 1,
         type: 'Student - Basic',
         amount: 1000,
         lastTransaction: dateString1,
       },
       {
+        id: 2,
         type: 'Professional',
         amount: 1999.99,
         lastTransaction: dateString2,
@@ -51,7 +53,7 @@ describe('MySQL specific datatypes', function() {
             dataType: 'DATE',
           },
         },
-      });
+      }, {forceId: false});
       db.automigrate(done);
     });
     after(function(done) {
@@ -86,7 +88,7 @@ describe('MySQL specific datatypes', function() {
     });
 
     it('find an instance', function(done) {
-      Account.find(function(err, result) {
+      Account.find({order: 'amount'}, function(err, result) {
         if (err) return done(err);
         assert(result);
         assert(_.isEqual(data.length, result.length));
