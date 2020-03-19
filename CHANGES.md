@@ -1,3 +1,25 @@
+2020-03-19, Version 5.4.3
+=========================
+
+ * Exclude 'deps' and '.github' from npm publish (Dominique Emond)
+
+ * fix README display on the site (Agnes Lin)
+
+ * chore: update copyrights year (Diana Lau)
+
+ * chore: improve issue and PR templates (Nora)
+
+ * chore: move mocha flag to opts (jannyHou)
+
+ * fix: tests for datatypes (jannyHou)
+
+ * fix: force exit (jannyHou)
+
+ * update tests (jannyHou)
+
+ * upgrade dependencies (jannyHou)
+
+
 2019-07-25, Version 5.4.2
 =========================
 
