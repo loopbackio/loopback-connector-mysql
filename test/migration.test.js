@@ -4,14 +4,14 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var assert = require('assert');
-var async = require('async');
-var platform = require('./helpers/platform');
-var should = require('./init');
-var Schema = require('loopback-datasource-juggler').Schema;
+const assert = require('assert');
+const async = require('async');
+const platform = require('./helpers/platform');
+const should = require('./init');
+const Schema = require('loopback-datasource-juggler').Schema;
 
-var db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
-var mysqlVersion;
+let db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
+let mysqlVersion;
 
 describe('migrations', function() {
   before(setup);
@@ -263,7 +263,7 @@ describe('migrations', function() {
     if (platform.isWindows) {
       return done();
     }
-    var userExists = function(cb) {
+    const userExists = function(cb) {
       query('SELECT * FROM UserData', function(err, res) {
         cb(!err && res[0].email == 'test@example.com');
       });
@@ -338,7 +338,8 @@ describe('migrations', function() {
           assert.equal(found.floater, 12345678.123456);
           done();
         });
-      });
+      },
+    );
   });
 
   // Reference: http://dev.mysql.com/doc/refman/5.7/en/out-of-range-and-overflow.html
@@ -377,7 +378,7 @@ describe('migrations', function() {
     DefaultData.create({}, function(err, obj) {
       assert.ok(!err);
       assert.ok(obj);
-      var now = new Date();
+      const now = new Date();
       DefaultData.findById(obj.id, function(err, found) {
         now.setSeconds(0);
         found.dateTime.setSeconds(0);
@@ -501,7 +502,7 @@ describe('migrations', function() {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("0000-00-00 00:00:00", "0000-00-00 00:00:00") ', function(err) {
-      var errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+      const errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
           '\'0000-00-00 00:00:00\' for column \'dateTime\' at row 1';
       assert(err);
       assert.equal(err.message, errMsg);
@@ -517,7 +518,7 @@ describe('migrations', function() {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("1000-01-01 00:00:00", "0000-00-00 00:00:00") ', function(err) {
-      var errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+      const errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
             '\'0000-00-00 00:00:00\' for column \'timestamp\' at row 1';
       assert(err);
       assert.equal(err.message, errMsg);
@@ -608,16 +609,16 @@ function setup(done) {
   });
 }
 
-var query = function(sql, cb) {
+const query = function(sql, cb) {
   db.adapter.execute(sql, cb);
 };
 
-var blankDatabase = function(db, cb) {
-  var dbn = db.settings.database;
-  var cs = db.settings.charset;
-  var co = db.settings.collation;
+const blankDatabase = function(db, cb) {
+  const dbn = db.settings.database;
+  const cs = db.settings.charset;
+  const co = db.settings.collation;
   query('DROP DATABASE IF EXISTS ' + dbn, function(err) {
-    var q = 'CREATE DATABASE ' + dbn;
+    let q = 'CREATE DATABASE ' + dbn;
     if (cs) {
       q += ' CHARACTER SET ' + cs;
     }
@@ -630,12 +631,12 @@ var blankDatabase = function(db, cb) {
   });
 };
 
-var getFields = function(model, cb) {
+const getFields = function(model, cb) {
   query('SHOW FIELDS FROM ' + model, function(err, res) {
     if (err) {
       cb(err);
     } else {
-      var fields = {};
+      const fields = {};
       res.forEach(function(field) {
         fields[field.Field] = field;
       });
@@ -646,13 +647,13 @@ var getFields = function(model, cb) {
   });
 };
 
-var getIndexes = function(model, cb) {
+const getIndexes = function(model, cb) {
   query('SHOW INDEXES FROM ' + model, function(err, res) {
     if (err) {
       console.log(err);
       cb(err);
     } else {
-      var indexes = {};
+      const indexes = {};
       // Note: this will only show the first key of compound keys
       res.forEach(function(index) {
         if (parseInt(index.Seq_in_index, 10) == 1) {

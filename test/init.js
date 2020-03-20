@@ -9,9 +9,9 @@ module.exports = require('should');
 const juggler = require('loopback-datasource-juggler');
 let DataSource = juggler.DataSource;
 
-var config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
+const config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 global.getConfig = function(options) {
-  var dbConf = {
+  const dbConf = {
     host: process.env.MYSQL_HOST || config.host || 'localhost',
     port: process.env.MYSQL_PORT || config.port || 3306,
     database: process.env.MYSQL_DATABASE || 'myapp_test',
@@ -19,9 +19,10 @@ global.getConfig = function(options) {
     password: process.env.MYSQL_PASSWORD || config.password,
     createDatabase: true,
   };
+  this.console.log('dbConf = ', dbConf);
 
   if (options) {
-    for (var el in options) {
+    for (const el in options) {
       dbConf[el] = options[el];
     }
   }

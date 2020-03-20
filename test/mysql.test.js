@@ -4,12 +4,12 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var async = require('async');
-var should = require('./init.js');
-var sinon = require('sinon');
+const async = require('async');
+const should = require('./init.js');
+const sinon = require('sinon');
 const List = require('loopback-datasource-juggler/lib/list');
 
-var Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student, db;
+let Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student, db;
 
 // Mock up mongodb ObjectID
 function ObjectID(id) {
@@ -72,7 +72,8 @@ describe('mysql', function() {
       function(err) {
         should.not.exist(err);
         done(err);
-      });
+      },
+    );
   });
 
   beforeEach(function() {
@@ -98,7 +99,7 @@ describe('mysql', function() {
   });
 
   it('should allow ObjectID', function(done) {
-    var uid = new ObjectID('123');
+    const uid = new ObjectID('123');
     Post.create({title: 'a', content: 'AAA', userId: uid},
       function(err, post) {
         should.not.exist(err);
@@ -155,7 +156,7 @@ describe('mysql', function() {
   });
 
   it('updateOrCreate should create a new instance if it does not exist', function(done) {
-    var post = {id: 123, title: 'a', content: 'AAA'};
+    const post = {id: 123, title: 'a', content: 'AAA'};
     Post.updateOrCreate(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
@@ -227,7 +228,7 @@ describe('mysql', function() {
     });
 
     it('should create a new instance if it does not exist', function(done) {
-      var post = {id: 123, title: 'a', content: 'AAA'};
+      const post = {id: 123, title: 'a', content: 'AAA'};
       Post.replaceOrCreate(post, function(err, p) {
         if (err) return done(err);
         p.id.should.equal(post.id);
@@ -246,10 +247,10 @@ describe('mysql', function() {
     });
 
     it('isNewInstance should be undefined for after save hook', function(done) {
-      var student = {name: 'Joe', age: 20};
-      var newStudent = {};
-      var isNewInstanceBefore = false;
-      var isNewInstanceAfter = false;
+      const student = {name: 'Joe', age: 20};
+      const newStudent = {};
+      let isNewInstanceBefore = false;
+      let isNewInstanceAfter = false;
       Student.create(student, function(err, createdStudent) {
         if (err) return done(err);
         newStudent.id = createdStudent.id;
@@ -314,7 +315,7 @@ describe('mysql', function() {
     });
 
   it('save should create a new instance if it does not exist', function(done) {
-    var post = new Post({id: 123, title: 'a', content: 'AAA'});
+    const post = new Post({id: 123, title: 'a', content: 'AAA'});
     post.save(post, function(err, p) {
       should.not.exist(err);
       p.title.should.be.equal(post.title);
@@ -335,7 +336,7 @@ describe('mysql', function() {
   });
 
   it('all return should honor filter.fields', function(done) {
-    var post = new Post({title: 'b', content: 'BBB'});
+    const post = new Post({title: 'b', content: 'BBB'});
     post.save(function(err, post) {
       Post.all({fields: ['title'], where: {title: 'b'}}, function(err, posts) {
         should.not.exist(err);
@@ -468,7 +469,7 @@ describe('mysql', function() {
     });
   });
   context('null vals in different operators', function() {
-    var defaultPost = {
+    const defaultPost = {
       id: 3,
       title: 'defTitle',
       content: 'defContent',
@@ -689,7 +690,7 @@ describe('mysql', function() {
   });
 
   it('should not allow duplicate titles', function(done) {
-    var data = {title: 'a', content: 'AAA'};
+    const data = {title: 'a', content: 'AAA'};
     PostWithUniqueTitle.create(data, function(err, post) {
       should.not.exist(err);
       PostWithUniqueTitle.create(data, function(err, post) {
@@ -729,7 +730,7 @@ describe('mysql', function() {
         beforeEach(function addSpy() {
           sinon.stub(console, 'warn');
         });
-        afterEach(function removeSpy()  {
+        afterEach(function removeSpy() {
           console.warn.restore();
         });
 
@@ -793,7 +794,7 @@ describe('mysql', function() {
         beforeEach(function addSpy() {
           sinon.stub(console, 'warn');
         });
-        afterEach(function removeSpy()  {
+        afterEach(function removeSpy() {
           console.warn.restore();
         });
 
@@ -846,7 +847,7 @@ describe('mysql', function() {
       beforeEach(function addSpy() {
         sinon.stub(console, 'warn');
       });
-      afterEach(function removeSpy()  {
+      afterEach(function removeSpy() {
         console.warn.restore();
       });
 

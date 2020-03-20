@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var Transaction = require('loopback-datasource-juggler').Transaction;
+const Transaction = require('loopback-datasource-juggler').Transaction;
 require('./init.js');
 require('should');
 
-var db, Post, Review;
+let db, Post, Review;
 
 describe('transactions', function() {
   before(function(done) {
@@ -28,8 +28,8 @@ describe('transactions', function() {
     });
   });
 
-  var currentTx;
-  var hooks = [];
+  let currentTx;
+  let hooks = [];
   // Return an async function to start a transaction and create a post
   function createPostInTx(post, timeout) {
     return function(done) {
@@ -81,7 +81,7 @@ describe('transactions', function() {
   // records to equal to the count
   function expectToFindPosts(where, count, inTx) {
     return function(done) {
-      var options = {};
+      const options = {};
       if (inTx) {
         options.transaction = currentTx;
       }
@@ -106,7 +106,7 @@ describe('transactions', function() {
   }
 
   describe('commit', function() {
-    var post = {title: 't1', content: 'c1'};
+    const post = {title: 't1', content: 'c1'};
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -132,7 +132,7 @@ describe('transactions', function() {
   });
 
   describe('rollback', function() {
-    var post = {title: 't2', content: 'c2'};
+    const post = {title: 't2', content: 'c2'};
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -158,7 +158,7 @@ describe('transactions', function() {
   });
 
   describe('timeout', function() {
-    var post = {title: 't3', content: 'c3'};
+    const post = {title: 't3', content: 'c3'};
     before(createPostInTx(post, 500));
 
     it('should invoke the timeout hook', function(done) {

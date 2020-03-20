@@ -5,22 +5,22 @@
 
 'use strict';
 require('./init.js');
-var assert = require('assert');
-var _ = require('lodash');
+const assert = require('assert');
+const _ = require('lodash');
 const GeoPoint = require('loopback-datasource-juggler').GeoPoint;
 
-var db, BlobModel, EnumModel, ANIMAL_ENUM, City, Account;
+let db, BlobModel, EnumModel, ANIMAL_ENUM, City, Account;
 
-var mysqlVersion;
+let mysqlVersion;
 
 describe('MySQL specific datatypes', function() {
   before(setup);
 
   describe('Support explicit datatypes on a property', function() {
-    var dateString1 = '2017-04-01';
-    var dateString2 = '2016-01-30';
-    var dateForTransactions = [new Date(dateString1).toString(), new Date(dateString2).toString()];
-    var data = [
+    const dateString1 = '2017-04-01';
+    const dateString2 = '2016-01-30';
+    const dateForTransactions = [new Date(dateString1).toString(), new Date(dateString2).toString()];
+    const data = [
       {
         id: 1,
         type: 'Student - Basic',
@@ -111,7 +111,7 @@ describe('MySQL specific datatypes', function() {
     });
 
     it('update an instance', function(done) {
-      var updatedData = {
+      const updatedData = {
         type: 'Student - Basic',
         amount: 1155.77,
       };
@@ -143,7 +143,7 @@ describe('MySQL specific datatypes', function() {
   });
 
   it('should create a model instance with Enums', function(done) {
-    var em = EnumModel.create({animal: ANIMAL_ENUM.CAT, condition: 'sleepy', mood: 'happy'}, function(err, obj) {
+    const em = EnumModel.create({animal: ANIMAL_ENUM.CAT, condition: 'sleepy', mood: 'happy'}, function(err, obj) {
       if (err) return done(err);
       assert.equal(obj.condition, 'sleepy');
       EnumModel.findOne({where: {animal: ANIMAL_ENUM.CAT}}, function(err, found) {
@@ -168,9 +168,9 @@ describe('MySQL specific datatypes', function() {
   });
 
   it('should create a model instance with object/json types', function(done) {
-    var note = {a: 1, b: '2'};
-    var extras = {c: 3, d: '4'};
-    var em = EnumModel.create({animal: ANIMAL_ENUM.DOG, condition: 'sleepy',
+    const note = {a: 1, b: '2'};
+    const extras = {c: 3, d: '4'};
+    const em = EnumModel.create({animal: ANIMAL_ENUM.DOG, condition: 'sleepy',
       mood: 'happy', note: note, extras: extras}, function(err, obj) {
       if (err) return done(err);
       assert.equal(obj.condition, 'sleepy');
@@ -185,9 +185,9 @@ describe('MySQL specific datatypes', function() {
     });
   });
   it('should create a model instance with binary types', function(done) {
-    var str = 'This is a test';
-    var name = 'bob';
-    var bob = {name: name, bin: new Buffer.from(str)};
+    const str = 'This is a test';
+    const name = 'bob';
+    const bob = {name: name, bin: new Buffer.from(str)};
     BlobModel.create(bob, function(err, obj) {
       if (err) return done(err);
       assert.equal(obj.bin.toString(), str);
@@ -199,20 +199,20 @@ describe('MySQL specific datatypes', function() {
     });
   });
   it('should create a model instance with geopoint type', function(done) {
-    var city1 = {
+    const city1 = {
       name: 'North York',
       loc: {
         lat: 43.761539,
         lng: -79.411079,
       },
     };
-    var xcor, ycor;
+    let xcor, ycor;
     City.create(city1, function(err, res) {
       if (err) return done(err);
       const loc_in_geo_type = new GeoPoint(city1.loc);
       res.loc.should.deepEqual(loc_in_geo_type);
       res.name.should.equal(city1.name);
-      var sqlStmt = 'select ST_X(loc),ST_Y(loc) from City where id=1';
+      const sqlStmt = 'select ST_X(loc),ST_Y(loc) from City where id=1';
       db.connector.execute(sqlStmt, function(err, res) {
         if (err) return done(err);
         xcor = res[0]['ST_X(loc)'];
@@ -262,16 +262,16 @@ function setup(done) {
   });
 }
 
-var query = function(sql, cb) {
+const query = function(sql, cb) {
   db.adapter.execute(sql, cb);
 };
 
-var blankDatabase = function(db, cb) {
-  var dbn = db.settings.database;
-  var cs = db.settings.charset;
-  var co = db.settings.collation;
+const blankDatabase = function(db, cb) {
+  const dbn = db.settings.database;
+  const cs = db.settings.charset;
+  const co = db.settings.collation;
   query('DROP DATABASE IF EXISTS ' + dbn, function(err) {
-    var q = 'CREATE DATABASE ' + dbn;
+    let q = 'CREATE DATABASE ' + dbn;
     if (cs) {
       q += ' CHARACTER SET ' + cs;
     }
@@ -284,12 +284,12 @@ var blankDatabase = function(db, cb) {
   });
 };
 
-var getFields = function(model, cb) {
+const getFields = function(model, cb) {
   query('SHOW FIELDS FROM ' + model, function(err, res) {
     if (err) {
       cb(err);
     } else {
-      var fields = {};
+      const fields = {};
       res.forEach(function(field) {
         fields[field.Field] = field;
       });
@@ -298,13 +298,13 @@ var getFields = function(model, cb) {
   });
 };
 
-var getIndexes = function(model, cb) {
+const getIndexes = function(model, cb) {
   query('SHOW INDEXES FROM ' + model, function(err, res) {
     if (err) {
       console.log(err);
       cb(err);
     } else {
-      var indexes = {};
+      const indexes = {};
       // Note: this will only show the first key of compound keys
       res.forEach(function(index) {
         if (parseInt(index.Seq_in_index, 10) == 1) {
