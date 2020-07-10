@@ -1,3 +1,13 @@
+2020-07-10, Version 5.4.4
+=========================
+
+ * docs: update README with lb4 style (Agnes Lin)
+
+ * chore: update strong-globalize (Diana Lau)
+
+ * fix MySQL README layout (Agnes Lin)
+
+
 2020-03-19, Version 5.4.3
 =========================
 
