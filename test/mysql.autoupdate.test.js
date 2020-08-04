@@ -788,6 +788,93 @@ describe('MySQL connector', function() {
     });
   });
 
+  it('should auto migrate/update custom foreign keys name with its constraint', function(done) {
+    var sourceModel = {
+      'name': 'SourceModel',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'source_model',
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'name': {
+          'type': 'String',
+          'length': 20,
+        },
+      },
+    };
+
+    var customFkModel = {
+      'name': 'CustomFkTest',
+      'options': {
+        'idInjection': false,
+        'mysql': {
+          'schema': 'myapp_test',
+          'table': 'custom_fk_test',
+        },
+        'foreignKeys': {
+          'fk_customfktest_customerId': {
+            'name': 'fk_customfktest_customerId',
+            'entity': 'SourceModel',
+            'entityKey': 'id',
+            'foreignKey': 'customerId',
+          },
+        },
+      },
+      'properties': {
+        'id': {
+          'type': 'String',
+          'length': 20,
+          'id': 1,
+        },
+        'customerId': {
+          'type': 'String',
+          'length': 20,
+          'mysql': {'columnName': 'custom_fk'},
+        },
+      },
+    };
+
+    var foreignKeySelect =
+    'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
+    'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
+    'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
+    'AND   TABLE_NAME = "custom_fk_test"';
+    var getCreateTable = 'SHOW CREATE TABLE `myapp_test`.`custom_fk_test`';
+
+    ds.createModel(sourceModel.name, sourceModel.properties, sourceModel.options);
+    ds.createModel(customFkModel.name, customFkModel.properties, customFkModel.options);
+
+    // do initial update/creation of table
+    ds.autoupdate(function(err) {
+      assert(!err, err);
+      ds.discoverModelProperties('custom_fk_test', function(err, props) {
+        // validate that we have the correct number of properties
+        assert.equal(props.length, 2);
+
+        // get the foreign keys for this table
+        ds.connector.execute(foreignKeySelect, function(err, foreignKeys) {
+          if (err) return done(err);
+          // validate that the foreign key exists and points to the right column
+          assert(foreignKeys);
+          assert(foreignKeys.length.should.be.equal(1));
+          assert.equal(foreignKeys[0].REFERENCED_TABLE_NAME, 'source_model');
+          assert.equal(foreignKeys[0].COLUMN_NAME, 'custom_fk');
+          assert.equal(foreignKeys[0].CONSTRAINT_NAME, 'fk_customfktest_customerId');
+          assert.equal(foreignKeys[0].REFERENCED_COLUMN_NAME, 'id');
+          done(err);
+        });
+      });
+    });
+  });
+
   function setupAltColNameData() {
     var schema = {
       name: 'ColRenameTest',
