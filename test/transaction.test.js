@@ -159,7 +159,7 @@ describe('transactions', function() {
 
   describe('timeout', function() {
     var post = {title: 't3', content: 'c3'};
-    before(createPostInTx(post, 2000));
+    before(createPostInTx(post, 500));
 
     it('should invoke the timeout hook', function(done) {
       currentTx.observe('timeout', function(context, next) {
