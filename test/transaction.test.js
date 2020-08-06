@@ -133,7 +133,7 @@ describe('transactions', function() {
 
   describe('rollback', function() {
     var post = {title: 't2', content: 'c2'};
-    before(createPostInTx(post));
+    before(createPostInTx(post, 2000));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
 
@@ -159,7 +159,7 @@ describe('transactions', function() {
 
   describe('timeout', function() {
     var post = {title: 't3', content: 'c3'};
-    before(createPostInTx(post, 500));
+    before(createPostInTx(post, 2000));
 
     it('should invoke the timeout hook', function(done) {
       currentTx.observe('timeout', function(context, next) {
