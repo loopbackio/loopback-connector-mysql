@@ -5,8 +5,8 @@
 
 'use strict';
 
-var setHttpCode = require('../lib/set-http-code');
-var should = require('./init.js');
+const setHttpCode = require('../lib/set-http-code');
+const should = require('./init.js');
 
 describe('setHttpCode', function() {
   describe('should set statusCode', function() {
@@ -22,7 +22,7 @@ describe('setHttpCode', function() {
 
     function testErrorCode(name, msg, expected) {
       it(name, function() {
-        var err = new Error(msg);
+        let err = new Error(msg);
         err = setHttpCode(err);
         should.exist(err.statusCode);
         should.equal(err.statusCode, expected);
@@ -34,7 +34,7 @@ describe('setHttpCode', function() {
   });
 
   it('should convert strings to errors', function() {
-    var err = 'REALLY_BAD: Something truly awful occurred.';
+    let err = 'REALLY_BAD: Something truly awful occurred.';
     err = setHttpCode(err);
     should.exist(err.statusCode);
     should(err instanceof Error);

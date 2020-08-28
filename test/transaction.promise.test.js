@@ -7,11 +7,11 @@
 if (typeof Promise === 'undefined') {
   global.Promise = require('bluebird');
 }
-var Transaction = require('loopback-datasource-juggler').Transaction;
+const Transaction = require('loopback-datasource-juggler').Transaction;
 require('./init.js');
 require('should');
 
-var db, Post, Review;
+let db, Post, Review;
 
 describe('transactions with promise', function() {
   before(function(done) {
@@ -38,13 +38,13 @@ describe('transactions with promise', function() {
     done();
   });
 
-  var currentTx;
-  var hooks = [];
+  let currentTx;
+  let hooks = [];
   // Return an async function to start a transaction and create a post
   function createPostInTx(post, timeout) {
     return function(done) {
       // Transaction.begin(db.connector, Transaction.READ_COMMITTED,
-      var promise = Post.beginTransaction({
+      const promise = Post.beginTransaction({
         isolationLevel: Transaction.READ_COMMITTED,
         timeout: timeout,
       });
@@ -77,8 +77,10 @@ describe('transactions with promise', function() {
             }, {transaction: currentTx}).then(
               function(c) {
                 done(null, c);
-              });
-          });
+              },
+            );
+          },
+        );
       }).catch(done);
     };
   }
@@ -87,7 +89,7 @@ describe('transactions with promise', function() {
   // records to equal to the count
   function expectToFindPosts(where, count, inTx) {
     return function(done) {
-      var options = {};
+      const options = {};
       if (inTx) {
         options.transaction = currentTx;
       }
@@ -105,12 +107,13 @@ describe('transactions with promise', function() {
           } else {
             done();
           }
-        }).catch(done);
+        },
+      ).catch(done);
     };
   }
 
   describe('commit', function() {
-    var post = {title: 't1', content: 'c1'};
+    const post = {title: 't1', content: 'c1'};
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -136,7 +139,7 @@ describe('transactions with promise', function() {
   });
 
   describe('rollback', function() {
-    var post = {title: 't2', content: 'c2'};
+    const post = {title: 't2', content: 'c2'};
     before(createPostInTx(post));
 
     it('should not see the uncommitted insert', expectToFindPosts(post, 0));
@@ -162,7 +165,7 @@ describe('transactions with promise', function() {
   });
 
   describe('timeout', function() {
-    var post = {title: 't3', content: 'c3'};
+    const post = {title: 't3', content: 'c3'};
     before(createPostInTx(post, 500));
 
     it('should invoke the timeout hook', function(done) {

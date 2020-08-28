@@ -4,11 +4,11 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var DataSource = require('loopback-datasource-juggler').DataSource;
+const DataSource = require('loopback-datasource-juggler').DataSource;
 
-var config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
+const config = require('rc')('loopback', {dev: {mysql: {}}}).dev.mysql;
 
-var ds = new DataSource(require('../'), config);
+const ds = new DataSource(require('../'), config);
 
 function show(err, models) {
   if (err) {
@@ -35,7 +35,7 @@ ds.discoverForeignKeys('inventory', show);
 ds.discoverExportedForeignKeys('location', show);
 
 ds.discoverAndBuildModels('weapon', {owner: 'strongloop', visited: {}, associations: true}, function(err, models) {
-  for (var m in models) {
+  for (const m in models) {
     models[m].all(show);
   }
 });
