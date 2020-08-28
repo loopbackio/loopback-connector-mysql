@@ -4,9 +4,6 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-if (typeof Promise === 'undefined') {
-  global.Promise = require('bluebird');
-}
 const Transaction = require('loopback-datasource-juggler').Transaction;
 require('./init.js');
 require('should');

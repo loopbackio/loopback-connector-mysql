@@ -28,7 +28,6 @@
     "strong-globalize": "^6.0.4"
   },
   "devDependencies": {
-    "bluebird": "~2.9.10",
     "eslint": "^7.7.0",
     "eslint-config-loopback": "^13.1.0",
     "juggler-v3": "file:./deps/juggler-v3",
