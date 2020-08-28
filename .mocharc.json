@@ -1,0 +1,5 @@
+{
+  "globals": "getSchema",
+  "timeout": "15000",
+  "exit": true
+}
