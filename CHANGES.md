@@ -1,3 +1,27 @@
+2020-09-01, Version 6.0.0
+=========================
+
+ * remove bluebird from devDependencies (Miroslav Bajtoš)
+
+ * update eslint + config to latest (Miroslav Bajtoš)
+
+ * update mocha to 8.x (Miroslav Bajtoš)
+
+ * chore: update dependencies to latest (Miroslav Bajtoš)
+
+ * [SEMVER-MAJOR] Drop support for Node.js 8.x (Miroslav Bajtoš)
+
+ * chore: switch to DCO (Diana Lau)
+
+ * docs: update default value setup section (Agnes Lin)
+
+ * chore: add Node.js 14 to travis (Diana Lau)
+
+ * chore: update CODEOWNERS (Diana Lau)
+
+ * fixed typo on readme (filipef101)
+
+
 2020-07-10, Version 5.4.4
 =========================
 
