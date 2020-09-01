@@ -5,13 +5,13 @@
 
 'use strict';
 require('./init.js');
-var assert = require('assert');
-var should = require('should');
-var DataSource = require('loopback-datasource-juggler').DataSource;
-var mysqlConnector = require('../');
-var url = require('url');
+const assert = require('assert');
+const should = require('should');
+const DataSource = require('loopback-datasource-juggler').DataSource;
+const mysqlConnector = require('../');
+const url = require('url');
 
-var db, DummyModel, odb, config;
+let db, DummyModel, odb, config;
 
 describe('connections', function() {
   before(function() {
@@ -25,13 +25,13 @@ describe('connections', function() {
   });
 
   it('should pass with valid settings', function(done) {
-    var db = new DataSource(mysqlConnector, config);
+    const db = new DataSource(mysqlConnector, config);
     db.ping(done);
   });
 
   it('ignores all other settings when url is present', function(done) {
-    var formatedUrl = generateURL(config);
-    var dbConfig = {
+    const formatedUrl = generateURL(config);
+    const dbConfig = {
       url: formatedUrl,
       host: 'invalid-hostname',
       port: 80,
@@ -40,15 +40,15 @@ describe('connections', function() {
       password: 'invalid-password',
     };
 
-    var db = new DataSource(mysqlConnector, dbConfig);
+    const db = new DataSource(mysqlConnector, dbConfig);
     db.ping(done);
   });
 
   it('should use utf8 charset', function(done) {
-    var test_set = /utf8/;
-    var test_collo = /utf8_general_ci/;
-    var test_set_str = 'utf8';
-    var test_set_collo = 'utf8_general_ci';
+    const test_set = /utf8/;
+    const test_collo = /utf8_general_ci/;
+    const test_set_str = 'utf8';
+    const test_set_collo = 'utf8_general_ci';
     charsetTest(test_set, test_collo, test_set_str, test_set_collo, done);
   });
 
@@ -60,8 +60,8 @@ describe('connections', function() {
   });
 
   it('should disconnect then connect and ORM should work', function() {
-    var ds = new DataSource(mysqlConnector, config);
-    var Student = ds.define('Student', {
+    const ds = new DataSource(mysqlConnector, config);
+    const Student = ds.define('Student', {
       name: {type: String, length: 255},
       age: {type: Number},
     }, {
@@ -95,10 +95,10 @@ describe('connections', function() {
   });
 
   it('should use latin1 charset', function(done) {
-    var test_set = /latin1/;
-    var test_collo = /latin1_general_ci/;
-    var test_set_str = 'latin1';
-    var test_set_collo = 'latin1_general_ci';
+    const test_set = /latin1/;
+    const test_collo = /latin1_general_ci/;
+    const test_set_str = 'latin1';
+    const test_set_collo = 'latin1_general_ci';
     charsetTest(test_set, test_collo, test_set_str, test_set_collo, done);
   });
 
@@ -112,14 +112,14 @@ describe('connections', function() {
 
   describe('lazyConnect', function() {
     it('should skip connect phase (lazyConnect = true)', function(done) {
-      var dbConfig = {
+      const dbConfig = {
         host: '127.0.0.1',
         port: 4,
         lazyConnect: true,
       };
-      var ds = new DataSource(mysqlConnector, dbConfig);
+      const ds = new DataSource(mysqlConnector, dbConfig);
 
-      var errTimeout = setTimeout(function() {
+      const errTimeout = setTimeout(function() {
         done();
       }, 2000);
       ds.on('error', function(err) {
@@ -129,12 +129,12 @@ describe('connections', function() {
     });
 
     it('should report connection error (lazyConnect = false)', function(done) {
-      var dbConfig = {
+      const dbConfig = {
         host: '127.0.0.1',
         port: 4,
         lazyConnect: false,
       };
-      var ds = new DataSource(mysqlConnector, dbConfig);
+      const ds = new DataSource(mysqlConnector, dbConfig);
 
       ds.on('error', function(err) {
         err.message.should.containEql('ECONNREFUSED');
@@ -152,7 +152,7 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done) {
         createDatabase: true});
       DummyModel = db.define('DummyModel', {string: String});
       db.automigrate(function() {
-        var q = 'SELECT DEFAULT_COLLATION_NAME' +
+        const q = 'SELECT DEFAULT_COLLATION_NAME' +
           ' FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = ' +
           db.driver.escape(db.settings.database) + ' LIMIT 1';
         db.connector.execute(q, function(err, r) {
@@ -160,8 +160,8 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done) {
           should(r[0].DEFAULT_COLLATION_NAME).match(test_collo);
           db.connector.execute('SHOW VARIABLES LIKE "character_set%"', function(err, r) {
             assert.ok(!err);
-            var hit_all = 0;
-            for (var result in r) {
+            let hit_all = 0;
+            for (const result in r) {
               hit_all += matchResult(r[result], 'character_set_connection', test_set);
               hit_all += matchResult(r[result], 'character_set_database', test_set);
               hit_all += matchResult(r[result], 'character_set_results', test_set);
@@ -171,8 +171,8 @@ function charsetTest(test_set, test_collo, test_set_str, test_set_collo, done) {
           });
           db.connector.execute('SHOW VARIABLES LIKE "collation%"', function(err, r) {
             assert.ok(!err);
-            var hit_all = 0;
-            for (var result in r) {
+            let hit_all = 0;
+            for (const result in r) {
               hit_all += matchResult(r[result], 'collation_connection', test_set);
               hit_all += matchResult(r[result], 'collation_database', test_set);
             }
@@ -193,12 +193,12 @@ function matchResult(result, variable_name, match) {
   return 0;
 }
 
-var query = function(sql, cb) {
+function query(sql, cb) {
   odb.connector.execute(sql, cb);
-};
+}
 
 function generateURL(config) {
-  var urlObj = {
+  const urlObj = {
     protocol: 'mysql',
     auth: config.username || '',
     hostname: config.host,
@@ -208,6 +208,6 @@ function generateURL(config) {
   if (config.password) {
     urlObj.auth += ':' + config.password;
   }
-  var formatedUrl = url.format(urlObj);
+  const formatedUrl = url.format(urlObj);
   return formatedUrl;
 }

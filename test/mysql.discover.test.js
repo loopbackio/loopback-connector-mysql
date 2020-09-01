@@ -5,11 +5,11 @@
 
 'use strict';
 process.env.NODE_ENV = 'test';
-var should = require('should');
+const should = require('should');
 
-var assert = require('assert');
-var DataSource = require('loopback-datasource-juggler').DataSource;
-var db, config;
+const assert = require('assert');
+const DataSource = require('loopback-datasource-juggler').DataSource;
+let db, config;
 
 before(function(done) {
   require('./init');
@@ -42,7 +42,7 @@ describe('discoverModels', function() {
           console.error(err);
           done(err);
         } else {
-          var views = false;
+          let views = false;
           assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
             if (m.type === 'view') {
@@ -66,7 +66,7 @@ describe('discoverModels', function() {
           console.error(err);
           done(err);
         } else {
-          var views = false;
+          const views = false;
           assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
             assert.equal(m.owner.toLowerCase(), config.database.toLowerCase());
@@ -109,7 +109,7 @@ describe('Discover models including other users', function() {
         console.error(err);
         done(err);
       } else {
-        var others = false;
+        let others = false;
         assert.equal(3, models.length);
         models.forEach(function(m) {
           assert(m.owner);
@@ -227,7 +227,7 @@ describe('Discover model generated columns', function() {
 });
 
 describe('Discover LDL schema from a table', function() {
-  var schema;
+  let schema;
   before(function(done) {
     db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function(err, schema_) {
       schema = schema_;
@@ -235,8 +235,8 @@ describe('Discover LDL schema from a table', function() {
     });
   });
   it('should return an LDL schema for INVENTORY', function() {
-    var productId = 'productId' in schema.properties ? 'productId' : 'productid';
-    var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
+    const productId = 'productId' in schema.properties ? 'productId' : 'productid';
+    const locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
     assert.strictEqual(schema.name, 'Inventory');
     assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
     assert.strictEqual(schema.options.mysql.table, 'INVENTORY');
@@ -257,7 +257,7 @@ describe('Discover LDL schema from a table', function() {
 });
 
 describe('Discover and build models', function() {
-  var models;
+  let models;
   before(function(done) {
     db.discoverAndBuildModels('INVENTORY', {owner: 'STRONGLOOP', visited: {}, associations: true},
       function(err, models_) {
@@ -267,9 +267,9 @@ describe('Discover and build models', function() {
   });
   it('should discover and build models', function() {
     assert(models.Inventory, 'Inventory model should be discovered and built');
-    var schema = models.Inventory.definition;
-    var productId = 'productId' in schema.properties ? 'productId' : 'productid';
-    var locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
+    const schema = models.Inventory.definition;
+    const productId = 'productId' in schema.properties ? 'productId' : 'productid';
+    const locationId = 'locationId' in schema.properties ? 'locationId' : 'locationid';
     assert(/STRONGLOOP/i.test(schema.settings.mysql.schema));
     assert.strictEqual(schema.settings.mysql.table, 'INVENTORY');
     assert(schema.properties[productId]);
@@ -293,7 +293,7 @@ describe('Discover and build models', function() {
 
   describe('discoverModelProperties() flags', function() {
     context('with default flags', function() {
-      var models, schema;
+      let models, schema;
       before(discoverAndBuildModels);
 
       it('handles CHAR(1) as Boolean', function() {
@@ -325,7 +325,7 @@ describe('Discover and build models', function() {
     });
 
     context('with flag treatCHAR1AsString = true', function() {
-      var models, schema;
+      let models, schema;
       before(discoverAndBuildModels);
 
       it('handles CHAR(1) as String', function() {
@@ -358,7 +358,7 @@ describe('Discover and build models', function() {
     });
 
     context('with flag treatBIT1AsBit = false', function() {
-      var models, schema;
+      let models, schema;
       before(discoverAndBuildModels);
 
       it('handles CHAR(1) as Boolean', function() {
@@ -391,7 +391,7 @@ describe('Discover and build models', function() {
     });
 
     context('with flag treatTINYINT1AsTinyInt = false', function() {
-      var models, schema;
+      let models, schema;
       before(discoverAndBuildModels);
 
       it('handles CHAR(1) as Boolean', function() {

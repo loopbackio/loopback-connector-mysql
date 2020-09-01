@@ -4,7 +4,7 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var SG = require('strong-globalize');
+const SG = require('strong-globalize');
 SG.SetRootDir(__dirname);
 
 module.exports = require('./lib/mysql.js');

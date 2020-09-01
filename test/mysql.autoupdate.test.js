@@ -4,9 +4,9 @@
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
-var assert = require('assert');
+const assert = require('assert');
 require('./init');
-var ds;
+let ds;
 
 before(function() {
   ds = global.getDataSource();
@@ -19,7 +19,7 @@ describe('MySQL connector', function() {
 
   describe('escape index names upon automigrate', function() {
     before(function(done) {
-      var messageSchema = {
+      const messageSchema = {
         'name': 'Message',
         'options': {
           'idInjection': false,
@@ -68,7 +68,7 @@ describe('MySQL connector', function() {
   });
 
   it('should auto migrate/update tables', function(done) {
-    var schema_v1 = {
+    const schema_v1 = {
       'name': 'CustomerTest',
       'options': {
         'idInjection': false,
@@ -123,7 +123,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v2 = {
+    const schema_v2 = {
       'name': 'CustomerTest',
       'options': {
         'idInjection': false,
@@ -222,7 +222,7 @@ describe('MySQL connector', function() {
         assert(isActual, 'isActual should return true after automigrate');
         ds.discoverModelProperties('customer_test', function(err, props) {
           assert.equal(props.length, 5);
-          var names = props.map(function(p) {
+          const names = props.map(function(p) {
             return p.columnName;
           });
           assert.equal(props[0].nullable, 'N');
@@ -250,7 +250,7 @@ describe('MySQL connector', function() {
                 ds.discoverModelProperties('customer_test', function(err, props) {
                   if (err) return done(err);
                   assert.equal(props.length, 7);
-                  var names = props.map(function(p) {
+                  const names = props.map(function(p) {
                     return p.columnName;
                   });
                   assert.equal(names[0], 'id');
@@ -287,7 +287,7 @@ describe('MySQL connector', function() {
   });
 
   it('should auto migrate/update foreign keys in tables', function(done) {
-    var customer2_schema = {
+    const customer2_schema = {
       'name': 'CustomerTest2',
       'options': {
         'idInjection': false,
@@ -318,7 +318,7 @@ describe('MySQL connector', function() {
         },
       },
     };
-    var customer3_schema = {
+    const customer3_schema = {
       'name': 'CustomerTest3',
       'options': {
         'idInjection': false,
@@ -350,7 +350,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v1 = {
+    const schema_v1 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -385,7 +385,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v2 = {
+    const schema_v2 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -423,7 +423,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v3 = {
+    const schema_v3 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -453,7 +453,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var foreignKeySelect =
+    const foreignKeySelect =
       'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
       'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
       'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
@@ -537,7 +537,7 @@ describe('MySQL connector', function() {
   });
 
   it('should auto migrate/update foreign keys in tables multiple times without error', function(done) {
-    var customer3_schema = {
+    const customer3_schema = {
       'name': 'CustomerTest3',
       'options': {
         'idInjection': false,
@@ -569,7 +569,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v1 = {
+    const schema_v1 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -621,7 +621,7 @@ describe('MySQL connector', function() {
   });
 
   it('should auto migrate/update foreign keys with onUpdate and onDelete in tables', function(done) {
-    var customer2_schema = {
+    const customer2_schema = {
       'name': 'CustomerTest2',
       'options': {
         'idInjection': false,
@@ -653,7 +653,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v1 = {
+    const schema_v1 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -690,7 +690,7 @@ describe('MySQL connector', function() {
       },
     };
 
-    var schema_v2 = {
+    const schema_v2 = {
       'name': 'OrderTest',
       'options': {
         'idInjection': false,
@@ -727,12 +727,12 @@ describe('MySQL connector', function() {
       },
     };
 
-    var foreignKeySelect =
+    const foreignKeySelect =
     'SELECT COLUMN_NAME,CONSTRAINT_NAME,REFERENCED_TABLE_NAME, REFERENCED_COLUMN_NAME ' +
     'FROM   INFORMATION_SCHEMA.KEY_COLUMN_USAGE ' +
     'WHERE  REFERENCED_TABLE_SCHEMA = "myapp_test" ' +
     'AND   TABLE_NAME = "order_test"';
-    var getCreateTable = 'SHOW CREATE TABLE `myapp_test`.`order_test`';
+    const getCreateTable = 'SHOW CREATE TABLE `myapp_test`.`order_test`';
 
     ds.createModel(customer2_schema.name, customer2_schema.properties, customer2_schema.options);
     ds.createModel(schema_v1.name, schema_v1.properties, schema_v1.options);
@@ -789,7 +789,7 @@ describe('MySQL connector', function() {
   });
 
   function setupAltColNameData() {
-    var schema = {
+    const schema = {
       name: 'ColRenameTest',
       options: {
         idInjection: false,
@@ -845,7 +845,7 @@ describe('MySQL connector', function() {
 
   it('should update the nullable property of "first_name" to false', function(done) {
     // update the model "required" property
-    var schema = {
+    const schema = {
       name: 'ColRenameTest',
       options: {
         idInjection: false,
