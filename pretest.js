@@ -5,21 +5,17 @@
 
 'use strict';
 
+const fs = require('fs');
+const cp = require('child_process');
+
 if (!process.env.CI) {
   return console.log('Not seeding DB with test db');
 }
 
-process.env.MYSQL_HOST =
-  process.env.MYSQL_HOST || process.env.MYSQL_HOST || 'localhost';
-process.env.MYSQL_PORT =
-  process.env.MYSQL_PORT || process.env.MYSQL_PORT || 3306;
-process.env.MYSQL_USER =
-  process.env.MYSQL_USER || process.env.MYSQL_USER || 'test';
-process.env.MYSQL_PASSWORD =
-  process.env.MYSQL_PASSWORD || process.env.MYSQL_PASSWORD || 'test';
-
-const fs = require('fs');
-const cp = require('child_process');
+process.env.MYSQL_HOST = process.env.MYSQL_HOST || 'localhost';
+process.env.MYSQL_PORT = process.env.MYSQL_PORT || 3306;
+process.env.MYSQL_USER = process.env.MYSQL_USER || 'test';
+process.env.MYSQL_PASSWORD = process.env.MYSQL_PASSWORD || 'test';
 
 const sql = fs.createReadStream(require.resolve('./test/schema.sql'));
 const stdio = ['pipe', process.stdout, process.stderr];
@@ -36,7 +32,7 @@ if (process.env.MYSQL_PASSWORD) {
 }
 
 console.log('seeding DB with example db...');
-const mysql = cp.spawn('mysql', args, {stdio: stdio});
+const mysql = cp.spawn('mysql', args, {shell: true, stdio: stdio});
 sql.pipe(mysql.stdin);
 mysql.on('exit', function(code) {
   console.log('done seeding DB');
