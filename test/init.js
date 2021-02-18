@@ -12,11 +12,11 @@ let DataSource = juggler.DataSource;
 const config = require('rc')('loopback', {test: {mysql: {}}}).test.mysql;
 global.getConfig = function(options) {
   const dbConf = {
-    host: process.env.MYSQL_HOST || config.host || 'localhost',
+    host: process.env.MYSQL_HOST || config.host || '127.0.0.1',
     port: process.env.MYSQL_PORT || config.port || 3306,
-    database: process.env.MYSQL_DATABASE || 'myapp_test',
-    username: process.env.MYSQL_USER || config.username,
-    password: process.env.MYSQL_PASSWORD || config.password,
+    database: process.env.MYSQL_DATABASE || 'testdb',
+    username: process.env.MYSQL_USER || config.username || 'user',
+    password: process.env.MYSQL_PASSWORD || config.password || 'pass',
     createDatabase: true,
   };
 

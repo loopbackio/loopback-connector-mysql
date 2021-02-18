@@ -14,9 +14,9 @@ process.env.MYSQL_HOST =
 process.env.MYSQL_PORT =
   process.env.MYSQL_PORT || process.env.MYSQL_PORT || 3306;
 process.env.MYSQL_USER =
-  process.env.MYSQL_USER || process.env.MYSQL_USER || 'test';
+  process.env.MYSQL_USER || process.env.MYSQL_USER || 'user';
 process.env.MYSQL_PASSWORD =
-  process.env.MYSQL_PASSWORD || process.env.MYSQL_PASSWORD || 'test';
+  process.env.MYSQL_PASSWORD || process.env.MYSQL_PASSWORD || 'pass';
 
 const fs = require('fs');
 const cp = require('child_process');
