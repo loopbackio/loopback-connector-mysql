@@ -900,14 +900,22 @@ SET MYSQL_HOST=<HOST> SET MYSQL_PORT=<PORT> SET MYSQL_USER=<USER> SET MYSQL_PASS
 ### Docker
 
 If you do not have a local MySQL instance, you can also run the test suite with
-very minimal requirements.
-
-- Assuming you have [Docker](https://docs.docker.com/engine/installation/)
+very minimal requirements. Assuming you have [Docker](https://docs.docker.com/engine/installation/)
   installed, run the following script which would spawn a MySQL instance on your
   local:
 
+- Linux
+
 ```bash
 source setup.sh <HOST> <PORT> <USER> <PASSWORD> <DATABASE>
+```
+
+- Windows (PowerShell)
+1. Run Get-ExecutionPolicy. If it not returns Bypass, then run Set-ExecutionPolicy Bypass -Scope Process
+2. Now run the following command:
+
+```powershell
+.\setup.ps1 <HOST> <PORT> <USER> <PASSWORD> <DATABASE>
 ```
 
 where `<HOST>`, `<PORT>`, `<USER>`, `<PASSWORD>` and `<DATABASE>` are optional
