@@ -13,19 +13,41 @@ jobs:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         node-version: [10, 12, 14, 15]
+<<<<<<< HEAD
+
+    # services:
+    #   mysql:
+    #     image: mysql:5.7
+    #     env:
+    #       MYSQL_USER: user
+    #       MYSQL_PASSWORD: pass
+    #       MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    #       MYSQL_DATABASE: 'testdb'
+    #       MYSQL_ROOT_PASSWORD: root
+    #       MYSQL_HOST: localhost
+    #     ports:
+    #       - 3306:3306
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+=======
     services:
       mysql:
-        image: mysql:5.7.22
+        image: mysql:5.7
         env:
           MYSQL_USER: user
           MYSQL_PASSWORD: pass
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: 'testdb'
+          MYSQL_DATABASE: testdb
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_HOST: localhost
+          MYSQL_PORT: 3307
+        ports:
+          - 3307:3307
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+>>>>>>> f50d049... ci: port 3307
 
     steps:
-      - name: Set Up MySQL
-        run: sudo /etc/init.d/mysql start
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
 
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -33,11 +55,65 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+
+      # - uses: docker://library/mysql:5.7
+      # - name: Set up MySQL 5.7
+      #   uses: mirromutth/mysql-action@master
+      #   with:
+      #     mysql version: 5.7
+      #     mysql database: testdb
+      #     mysql root password: root
+      # - name: npm install, build, and test
+      #   run: |
+      #     npm install
+      #     npm test
+      #   env:
+      #     CI: true
+
+
       - name: Create DB and User
+      # #   # the first line is crucial
         run: |
-          mysql -uroot -proot -e 'CREATE DATABASE testdb;'
-          mysql -uroot -proot -e "CREATE USER 'user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';"
-          mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON * . * TO 'user'@'localhost';"
-          mysql -uroot -proot -e "FLUSH PRIVILEGES"
+          sudo /etc/init.d/mysql start
+          sudo systemctl enable mysql.service
+          sudo systemctl start mysql.service
+          docker container ls
+          docker container run -e MYSQL_ROOT_PASSWORD=root -e MYSQL_PORT=3307 -e MYSQL_HOST=localhost -d mysql:5.7
+          mysql -V
+      #     sudo service mysql stop
+      #     mysql -V
+        # docker run -it mysql 
+        # docker exec `docker ps -q` mysqld --version --mount "type=bind,src=/run/mysqld,dst=/var/run/mysqld"
+        # npm install
+        # npm test
+        # sudo /etc/init.d/mysql start
+        # mysql -V
+        # mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
+      #     docker image ls
+      #     docker container ls
+          # sudo systemctl enable mysql.service
+      #     docker exec `docker ps -q` mysqld --version
+      #     mysql -V
+      #     mysql -e 'CREATE DATABASE testdb;' -uroot -proot
+      #     mysql -e 'SHOW DATABASES;' -uroot -proot
+      #     mysql -uroot -proot -e "CREATE USER 'user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';"
+      #     mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON * . * TO 'user'@'localhost';"
+      #     mysql -uroot -proot -e "FLUSH PRIVILEGES"
+      #   run: |
+      # sudo /etc/init.d/mysql start
+          #       /usr/bin/docker
+          # docker.io/library/mysql:5.7
+      #     sudo netstat -ln | grep mysql
+      #     mysqladmin -proot -uroot root variables
+      #     mysql -uroot -proot -e 'CREATE DATABASE testdb;'
+      #     mysql -uroot -proot -e "CREATE USER 'user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'pass';"
+      #     mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON * . * TO 'user'@'localhost';"
+      #     mysql -uroot -proot -e "FLUSH PRIVILEGES"
       - run: npm install
       - run: npm test
+        env:
+          DB_PORT: ${{ job.services.mysql.ports[3307] }}
+      #   env:
+      #     host: 127.0.0.1
+                # sudo ls -a /var/run/mysqld/
+
