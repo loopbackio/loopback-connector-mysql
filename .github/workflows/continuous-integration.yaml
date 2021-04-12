@@ -48,7 +48,7 @@ jobs:
           mysql root password: root
       - name: Wait for MySQL
         run: |
-          docker run -it -e MYSQL_ROOT_PASSWORD=root -d mysql:5.7
+          docker run -it -e MYSQL_ROOT_PASSWORD=root -v /var/run/docker.sock:/var/run/mysqld -d mysql:5.7
           while ! mysqladmin ping --host=127.0.0.1 --port 3000 --password=$MYSQL_ROOT_PASSWORD --silent < ./test/schema.sql; do
             sleep 1
           done
