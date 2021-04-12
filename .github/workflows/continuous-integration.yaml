@@ -48,27 +48,19 @@ jobs:
           mysql root password: root
       - name: Wait for MySQL
         run: |
-          sudo ls /var/run/mysql
+          sudo systemctl start mysql
           docker ps -a
-
-
-
-
-
-
-
-
-      #     docker run -it -e MYSQL_ROOT_PASSWORD=root -v /var/run/mysqld:/host/mysqld -d mysql:5.7
-      #     while ! mysqladmin ping --host=127.0.0.1 --port 3000 --password=$MYSQL_ROOT_PASSWORD --silent < ./test/schema.sql; do
-      #       sleep 1
-      #     done
-      #     docker container ls
-      #     mysql -uroot -proot "SHOW DATABASES;"
-      # - name: npm install, build, and test
-      #   run: |
-      #     npm install
-      #     npm test
-      #   env:
-      #     DB_PORT: 3306
-      #     CI: true
+          docker run -it -e MYSQL_ROOT_PASSWORD=root -v /var/run/mysqld:/host/mysqld -d mysql:5.7
+          while ! mysqladmin ping --host=127.0.0.1 --port 3000 --password=$MYSQL_ROOT_PASSWORD --silent < ./test/schema.sql; do
+            sleep 1
+          done
+          docker container ls
+          mysql -uroot -proot "SHOW DATABASES;"
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm test
+        env:
+          DB_PORT: 3306
+          CI: true
 # docker run -it -e MYSQL_ROOT_PASSWORD=root -v /var/run/mysqld/mysqld.sock:/host/mysqld/mysqld.sock -d mysql:5.7
