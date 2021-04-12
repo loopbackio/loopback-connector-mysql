@@ -63,6 +63,7 @@ jobs:
         # mysql -uroot -proot -e "show databases"
       - name: npm install, build, and test
         run: |
+          mysqladmin -u root -proot shutdown
           sudo service mysql start
           npm install
           npm test
