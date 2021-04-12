@@ -48,7 +48,12 @@ jobs:
           mysql root password: root
       - name: Wait for MySQL
         run: |
-          sudo cat /var/run/mysqld/mysqld.sock
+          sudo touch /var/run/mysqld/mysqld.sock
+          sudo touch /var/run/mysqld/mysqld.pid
+          sudo chown -R mysql:mysql /var/run/mysqld/mysqld.sock
+          sudo chown -R mysql:mysql /var/run/mysqld/mysqld.pid
+          sudo chmod -R 644 /var/run/mysqld/mysqld.sock
+          docker ps -a
 
 
 
