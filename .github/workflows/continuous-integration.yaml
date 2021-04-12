@@ -65,6 +65,9 @@ jobs:
         run: |
           mysqladmin -u root -proot shutdown
           sudo service mysql start
+          while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
+            sleep 1
+          done
           npm install
           npm test
         env:
