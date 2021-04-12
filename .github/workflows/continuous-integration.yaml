@@ -17,7 +17,7 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:5.7.22
         env:
           MYSQL_USER: user
           MYSQL_PASSWORD: pass
@@ -47,14 +47,15 @@ jobs:
       #     mysql version: 5.7
       #     mysql database: testdb
       #     mysql root password: root
-      #     mysql user: user # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+      #     mysql user: user
       #     mysql password: pass
       - name: Wait for MySQL
         run: |
           sudo systemctl start mysql
-          while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
-            sleep 1
-          done
+          sleep 20
+        # while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
+        #   sleep 1
+        # done
         # sudo apt-get update
         # sudo apt-get install -y mysql-client
         # docker ps -a
