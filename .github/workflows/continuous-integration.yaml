@@ -51,6 +51,7 @@ jobs:
       #     mysql password: pass
       - name: Wait for MySQL
         run: |
+          sudo systemctl enable mysql
           sudo systemctl start mysql
           sleep 20
         # while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
