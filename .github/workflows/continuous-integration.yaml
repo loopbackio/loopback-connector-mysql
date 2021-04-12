@@ -12,21 +12,22 @@ jobs:
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-        node-version: [10, 12, 14, 15]
+        node-version: [12]
+        # node-version: [10, 12, 14, 15]
 
-    # services:
-    #   mysql:
-    #     image: mysql:5.7
-    #     env:
-    #       MYSQL_USER: user
-    #       MYSQL_PASSWORD: pass
-    #       MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    #       MYSQL_DATABASE: 'testdb'
-    #       MYSQL_ROOT_PASSWORD: root
-    #       MYSQL_HOST: localhost
-    #     ports:
-    #       - 3306:3306
-    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_USER: user
+          MYSQL_PASSWORD: pass
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testdb
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_HOST: localhost
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Shutdown Ubuntu MySQL (SUDO)
@@ -39,27 +40,27 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
 
-      - name: Set up MySQL 5.7
-        uses: mirromutth/mysql-action@master
-        with:
-          host port: 3000
-          mysql version: 5.7
-          mysql database: testdb
-          mysql root password: root
-          mysql user: user # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: pass
+      # - name: Set up MySQL 5.7
+      #   uses: mirromutth/mysql-action@master
+      #   with:
+      #     host port: 3000
+      #     mysql version: 5.7
+      #     mysql database: testdb
+      #     mysql root password: root
+      #     mysql user: user # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+      #     mysql password: pass
       - name: Wait for MySQL
         run: |
           sudo systemctl start mysql
-          sudo apt-get update
-          sudo apt-get install -y mysql-client
-          docker ps -a
+        # sudo apt-get update
+        # sudo apt-get install -y mysql-client
+        # docker ps -a
 
-          while ! mysqladmin ping --host=127.0.0.1 --port 3000 -uroot --password=root --silent < ./test/schema.sql; do
-            sleep 1
-          done
-          docker container ls
-          mysql -uroot -proot -e "show databases"
+        # while ! mysqladmin ping --host=127.0.0.1 --port 3000 -uroot --password=root --silent < ./test/schema.sql; do
+        #   sleep 1
+        # done
+        # docker container ls
+        # mysql -uroot -proot -e "show databases"
       - name: npm install, build, and test
         run: |
           npm install
