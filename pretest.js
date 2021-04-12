@@ -12,7 +12,7 @@ if (!process.env.CI) {
 process.env.MYSQL_HOST =
   process.env.MYSQL_HOST || process.env.MYSQL_HOST || 'localhost';
 process.env.MYSQL_PORT =
-  process.env.MYSQL_PORT || process.env.MYSQL_PORT || 3307;
+  process.env.MYSQL_PORT || process.env.MYSQL_PORT || 3306;
 process.env.MYSQL_USER =
   process.env.MYSQL_USER || process.env.MYSQL_USER || 'root';
 process.env.MYSQL_PASSWORD =
