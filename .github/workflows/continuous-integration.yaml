@@ -55,7 +55,6 @@ jobs:
         # sudo apt-get update
         # sudo apt-get install -y mysql-client
         # docker ps -a
-
           while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
             sleep 1
         # done
