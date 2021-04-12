@@ -30,8 +30,8 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
+      # - name: Shutdown Ubuntu MySQL (SUDO)
+      #   run: sudo service mysql stop
 
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
