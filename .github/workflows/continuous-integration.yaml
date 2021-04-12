@@ -49,10 +49,9 @@ jobs:
       #     mysql root password: root
       #     mysql user: user
       #     mysql password: pass
-      - name: Wait for MySQL
-        run: |
-          sudo service mysql start
-          sleep 20
+      # - name: Wait for MySQL
+      #   run: |
+      #     sudo service mysql start
         # while ! mysqladmin ping --host=127.0.0.1 --port 3306 -uroot --password=root --silent; do
         #   sleep 1
         # done
@@ -64,6 +63,7 @@ jobs:
         # mysql -uroot -proot -e "show databases"
       - name: npm install, build, and test
         run: |
+          sudo service mysql start
           npm install
           npm test
         env:
