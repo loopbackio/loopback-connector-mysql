@@ -46,12 +46,14 @@ jobs:
           mysql version: 5.7
           mysql database: testdb
           mysql root password: root
+          mysql user: user # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: pass
       - name: Wait for MySQL
         run: |
           sudo systemctl start mysql
           docker ps -a
 
-          while ! mysqladmin ping --host=127.0.0.1 --port 3000 --password=$MYSQL_ROOT_PASSWORD --silent < ./test/schema.sql; do
+          while ! mysqladmin ping --host=127.0.0.1 --port 3000 --password=root --silent < ./test/schema.sql; do
             sleep 1
           done
           docker container ls
