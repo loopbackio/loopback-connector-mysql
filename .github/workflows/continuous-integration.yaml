@@ -63,7 +63,8 @@ jobs:
         # mysql -uroot -proot -e "show databases"
       - name: npm install, build, and test
         run: |
-          sudo ls /usr/bin/docker
+          sudo systemctl enable mysql.service
+          sudo systemctl start mysql.service
           docker ps -a
           mysql -uroot -proot -e "show databases"
           npm install
