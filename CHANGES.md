@@ -1,3 +1,13 @@
+2021-06-10, Version 6.0.1
+=========================
+
+ * fix (core) accepts boolean type (yongzhi-chen)
+
+ * fix(docs): Specify table creation order method (Roderik van Heijst)
+
+ * fix(docs): update enum type (Diana Lau)
+
+
 2020-09-01, Version 6.0.0
 =========================
 
