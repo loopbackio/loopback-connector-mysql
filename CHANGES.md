@@ -1,3 +1,11 @@
+2021-07-12, Version 6.0.2
+=========================
+
+ * chore: move this repo to loopbackio org (Diana Lau)
+
+ * ci: add GitHub Actions (Diana Lau)
+
+
 2021-06-10, Version 6.0.1
 =========================
 
