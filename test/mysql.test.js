@@ -37,6 +37,17 @@ describe('mysql', function() {
       userId: ObjectID,
     }, {
       forceId: false,
+      indexes: {
+        content_fts_index: {
+          kind: 'FULLTEXT',
+          columns: 'content',
+        },
+        title_fts_index: {
+          kind: 'FULLTEXT',
+          columns: 'title',
+        },
+      },
+      allowExtendedOperators: true,
     });
 
     PostWithStringId = db.define('PostWithStringId', {
@@ -908,6 +919,105 @@ describe('mysql', function() {
             done();
           });
         });
+      });
+    });
+  });
+
+  context('match operator', function() {
+    beforeEach(function deleteExistingTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+    beforeEach(function createTestFixtures(done) {
+      Post.create([
+        {title: 'About Redis', content: 'Redis is a Database'},
+        {title: 'Usage', content: 'How To Use MySQL database Well'},
+        {title: 'About Mysql', content: 'Mysql is a database'},
+      ], done);
+    });
+    after(function deleteTestFixtures(done) {
+      Post.destroyAll(done);
+    });
+
+    context('with one column and string', () => {
+      it('should work', function(done) {
+        Post.find({where: {content: {match: '+using MYSQL'}}}, (err, posts) => {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(2);
+          done();
+        });
+      });
+      it('should work in boolean mode with empty result expected', function(done) {
+        Post.find({where: {content: {matchbool: '+using MYSQL'}}}, (err, posts) => {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(0);
+          done();
+        });
+      });
+      it('should work in boolean mode with one result expected', function(done) {
+        Post.find({where: {content: {matchbool: '+use MYSQL'}}}, (err, posts) => {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(1);
+          done();
+        });
+      });
+      it('should work with matchqe operator with expected result in first and second pass', function(done) {
+        Post.find({where: {content: {match: 'redis'}}}, (err, posts) => {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(1);
+          Post.find({where: {content: {matchqe: 'redis'}}}, (err, expandedPosts) => {
+            should.not.exist(err);
+            should.exist(expandedPosts);
+            expandedPosts.length.should.equal(3);
+            done();
+          });
+        });
+      });
+      it('should work with matchnlqe operator with expected result in first and second pass', function(done) {
+        Post.find({where: {content: {match: 'redis'}}}, (err, posts) => {
+          should.not.exist(err);
+          should.exist(posts);
+          posts.length.should.equal(1);
+          Post.find({where: {content: {matchnlqe: 'redis'}}}, (err, expandedPosts) => {
+            should.not.exist(err);
+            should.exist(expandedPosts);
+            expandedPosts.length.should.equal(3);
+            done();
+          });
+        });
+      });
+    });
+
+    context('with multiple column and one string', () => {
+      it('should work', function(done) {
+        const against = 'using MYSQL';
+        Post.find(
+          {
+            where: {
+              or: [
+                {
+                  content: {
+                    match: against,
+                  },
+                },
+                {
+                  title: {
+                    match: against,
+                  },
+                },
+              ],
+            },
+          },
+          (err, posts) => {
+            should.not.exist(err);
+            should.exist(posts);
+            posts.length.should.equal(2);
+            done();
+          },
+        );
       });
     });
   });
