@@ -18,6 +18,7 @@ global.getConfig = function(options) {
     username: process.env.MYSQL_USER || config.username,
     password: process.env.MYSQL_PASSWORD || config.password,
     createDatabase: true,
+    allowExtendedOperators: true,
   };
 
   if (options) {
