@@ -1,3 +1,9 @@
+2021-10-20, Version 6.1.0
+=========================
+
+ * feat(operators): add match against operator (Akshat  Dubey)
+
+
 2021-07-12, Version 6.0.2
 =========================
 
