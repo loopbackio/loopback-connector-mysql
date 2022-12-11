@@ -126,6 +126,60 @@ describe('mysql', function() {
       });
   });
 
+  it('createAll should create an array of instances', function(done) {
+    Post.createAll([
+      {title: 'Title 1', content: 'Content 1'},
+      {title: 'Title 2', content: 'Content 2'},
+    ],
+    function(err, posts) {
+      should.not.exist(err);
+      posts.should.be.an.Array;
+      posts.should.have.lengthOf(2);
+      posts[0].should.have.property('id');
+      posts[0].id.should.be.a.Number;
+      posts[0].title.should.be.equal('Title 1');
+      posts[0].content.should.be.equal('Content 1');
+      posts[1].should.have.property('id');
+      posts[1].id.should.be.a.Number;
+      posts[1].title.should.be.equal('Title 2');
+      posts[1].content.should.be.equal('Content 2');
+
+      Post.findById(posts[0].id, function(er, p) {
+        should.not.exist(er);
+        p.id.should.be.equal(posts[0].id);
+        p.content.should.be.equal(posts[0].content);
+        done();
+      });
+    });
+  });
+
+  it('createAll should create an array of instances even when id is not auto generated', function(done) {
+    PostWithStringId.createAll([
+      {id: '10', title: 'Title 1', content: 'Content 1'},
+      {id: '20', title: 'Title 2', content: 'Content 2'},
+    ],
+    function(err, posts) {
+      should.not.exist(err);
+      posts.should.be.an.Array;
+      posts.should.have.lengthOf(2);
+      posts[0].should.have.property('id');
+      posts[0].id.should.be.a.String;
+      posts[0].title.should.be.equal('Title 1');
+      posts[0].content.should.be.equal('Content 1');
+      posts[1].should.have.property('id');
+      posts[1].id.should.be.a.String;
+      posts[1].title.should.be.equal('Title 2');
+      posts[1].content.should.be.equal('Content 2');
+
+      PostWithStringId.findById(posts[0].id, function(er, p) {
+        should.not.exist(er);
+        p.id.should.be.equal(posts[0].id);
+        p.content.should.be.equal(posts[0].content);
+        done();
+      });
+    });
+  });
+
   it('updateOrCreate should update the instance', function(done) {
     Post.create({title: 'a', content: 'AAA'}, function(err, post) {
       post.title = 'b';
@@ -716,7 +770,7 @@ describe('mysql', function() {
       Post.destroyAll(done);
     });
     beforeEach(function createTestFixtures(done) {
-      Post.create([
+      Post.createAll([
         {title: 'a', content: 'AAA'},
         {title: 'b', content: 'BBB'},
       ], done);
@@ -928,7 +982,7 @@ describe('mysql', function() {
       Post.destroyAll(done);
     });
     beforeEach(function createTestFixtures(done) {
-      Post.create([
+      Post.createAll([
         {title: 'About Redis', content: 'Redis is a Database'},
         {title: 'Usage', content: 'How To Use MySQL database Well'},
         {title: 'About Mysql', content: 'Mysql is a database'},
