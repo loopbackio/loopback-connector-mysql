@@ -3,13 +3,13 @@
   "version": "6.1.0",
   "description": "MySQL connector for loopback-datasource-juggler",
   "engines": {
-    "node": ">=10"
+    "node": "14 || 16"
   },
   "main": "index.js",
   "scripts": {
     "pretest": "node pretest.js",
     "lint": "eslint .",
-    "test": "mocha test/*.test.js node_modules/juggler-v3/test.js node_modules/juggler-v4/test.js",
+    "test": "mocha test/*.test.js",
     "posttest": "npm run lint"
   },
   "files": [
@@ -23,21 +23,19 @@
     "async": "^3.2.0",
     "debug": "^4.1.1",
     "lodash": "^4.17.11",
-    "loopback-connector": "^5.0.0",
+    "loopback-connector": "^5.2.0",
     "mysql": "^2.11.1",
     "strong-globalize": "^6.0.4"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^12.1.4",
     "eslint": "^7.7.0",
     "eslint-config-loopback": "^13.1.0",
-    "juggler-v3": "file:./deps/juggler-v3",
-    "juggler-v4": "file:./deps/juggler-v4",
-    "loopback-datasource-juggler": "^3.0.0 || ^4.0.0",
+    "loopback-datasource-juggler": "^4.28.0",
     "mocha": "^8.1.2",
     "rc": "^1.0.0",
     "should": "^13.2.3",
-    "sinon": "^9.0.3",
-    "@commitlint/config-conventional": "^12.1.4"
+    "sinon": "^9.0.3"
   },
   "repository": {
     "type": "git",

@@ -4,4 +4,4 @@ coverage
 *.xml
 .loopbackrc
 .idea
-
+.vscode
