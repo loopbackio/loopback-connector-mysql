@@ -1,3 +1,23 @@
+2023-01-09, Version 6.2.0
+=========================
+
+ * feat: add support for multiple insert in one query (Samarpan  Bhattacharya)
+
+ * feat: Avoid 'USING ' on FULLTEXT index (FORNO)
+
+ * fix: remove redundant debug (Rifa Achrinza)
+
+ * docs: add SECURITY.md (#465) (Diana Lau)
+
+ * docs: update coc (#464) (Diana Lau)
+
+ * docs: add code of conduct (#463) (Diana Lau)
+
+ * chore: remove .travis.yml (Diana Lau)
+
+ * chore: add @marioestradarosa as codeowners (Diana Lau)
+
+
 2021-10-20, Version 6.1.0
 =========================
 
