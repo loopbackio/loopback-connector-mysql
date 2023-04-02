@@ -11,7 +11,8 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    # ubuntu support dropped due to https://github.com/ankane/setup-mysql/commit/70636bf8d2c54521a1b871af766b58d76b468d94
+    runs-on: [macos-12, windows-2022]
     strategy:
       matrix:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
