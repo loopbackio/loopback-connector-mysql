@@ -23,7 +23,8 @@ describe('MySQL datetime handling', function() {
   // Modifying the connection timezones mid-flight is a pain,
   // but closing the existing connection requires more effort.
   function setConnectionTimezones(tz) {
-    db.connector.client._allConnections.forEach(function(con) {
+    // _allConnections is a Queue in mysql2 library
+    db.connector.client._allConnections.toArray().forEach(function(con) {
       con.config.timezone = tz;
     });
   }

@@ -222,18 +222,24 @@ describe('MySQL connector', function() {
         assert(isActual, 'isActual should return true after automigrate');
         ds.discoverModelProperties('customer_test', function(err, props) {
           assert.equal(props.length, 5);
+          // Mysql versions on different OS versions return results in different orders
+          props.sort(function(a, b) {
+            return a.columnName > b.columnName ? 1 : -1;
+          });
           const names = props.map(function(p) {
             return p.columnName;
           });
-          assert.equal(props[0].nullable, 'N');
+
+          assert.equal(names[0], 'age');
+          assert.equal(names[1], 'customer_discount');
+          assert.equal(names[2], 'email');
+          assert.equal(names[3], 'id');
+          assert.equal(names[4], 'name');
+          assert.equal(props[0].nullable, 'Y');
           assert.equal(props[1].nullable, 'Y');
           assert.equal(props[2].nullable, 'N');
-          assert.equal(props[3].nullable, 'Y');
-          assert.equal(names[0], 'id');
-          assert.equal(names[1], 'name');
-          assert.equal(names[2], 'email');
-          assert.equal(names[3], 'age');
-          assert.equal(names[4], 'customer_discount');
+          assert.equal(props[3].nullable, 'N');
+          assert.equal(props[4].nullable, 'Y');
 
           ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, indexes) {
             if (err) return done(err);
@@ -250,16 +256,20 @@ describe('MySQL connector', function() {
                 ds.discoverModelProperties('customer_test', function(err, props) {
                   if (err) return done(err);
                   assert.equal(props.length, 7);
+                  // Mysql versions on different OS versions return results in different orders
+                  props.sort(function(a, b) {
+                    return a.columnName > b.columnName ? 1 : -1;
+                  });
                   const names = props.map(function(p) {
                     return p.columnName;
                   });
-                  assert.equal(names[0], 'id');
-                  assert.equal(names[1], 'email');
+                  assert.equal(names[0], 'customer_address');
+                  assert.equal(names[1], 'customer_code');
                   assert.equal(names[2], 'customer_discount');
-                  assert.equal(names[3], 'firstName');
-                  assert.equal(names[4], 'lastName');
-                  assert.equal(names[5], 'customer_address');
-                  assert.equal(names[6], 'customer_code');
+                  assert.equal(names[3], 'email');
+                  assert.equal(names[4], 'firstName');
+                  assert.equal(names[5], 'id');
+                  assert.equal(names[6], 'lastName');
                   ds.connector.execute('SHOW INDEXES FROM customer_test', function(err, updatedindexes) {
                     if (err) return done(err);
                     assert(updatedindexes);
@@ -268,10 +278,11 @@ describe('MySQL connector', function() {
                     assert.equal(updatedindexes[1].Column_name, 'customer_code');
                     assert.equal(updatedindexes[2].Key_name, 'updated_name_index');
                     assert.equal(updatedindexes[3].Key_name, 'updated_name_index');
-                    // Mysql supports only index sorting in ascending; DESC is ignored
                     assert.equal(updatedindexes[1].Collation, 'A');
                     assert.equal(updatedindexes[2].Collation, 'A');
-                    assert.equal(updatedindexes[3].Collation, 'A');
+                    // MySQL8 supports descending indexes:
+                    // DESC in an index definition is no longer ignored but causes storage of key values in descending order.
+                    assert.equal(updatedindexes[3].Collation, 'D');
                     assert.equal(updatedindexes[1].Non_unique, 0);
                     assert.equal(updatedindexes[2].Non_unique, 0);
                     assert.equal(updatedindexes[3].Non_unique, 0);
@@ -761,7 +772,7 @@ describe('MySQL connector', function() {
             // validate that the foreign key exists and points to the right column
             assert(createTable);
             assert(createTable.length.should.be.equal(1));
-            assert(/ON DELETE CASCADE ON UPDATE NO ACTION/.test(createTable[0]['Create Table']), 'Constraint must have correct trigger');
+            assert(/ON DELETE CASCADE/.test(createTable[0]['Create Table']), 'Constraint must have correct trigger');
 
             ds.createModel(schema_v2.name, schema_v2.properties, schema_v2.options);
             ds.isActual(function(err, isActual) {

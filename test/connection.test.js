@@ -45,10 +45,10 @@ describe('connections', function() {
   });
 
   it('should use utf8 charset', function(done) {
-    const test_set = /utf8/;
-    const test_collo = /utf8_general_ci/;
-    const test_set_str = 'utf8';
-    const test_set_collo = 'utf8_general_ci';
+    const test_set = /utf8mb4/;
+    const test_collo = /utf8mb4_0900_ai_ci/;
+    const test_set_str = 'utf8mb4';
+    const test_set_collo = 'utf8mb4_0900_ai_ci';
     charsetTest(test_set, test_collo, test_set_str, test_set_collo, done);
   });
 

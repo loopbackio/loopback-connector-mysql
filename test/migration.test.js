@@ -27,7 +27,7 @@ describe('migrations', function() {
       should.not.exist(err);
       should.exist(result);
       result[0].Key.should.equal('PRI');
-      result[0].Type.should.equal('bigint(20)');
+      result[0].Type.should.equal('bigint');
       done();
     });
   });
@@ -38,7 +38,7 @@ describe('migrations', function() {
       fields.should.be.eql({
         id: {
           Field: 'id',
-          Type: 'int(11)',
+          Type: 'int',
           Null: 'NO',
           Key: 'PRI',
           Default: null,
@@ -73,7 +73,7 @@ describe('migrations', function() {
           Extra: ''},
         pendingPeriod: {
           Field: 'pendingPeriod',
-          Type: 'int(11)',
+          Type: 'int',
           Null: 'YES',
           Key: '',
           Default: null,
@@ -197,25 +197,25 @@ describe('migrations', function() {
     getFields('NumberData', function(err, fields) {
       fields.should.be.eql({
         id: {Field: 'id',
-          Type: 'int(11)',
+          Type: 'int',
           Null: 'NO',
           Key: 'PRI',
           Default: null,
           Extra: 'auto_increment'},
         number: {Field: 'number',
-          Type: 'decimal(10,3) unsigned',
+          Type: 'decimal(10,3)',
           Null: 'NO',
           Key: 'MUL',
           Default: null,
           Extra: ''},
         tinyInt: {Field: 'tinyInt',
-          Type: 'tinyint(2)',
+          Type: 'tinyint',
           Null: 'YES',
           Key: '',
           Default: null,
           Extra: ''},
         mediumInt: {Field: 'mediumInt',
-          Type: 'mediumint(8) unsigned',
+          Type: 'mediumint unsigned',
           Null: 'NO',
           Key: '',
           Default: null,
@@ -235,7 +235,7 @@ describe('migrations', function() {
     getFields('DateData', function(err, fields) {
       fields.should.be.eql({
         id: {Field: 'id',
-          Type: 'int(11)',
+          Type: 'int',
           Null: 'NO',
           Key: 'PRI',
           Default: null,
@@ -290,8 +290,8 @@ describe('migrations', function() {
           // add new column
           assert.ok(fields.newProperty, 'New column was not added');
           if (fields.newProperty) {
-            assert.equal(fields.newProperty.Type, 'bigint(20) unsigned',
-              'New column type is not bigint(20) unsigned');
+            assert.equal(fields.newProperty.Type, 'bigint unsigned',
+              'New column type is not bigint unsigned');
           }
           // drop column - will not happen.
           // assert.ok(!fields.pendingPeriod,
@@ -400,7 +400,7 @@ describe('migrations', function() {
     getFields('DefaultData', function(err, fields) {
       fields.should.be.eql({
         id: {Field: 'id',
-          Type: 'int(11)',
+          Type: 'int',
           Null: 'NO',
           Key: 'PRI',
           Default: null,
@@ -410,13 +410,13 @@ describe('migrations', function() {
           Null: 'YES',
           Key: '',
           Default: 'CURRENT_TIMESTAMP',
-          Extra: ''},
+          Extra: 'DEFAULT_GENERATED'},
         timestamp: {Field: 'timestamp',
           Type: 'timestamp',
           Null: 'YES',
           Key: '',
           Default: 'CURRENT_TIMESTAMP',
-          Extra: ''},
+          Extra: 'DEFAULT_GENERATED'},
         isAdmin: {Field: 'isAdmin',
           Type: 'tinyint(1)',
           Null: 'YES',
@@ -424,7 +424,7 @@ describe('migrations', function() {
           Default: '0',
           Extra: ''},
         number: {Field: 'number',
-          Type: 'int(10) unsigned',
+          Type: 'int unsigned',
           Null: 'NO',
           Key: 'MUL',
           Default: '256',
@@ -502,7 +502,7 @@ describe('migrations', function() {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("0000-00-00 00:00:00", "0000-00-00 00:00:00") ', function(err) {
-      const errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+      const errMsg = 'Incorrect datetime value: ' +
           '\'0000-00-00 00:00:00\' for column \'dateTime\' at row 1';
       assert(err);
       assert.equal(err.message, errMsg);
@@ -518,7 +518,7 @@ describe('migrations', function() {
     query('INSERT INTO `DateData` ' +
       '(`dateTime`, `timestamp`) ' +
       'VALUES("1000-01-01 00:00:00", "0000-00-00 00:00:00") ', function(err) {
-      const errMsg = 'ER_TRUNCATED_WRONG_VALUE: Incorrect datetime value: ' +
+      const errMsg = 'Incorrect datetime value: ' +
             '\'0000-00-00 00:00:00\' for column \'timestamp\' at row 1';
       assert(err);
       assert.equal(err.message, errMsg);
