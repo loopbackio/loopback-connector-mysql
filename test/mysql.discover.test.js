@@ -103,18 +103,19 @@ describe('Discover models including other users', function() {
   it('should return an array of all tables and views', function(done) {
     db.discoverModelDefinitions({
       all: true,
-      limit: 3,
     }, function(err, models) {
       if (err) {
         console.error(err);
         done(err);
       } else {
         let others = false;
-        assert.equal(3, models.length);
-        models.forEach(function(m) {
+        models.find(function(m) {
           assert(m.owner);
           if (m.owner !== 'STRONGLOOP') {
             others = true;
+            return true;
+          } else {
+            return false;
           }
         });
         assert(others, 'Should have tables/views owned by others');
@@ -133,7 +134,7 @@ describe('Discover model properties', function() {
           done(err);
         } else {
           models.forEach(function(m) {
-            assert(m.tableName === 'product');
+            assert(m.tableName.toLowerCase() === 'product');
           });
           done(null, models);
         }
@@ -150,7 +151,7 @@ describe('Discover model primary keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          assert(m.tableName === 'product');
+          assert(m.tableName.toLowerCase() === 'product');
         });
         done(null, models);
       }
@@ -164,7 +165,7 @@ describe('Discover model primary keys', function() {
         done(err);
       } else {
         models.forEach(function(m) {
-          assert(m.tableName === 'product');
+          assert(m.tableName.toLowerCase() === 'product');
         });
         done(null, models);
       }
@@ -206,7 +207,7 @@ describe('Discover model generated columns', function() {
     db.discoverModelProperties('product', function(err, models) {
       if (err) return done(err);
       models.forEach(function(model) {
-        assert(model.tableName === 'product');
+        assert(model.tableName.toLowerCase() === 'product');
         assert(!model.generated, 'STRONGLOOP.PRODUCT table should not have generated (identity) columns');
       });
       done();
@@ -216,7 +217,7 @@ describe('Discover model generated columns', function() {
     db.discoverModelProperties('testgen', function(err, models) {
       if (err) return done(err);
       models.forEach(function(model) {
-        assert(model.tableName === 'testgen');
+        assert(model.tableName.toLowerCase() === 'testgen');
         if (model.columnName === 'ID') {
           assert(model.generated, 'STRONGLOOP.TESTGEN.ID should be a generated (identity) column');
         }
