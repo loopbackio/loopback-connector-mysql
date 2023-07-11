@@ -1,3 +1,13 @@
+2023-07-11, Version 7.0.0
+=========================
+
+ * feat: add mysql8 support, update to mysql2 client and drop nodejs v14 and mysql5.7 support (Samarpan Bhattacharya)
+
+ * fix: parse some options to boolean (Muhammad Aaqil)
+
+ * ci: update ci runner (Samarpan Bhattacharya)
+
+
 2023-01-09, Version 6.2.0
 =========================
 
