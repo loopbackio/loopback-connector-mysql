@@ -1,3 +1,13 @@
+2023-08-15, Version 7.0.1
+=========================
+
+ * chore: update dependency async to ^3.2.4 (renovate[bot])
+
+ * chore: update dependency debug to ^4.3.4 (renovate[bot])
+
+ * chore: add renovate to this repo (dhmlau)
+
+
 2023-07-11, Version 7.0.0
 =========================
 
