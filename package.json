@@ -23,7 +23,7 @@
     "async": "^3.2.4",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
-    "loopback-connector": "^6.0.1",
+    "loopback-connector": "^6.0.2",
     "mysql2": "^3.6.0",
     "strong-globalize": "^6.0.6"
   },
