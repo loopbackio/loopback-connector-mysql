@@ -1,3 +1,47 @@
+2023-09-11, Version 7.0.2
+=========================
+
+ * chore: update dependency mysql2 to ^3.6.1 (renovate[bot])
+
+ * chore: update dependency ubuntu to v22 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.0.2 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.49.0 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v6 (renovate[bot])
+
+ * chore: update actions/checkout action to v4 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.48.0 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.6.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^9.2.4 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^5.3.3 (renovate[bot])
+
+ * chore: update dependency mocha to v10 (renovate[bot])
+
+ * chore: update dependency rc to ^1.2.8 (renovate[bot])
+
+ * chore: update dependency mocha to ^8.4.0 (renovate[bot])
+
+ * chore: update dependency eslint to v8 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to v17 (renovate[bot])
+
+ * chore: update dependency strong-globalize to ^6.0.6 (renovate[bot])
+
+ * chore: update dependency eslint to ^7.32.0 (renovate[bot])
+
+ * chore: update dependency lodash to ^4.17.21 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^4.28.9 (renovate[bot])
+
+
 2023-08-15, Version 7.0.1
 =========================
 
