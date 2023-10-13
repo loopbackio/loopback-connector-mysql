@@ -126,6 +126,32 @@ describe('Discover models including other users', function() {
 });
 
 describe('Discover model properties', function() {
+  describe('Discover model properties in Ordinal Order', function() {
+    it('should return an array of columns for product in ordinal order', function(done) {
+      const productProperties = [];
+      const productPropertiesInOrdinalOrder = [
+        'ID',
+        'NAME',
+        'AUDIBLE_RANGE',
+        'EFFECTIVE_RANGE',
+        'ROUNDS',
+        'EXTRAS',
+        'FIRE_MODES',
+      ];
+      db.discoverModelProperties('PRODUCT', {orderBy: 'ordinal_position'}, function(err, models) {
+        if (err) {
+          console.error(err);
+          done(err);
+        } else {
+          models.forEach(function(m) { productProperties.push(m.columnName); });
+          productProperties.forEach((prop, index) => {
+            assert(productPropertiesInOrdinalOrder[index] === prop);
+          });
+          done(null, models);
+        }
+      });
+    });
+  });
   describe('Discover a named model', function() {
     it('should return an array of columns for product', function(done) {
       db.discoverModelProperties('product', function(err, models) {
