@@ -1,3 +1,21 @@
+2023-10-16, Version 7.0.3
+=========================
+
+ * chore: update dependency @commitlint/config-conventional to ^17.8.0 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.6.2 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency eslint to ^8.51.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^16.1.0 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.50.0 (renovate[bot])
+
+ * chore: update dependency sinon to v16 (renovate[bot])
+
+
 2023-09-11, Version 7.0.2
 =========================
 
