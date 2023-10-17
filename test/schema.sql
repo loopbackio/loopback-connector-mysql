@@ -49,6 +49,23 @@ LOCK TABLES `CUSTOMER` WRITE;
 /*!40000 ALTER TABLE `CUSTOMER` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `INVENTORY`
+--
+
+DROP TABLE IF EXISTS `PATIENT`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `PATIENT` (
+  `ID` varchar(20) NOT NULL,
+  `NAME` varchar(20) NOT NULL,
+  `TYPE` ENUM('INPATIENT', 'OUTPATIENT') DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
 --
 -- Table structure for table `INVENTORY`
 --

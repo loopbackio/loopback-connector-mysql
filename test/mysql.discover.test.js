@@ -257,6 +257,22 @@ describe('Discover LDL schema from a table', function() {
   });
 });
 
+describe('Discover and handle enum', function() {
+  let schema;
+  before(function(done) {
+    db.discoverSchema('PATIENT', {owner: 'STRONGLOOP'}, function(err, schema_) {
+      schema = schema_;
+      done(err);
+    });
+  });
+  it('should validate enum type for PATIENT', function() {
+    assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
+    assert.strictEqual(schema.options.mysql.table, 'PATIENT');
+    assert.strictEqual(schema.name, 'Patient');
+    assert.strictEqual(schema.properties.type.type, "enum('INPATIENT','OUTPATIENT')");
+  });
+});
+
 describe('Discover and build models', function() {
   let models;
   before(function(done) {
