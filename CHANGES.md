@@ -1,3 +1,25 @@
+2023-11-13, Version 7.0.4
+=========================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.0.3 (renovate[bot])
+
+ * chore: update dependency sinon to ^16.1.3 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.6.3 (renovate[bot])
+
+ * chore: update dependency async to ^3.2.5 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.53.0 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.52.0 (renovate[bot])
+
+ * chore: update actions/setup-node action to v4 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^17.8.1 (renovate[bot])
+
+
 2023-10-16, Version 7.0.3
 =========================
 
