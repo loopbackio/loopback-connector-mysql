@@ -10,7 +10,8 @@
     "pretest": "node pretest.js",
     "lint": "eslint .",
     "test": "mocha test/*.test.js",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "postinstall": "patch-package"
   },
   "files": [
     "intl",
@@ -25,6 +26,7 @@
     "lodash": "^4.17.21",
     "loopback-connector": "^6.0.3",
     "mysql2": "^3.6.3",
+    "patch-package": "^8.0.0",
     "strong-globalize": "^6.0.6"
   },
   "devDependencies": {
