@@ -3,7 +3,7 @@
   "version": "7.0.4",
   "description": "MySQL connector for loopback-datasource-juggler",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "main": "index.js",
   "scripts": {
