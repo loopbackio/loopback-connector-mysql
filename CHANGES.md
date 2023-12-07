@@ -1,3 +1,35 @@
+2023-12-07, Version 7.0.5
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.4 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.0 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.55.0 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.4.3 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency sinon to v17 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to v18 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.54.0 (renovate[bot])
+
+ * fix: return enum type (Muhammad Aaqil)
+
+ * ci: hard code db credentials (Rifa Achrinza)
+
+ * chore: drop support for nodejs 16 and lower BREAKING CHANGE: drop support for nodejs 16 and lower (Samarpan Bhattacharya)
+
+ * chore: update dependency loopback-datasource-juggler to v5 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.0.4 (renovate[bot])
+
+ * chore: patch mysql2 package for ensuring special characters in mysql password (Samarpan Bhattacharya)
+
+
 2023-11-13, Version 7.0.4
 =========================
 
