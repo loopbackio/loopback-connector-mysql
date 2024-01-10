@@ -1,3 +1,15 @@
+2024-01-10, Version 7.0.6
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.5 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.1 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.4.4 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.56.0 (renovate[bot])
+
+
 2023-12-07, Version 7.0.5
 =========================
 
