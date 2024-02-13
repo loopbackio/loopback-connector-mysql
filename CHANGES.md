@@ -1,3 +1,21 @@
+2024-02-13, Version 7.0.7
+=========================
+
+ * chore: update dependency loopback-connector to ^6.1.2 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.6.1 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.6 (renovate[bot])
+
+ * chore: update dependency mocha to ^10.3.0 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.6.0 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.5.0 (renovate[bot])
+
+ * fix: add order by ordinal position for query columns (Muhammad Aaqil)
+
+
 2024-01-10, Version 7.0.6
 =========================
 
