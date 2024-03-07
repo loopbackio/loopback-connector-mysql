@@ -1,3 +1,21 @@
+2024-03-07, Version 7.0.8
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.7 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.3 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.0.3 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.57.0 (renovate[bot])
+
+ * fix: remove extra options to mysql2 pool (Muhammad Aaqil)
+
+ * chore: update dependency @commitlint/config-conventional to v19 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^18.6.2 (renovate[bot])
+
+
 2024-02-13, Version 7.0.7
 =========================
 
