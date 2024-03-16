@@ -476,7 +476,6 @@ describe('Discover and build models', function() {
     context('with flag treatTINYINT1AsTinyInt = false', function() {
       let models, schema;
       before(discoverAndBuildModels);
-
       it('handles CHAR(1) as Boolean', function() {
         assert(schema.properties.enabled);
         assert.strictEqual(schema.properties.enabled.type, Boolean);
@@ -524,6 +523,11 @@ describe('Discover and build models', function() {
       it('handles TINYINT(1) as Boolean', function() {
         assert(schema.properties.active);
         assert.strictEqual(schema.properties.active.type, Boolean);
+      });
+
+      it('handles TINYINT as Boolean', function() {
+        assert(schema.properties.archived);
+        assert.strictEqual(schema.properties.archived.type, Boolean);
       });
 
       function discoverAndBuildModels(done) {
