@@ -39,7 +39,8 @@ CREATE TABLE `CUSTOMER` (
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
+ALTER TABLE `CUSTOMER`
+ADD COLUMN `email` VARCHAR(100) UNIQUE;
 --
 -- Dumping data for table `CUSTOMER`
 --

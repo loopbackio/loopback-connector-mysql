@@ -283,6 +283,21 @@ describe('Discover LDL schema from a table', function() {
   });
 });
 
+describe('Discover unique properties', function() {
+  let schema;
+  before(function(done) {
+    db.discoverSchema('CUSTOMER', {owner: 'STRONGLOOP'}, function(err, schema_) {
+      schema = schema_;
+      done(err);
+    });
+  });
+  it('should validate unique key for customer', function() {
+    assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
+    assert.strictEqual(schema.options.mysql.table, 'CUSTOMER');
+    assert.strictEqual(schema.properties.email.index.unique, true);
+  });
+});
+
 describe('Discover and handle enum', function() {
   let schema;
   before(function(done) {
