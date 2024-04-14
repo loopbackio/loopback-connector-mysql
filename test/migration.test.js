@@ -85,6 +85,13 @@ describe('migrations', function() {
           Key: '',
           Default: null,
           Extra: ''},
+        typings: {
+          Field: 'typings',
+          Type: "enum('A','B')",
+          Null: 'YES',
+          Key: '',
+          Default: null,
+          Extra: ''},
       });
       done();
     });
@@ -548,9 +555,10 @@ function setup(done) {
   require('./init.js');
 
   db = global.getSchema();
-
+  const customType = db.EnumFactory('A', 'B');
   UserData = db.define('UserData', {
     email: {type: String, null: false, index: true},
+    typings: {type: customType},
     name: String,
     bio: Schema.Text,
     birthDate: Date,
