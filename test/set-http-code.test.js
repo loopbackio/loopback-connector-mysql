@@ -29,6 +29,18 @@ describe('setHttpCode', function() {
       });
     }
   });
+
+  it('should set statusCode from code', function() {
+    let err = {
+      message: 'Duplicate entry \'value\' for key \'key_name\'',
+      code: 'ER_DUP_ENTRY',
+    };
+    err = setHttpCode(err);
+    should.exist(err.statusCode);
+    should(err instanceof Error);
+    should.equal(err.statusCode, 422);
+  });
+
   it('should do nothing without error', function() {
     should.doesNotThrow(setHttpCode);
   });
