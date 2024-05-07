@@ -37,7 +37,7 @@
     "mocha": "^10.4.0",
     "rc": "^1.2.8",
     "should": "^13.2.3",
-    "sinon": "^17.0.1"
+    "sinon": "^17.0.2"
   },
   "repository": {
     "type": "git",
