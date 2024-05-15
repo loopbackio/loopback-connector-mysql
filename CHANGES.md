@@ -1,3 +1,17 @@
+2024-05-15, Version 7.0.10
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.9 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.5 (renovate[bot])
+
+ * chore: update dependency sinon to ^17.0.2 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.2.2 (renovate[bot])
+
+ * fix: reading error code (Muhammad Aaqil)
+
+
 2024-04-08, Version 7.0.9
 =========================
 
