@@ -299,6 +299,22 @@ describe('Discover and handle enum', function() {
   });
 });
 
+describe('Discover models with JSON type columns', function() {
+  let schema;
+  before(function(done) {
+    db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function(err, schema_) {
+      schema = schema_;
+      done(err);
+    });
+  });
+  it('should validate JSON as an object type for INVENTORY', function() {
+    assert.ok(/STRONGLOOP/i.test(schema.options.mysql.schema));
+    assert.strictEqual(schema.options.mysql.table, 'INVENTORY');
+    assert.strictEqual(schema.name, 'Inventory');
+    assert.strictEqual(schema.properties.details.type, 'object');
+  });
+});
+
 describe('Discover and build models', function() {
   let models;
   before(function(done) {
