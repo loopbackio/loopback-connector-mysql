@@ -1,3 +1,15 @@
+2024-06-06, Version 7.0.11
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.10 (renovate[bot])
+
+ * chore: update dependency debug to ^4.3.5 (renovate[bot])
+
+ * fix: discover properties with json type (Muhammad Aaqil)
+
+ * chore: update dependency sinon to v18 (renovate[bot])
+
+
 2024-05-15, Version 7.0.10
 ==========================
 
