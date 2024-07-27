@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "async": "^3.2.5",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "lodash": "^4.17.21",
     "loopback-connector": "^6.1.7",
     "mysql2": "^3.6.3",
