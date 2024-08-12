@@ -1,3 +1,15 @@
+2024-08-12, Version 7.0.13
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.0.12 (renovate[bot])
+
+ * chore: update dependency mocha to ^10.7.3 (renovate[bot])
+
+ * chore: update dependency debug to ^4.3.6 (renovate[bot])
+
+ * chore: update dependency mocha to ^10.7.0 (renovate[bot])
+
+
 2024-07-04, Version 7.0.12
 ==========================
 
