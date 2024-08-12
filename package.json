@@ -33,7 +33,7 @@
     "@commitlint/config-conventional": "^19.2.2",
     "eslint": "^8.57.0",
     "eslint-config-loopback": "^13.1.0",
-    "loopback-datasource-juggler": "^5.0.11",
+    "loopback-datasource-juggler": "^5.0.12",
     "mocha": "^10.7.3",
     "rc": "^1.2.8",
     "should": "^13.2.3",
