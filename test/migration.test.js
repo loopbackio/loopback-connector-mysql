@@ -10,7 +10,7 @@ const platform = require('./helpers/platform');
 const should = require('./init');
 const Schema = require('loopback-datasource-juggler').Schema;
 
-let db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee;
+let db, UserData, StringData, NumberData, DateData, DefaultData, SimpleEmployee, SimplePatient;
 let mysqlVersion;
 
 describe('migrations', function() {
@@ -28,6 +28,18 @@ describe('migrations', function() {
       should.exist(result);
       result[0].Key.should.equal('PRI');
       result[0].Type.should.equal('bigint');
+      done();
+    });
+  });
+
+  it('Migrating models that has enum', function(done) {
+    query('describe SimplePatient', function(err, result) {
+      should.not.exist(err);
+      should.exist(result);
+      result[0].Key.should.equal('PRI');
+      result[0].Type.should.equal('bigint');
+      result[2].Field.should.equal('type');
+      result[2].Type.should.equal('enum(\'INPATIENT\',\'OUTPATIENT\')');
       done();
     });
   });
@@ -601,6 +613,23 @@ function setup(done) {
   SimpleEmployee = db.define('SimpleEmployee', {
     eId: {type: Number, generated: true, id: true, mysql: {dataType: 'bigint', dataLength: 20}},
     name: {type: String},
+  });
+
+  SimplePatient = db.define('SimplePatient', {
+    pid: {type: Number, generated: true, id: true, mysql: {dataType: 'bigint', dataLength: 20}},
+    name: {type: String},
+    patient: {
+      type: String,
+      mysql: {
+        columnName: 'type',
+        dataType: 'enum',
+        value: "'INPATIENT','OUTPATIENT'",
+        dataPrecision: null,
+        dataScale: null,
+        nullable: 'Y',
+        generated: false,
+      },
+    },
   });
 
   query('SELECT VERSION()', function(err, res) {
