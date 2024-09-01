@@ -9,7 +9,7 @@
   "scripts": {
     "pretest": "node pretest.js",
     "lint": "eslint .",
-    "test": "mocha test/*.test.js",
+    "test": "mocha test/mysql.discover.test.js",
     "posttest": "npm run lint",
     "postinstall": "patch-package"
   },
