@@ -251,6 +251,30 @@ describe('Discover model generated columns', function() {
       done();
     });
   });
+  it('should mark STORED column as generated', function(done) {
+    db.discoverModelProperties('testgen', function(err, models) {
+      if (err) return done(err);
+      models.forEach(function(model) {
+        assert(model.tableName.toLowerCase() === 'testgen');
+        if (model.columnName === 'TOKEN') {
+          assert(model.generated, 'STRONGLOOP.TESTGEN.TOKEN should be a generated (identity) column');
+        }
+      });
+      done();
+    });
+  });
+  it('should mark VIRTUAL column as generated', function(done) {
+    db.discoverModelProperties('testgen', function(err, models) {
+      if (err) return done(err);
+      models.forEach(function(model) {
+        assert(model.tableName.toLowerCase() === 'testgen');
+        if (model.columnName === 'VIRTUAL_TOKEN') {
+          assert(model.generated, 'STRONGLOOP.TESTGEN.VIRTUAL_TOKEN should be a generated (identity) column');
+        }
+      });
+      done();
+    });
+  });
 });
 
 describe('Discover LDL schema from a table', function() {
