@@ -242,6 +242,11 @@ describe('Discover model generated columns', function() {
   it('should return an array of columns for STRONGLOOP.TESTGEN and the first is generated', function(done) {
     db.discoverModelProperties('testgen', function(err, models) {
       if (err) return done(err);
+      console.log('[[[[[[[[[[[models]]]]]]]]]]]');
+      console.log(models);
+      console.log(models.length);
+      console.log('[[[[[[[[[[[models]]]]]]]]]]]');
+
       models.forEach(function(model) {
         assert(model.tableName.toLowerCase() === 'testgen');
         if (model.columnName === 'ID') {
