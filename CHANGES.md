@@ -1,3 +1,25 @@
+2024-09-09, Version 7.0.14
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.0 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.9 (renovate[bot])
+
+ * chore: update dependency debug to ^4.3.7 (renovate[bot])
+
+ * fix: enable migration for enum property (Muhammad Aaqil)
+
+ * fix: change condition to treat tinyint as boolean (Muhammad Aaqil)
+
+ * chore: update dependency async to ^3.2.6 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.4.1 (renovate[bot])
+
+ * fix: mark primary key auto-increment only if column type is TINYINT SMALLINT MEDIUMINT INT BIGINT (Muhammad Aaqil)
+
+ * chore: update dependency loopback-connector to ^6.1.8 (renovate[bot])
+
+
 2024-08-12, Version 7.0.13
 ==========================
 
