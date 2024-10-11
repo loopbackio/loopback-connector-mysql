@@ -1,3 +1,19 @@
+2024-10-11, Version 7.0.15
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.1 (renovate[bot])
+
+ * chore: update dependency sinon to v19 (renovate[bot])
+
+ * chore: update dependency ubuntu to v24 (renovate[bot])
+
+ * chore: update dependency eslint to ^8.57.1 (renovate[bot])
+
+ * chore: update dependency sinon to ^18.0.1 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.5.0 (renovate[bot])
+
+
 2024-09-09, Version 7.0.14
 ==========================
 
