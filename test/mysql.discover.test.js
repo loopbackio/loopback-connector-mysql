@@ -6,6 +6,7 @@
 'use strict';
 process.env.NODE_ENV = 'test';
 const should = require('should');
+const async = require('async');
 
 const assert = require('assert');
 const DataSource = require('loopback-datasource-juggler').DataSource;
@@ -586,5 +587,27 @@ describe('Discover and build models', function() {
         });
       }
     });
+  });
+});
+
+describe('Discover schema with strict mode on', function() {
+  let schema;
+  before(function(done) {
+    async.series([
+      db.execute('SET GLOBAL sql_mode = \'STRICT_ALL_TABLES\';'),
+      db.discoverSchema('INVENTORY', {owner: 'STRONGLOOP'}, function(err, schema_) {
+        schema = schema_;
+        done(err);
+      }),
+    ]);
+  });
+  it('should return an LDL schema for INVENTORY with strict mode on', function() {
+    assert.strictEqual(schema.name, 'Inventory');
+    Object.keys(schema.properties).forEach(property => {
+      if (schema.properties.length) {
+        assert.strictEqual(property.jsonSchema.maxLength, property.length);
+      }
+    });
+    async.series([db.execute('SET GLOBAL sql_mode = \'\';')]);
   });
 });
