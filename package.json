@@ -24,7 +24,7 @@
     "async": "^3.2.6",
     "debug": "^4.3.7",
     "lodash": "^4.17.21",
-    "loopback-connector": "^6.1.11",
+    "loopback-connector": "^6.1.12",
     "mysql2": "^3.6.3",
     "patch-package": "^8.0.0",
     "strong-globalize": "^6.0.6"
