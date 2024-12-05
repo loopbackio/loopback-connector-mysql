@@ -1,3 +1,15 @@
+2024-12-05, Version 7.0.17
+==========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.3 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.1.12 (renovate[bot])
+
+ * chore: update dependency mocha to v11 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.6.0 (renovate[bot])
+
+
 2024-11-12, Version 7.0.16
 ==========================
 
