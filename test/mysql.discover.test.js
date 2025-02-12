@@ -199,6 +199,23 @@ describe('Discover model primary keys', function() {
   });
 });
 
+describe('Discover user model with index', function() {
+  it('should return user with index', function(done) {
+    db.discoverModelProperties('user', function(err, models) {
+      if (err) {
+        console.error(err);
+        done(err);
+      } else {
+        models.forEach(function(m) {
+          assert(m.tableName.toLowerCase() === 'user');
+          assert(m.properties.email.index);
+        });
+        done(null, models);
+      }
+    });
+  });
+});
+
 describe('Discover model foreign keys', function() {
   it('should return an array of foreign keys for INVENTORY', function(done) {
     db.discoverForeignKeys('INVENTORY', function(err, models) {
