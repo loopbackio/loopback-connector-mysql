@@ -1,3 +1,21 @@
+2025-02-12, Version 7.1.0
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.5 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.1 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^19.7.1 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.0 (renovate[bot])
+
+ * feat: query to fetch unique columns (Muhammad Aaqil)
+
+ * chore: update dependency mocha to ^11.1.0 (renovate[bot])
+
+ * chore: update dependency debug to ^4.4.0 (renovate[bot])
+
+
 2024-12-05, Version 7.0.17
 ==========================
 
