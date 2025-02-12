@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.7.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.20.1",
     "eslint-config-loopback": "^13.1.0",
     "loopback-datasource-juggler": "^5.1.5",
     "mocha": "^11.1.0",
