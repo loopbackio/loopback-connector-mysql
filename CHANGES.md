@@ -1,3 +1,17 @@
+2025-04-14, Version 7.1.2
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.7 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.3 (renovate[bot])
+
+ * chore: update dependency sinon to v20 (renovate[bot])
+
+ * chore: update dependency sinon to ^19.0.5 (renovate[bot])
+
+ * chore: update dependency sinon to ^19.0.4 (renovate[bot])
+
+
 2025-03-18, Version 7.1.1
 =========================
 
