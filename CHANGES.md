@@ -1,3 +1,23 @@
+2025-05-12, Version 7.1.3
+=========================
+
+ * chore: update dependency mysql2 to ^3.14.1 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to v3.9.8 [security] (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.8 (renovate[bot])
+
+ * chore: fix ci (dhmlau)
+
+ * chore: update dependency @commitlint/config-conventional to ^19.8.1 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.2.2 (renovate[bot])
+
+ * chore: include Node.js 22 in CI (dhmlau)
+
+
 2025-04-14, Version 7.1.2
 =========================
 
