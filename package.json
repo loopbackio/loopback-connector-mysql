@@ -24,7 +24,7 @@
     "debug": "^4.4.0",
     "lodash": "^4.17.21",
     "loopback-connector": "^6.2.3",
-    "mysql2": "^3.6.3",
+    "mysql2": "^3.14.1",
     "strong-globalize": "^6.0.6"
   },
   "devDependencies": {
