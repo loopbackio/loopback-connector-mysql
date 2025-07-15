@@ -1,3 +1,21 @@
+2025-07-15, Version 7.1.5
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.10 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.6 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.14.2 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.1 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.0 (renovate[bot])
+
+ * chore: update dependency sinon to v21 (renovate[bot])
+
+
 2025-06-09, Version 7.1.4
 =========================
 
