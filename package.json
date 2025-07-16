@@ -3,7 +3,7 @@
   "version": "7.1.6",
   "description": "MySQL connector for loopback-datasource-juggler",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "main": "index.js",
   "scripts": {
@@ -42,5 +42,5 @@
     "url": "https://github.com/loopbackio/loopback-connector-mysql.git"
   },
   "license": "MIT",
-  "author": "IBM Corp."
+  "author": "IBM Corp. and LoopBack contributors"
 }
