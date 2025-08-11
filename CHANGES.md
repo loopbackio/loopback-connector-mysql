@@ -1,3 +1,13 @@
+2025-08-11, Version 8.0.0
+=========================
+
+ * chore: drop Node.js 18 support (dhmlau)
+
+ * chore: update dependency loopback-datasource-juggler to ^5.1.11 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.7 (renovate[bot])
+
+
 2025-08-11, Version 7.1.6
 =========================
 
