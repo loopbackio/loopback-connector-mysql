@@ -1,3 +1,13 @@
+2025-08-11, Version 7.1.6
+=========================
+
+ * chore: update actions/checkout action to v5 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.14.3 (renovate[bot])
+
+
 2025-07-15, Version 7.1.5
 =========================
 
