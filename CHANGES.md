@@ -1,3 +1,27 @@
+2025-10-14, Version 8.0.2
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^5.2.2 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^6.2.12 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.15.2 (renovate[bot])
+
+ * chore: update actions/setup-node action to v6 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.4 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.15.1 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to v20 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.15.0 (renovate[bot])
+
+ * chore: update dependency debug to ^4.4.3 (renovate[bot])
+
+
 2025-09-09, Version 8.0.1
 =========================
 
