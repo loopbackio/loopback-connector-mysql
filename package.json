@@ -32,7 +32,7 @@
     "eslint": "^8.57.1",
     "eslint-config-loopback": "^13.1.0",
     "loopback-datasource-juggler": "^5.2.2",
-    "mocha": "^11.7.4",
+    "mocha": "^11.7.5",
     "rc": "^1.2.8",
     "should": "^13.2.3",
     "sinon": "^21.0.0"
