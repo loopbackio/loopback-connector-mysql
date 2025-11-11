@@ -1,3 +1,17 @@
+2025-11-11, Version 8.0.3
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to v6 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v7 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.5 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.15.3 (renovate[bot])
+
+
 2025-10-14, Version 8.0.2
 =========================
 
