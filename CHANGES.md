@@ -1,3 +1,31 @@
+2026-04-14, Version 8.0.8
+=========================
+
+ * chore: update dependency loopback-connector to ^7.0.5 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^6.0.5 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^21.1.2 (renovate[bot])
+
+ * chore: update dependency lodash to ^4.18.1 (renovate[bot])
+
+ * chore: update dependency lodash to v4.18.1 [security] (renovate[bot])
+
+ * chore: update dependency node to v20.20.2 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.20.0 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^20.5.0 (renovate[bot])
+
+ * chore: update dependency sinon to ^21.0.3 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.19.1 (renovate[bot])
+
+
 2026-03-09, Version 8.0.7
 =========================
 
