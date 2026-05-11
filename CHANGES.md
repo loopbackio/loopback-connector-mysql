@@ -1,3 +1,19 @@
+2026-05-11, Version 8.0.9
+=========================
+
+ * chore: update dependency loopback-connector to ^7.0.6 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.3 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^20.5.3 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.2 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.1 (renovate[bot])
+
+
 2026-04-14, Version 8.0.8
 =========================
 
