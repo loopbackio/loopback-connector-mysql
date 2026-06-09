@@ -1,3 +1,27 @@
+2026-06-09, Version 9.0.0
+=========================
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.5 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.4 (renovate[bot])
+
+ * chore: update dependency mocha to ^11.7.6 (renovate[bot])
+
+ * chore: update dependency node to v24.16.0 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^21.0.2 (renovate[bot])
+
+ * chore: drop Node.js 20 support BREAKING CHANGE: drop Node.js 20 support (dhmlau)
+
+ * chore: update dependency sinon to v22 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to v21 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to ^6.0.6 (renovate[bot])
+
+
 2026-05-11, Version 8.0.9
 =========================
 
