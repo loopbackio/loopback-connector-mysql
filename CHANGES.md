@@ -1,3 +1,31 @@
+2026-07-16, Version 9.0.1
+=========================
+
+ * chore: update dependency loopback-connector to ^8.0.1 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.23.0 (renovate[bot])
+
+ * chore: update actions/setup-node action to v7 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.22.6 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^21.2.0 (renovate[bot])
+
+ * chore: update dependency node to v24.18.0 (renovate[bot])
+
+ * chore: update commitlint monorepo (renovate[bot])
+
+ * chore: update dependency node to v24.17.0 (renovate[bot])
+
+ * chore: update actions/checkout action to v7 (renovate[bot])
+
+ * chore: update dependency loopback-connector to v8 (renovate[bot])
+
+ * chore: update dependency loopback-datasource-juggler to v7 (renovate[bot])
+
+
 2026-06-09, Version 9.0.0
 =========================
 
