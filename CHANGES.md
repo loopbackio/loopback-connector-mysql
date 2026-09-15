@@ -1,3 +1,27 @@
+2026-09-15, Version 9.0.3
+=========================
+
+ * chore: update dependency loopback-datasource-juggler to ^7.0.3 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^8.0.3 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency node to v24.21.0 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.24.4 (renovate[bot])
+
+ * chore: update dependency mocha to ^12.0.1 (renovate[bot])
+
+ * chore: update dependency mocha to v12 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.24.3 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.24.2 (renovate[bot])
+
+ * chore: update dependency node to v24.20.0 (renovate[bot])
+
+
 2026-08-18, Version 9.0.2
 =========================
 
