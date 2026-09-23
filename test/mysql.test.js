@@ -8,6 +8,7 @@ const async = require('async');
 const should = require('./init.js');
 const sinon = require('sinon');
 const List = require('loopback-datasource-juggler/lib/list');
+const normalizeMySQLError = require('../lib/normalize-error.js');
 
 let Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student, db;
 
@@ -1073,6 +1074,38 @@ describe('mysql', function() {
           },
         );
       });
+    });
+  });
+
+  describe('database error normalization', function() {
+    it('should normalize duplicate key error (1062) to UNIQUE_CONSTRAINT_VIOLATION', function() {
+      const mockErr = new Error('Duplicate entry');
+      mockErr.errno = 1062;
+
+      const normalized = normalizeMySQLError(mockErr);
+
+      should.exist(normalized);
+      normalized.should.have.property('code', 'UNIQUE_CONSTRAINT_VIOLATION');
+    });
+
+    it('should normalize foreign key violation (1452) to FOREIGN_KEY_VIOLATION', function() {
+      const mockErr = new Error('Foreign Key constraint is failing');
+      mockErr.errno = 1452;
+
+      const normalized = normalizeMySQLError(mockErr);
+
+      should.exist(normalized);
+      normalized.should.have.property('code', 'FOREIGN_KEY_VIOLATION');
+    });
+
+    it('should normalize missing table error (1146) to TABLE_NOT_FOUND', function() {
+      const mockErr = new Error("Table 'myapp_test.NonExistentTable' doesn't exist");
+      mockErr.errno = 1146;
+
+      const normalized = normalizeMySQLError(mockErr);
+
+      should.exist(normalized);
+      normalized.should.have.property('code', 'TABLE_NOT_FOUND');
     });
   });
 
