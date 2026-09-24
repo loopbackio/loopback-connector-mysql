@@ -13,7 +13,7 @@ describe('transaction start failure', function() {
 
   // A fresh pool per test, so a leak in one test cannot fail the next one.
   beforeEach(function(done) {
-    db = global.getDataSource({connectionLimit: 2});
+    db = global.getDataSource({connectionLimit: 1});
     db.once('connected', function() {
       done();
     });
@@ -49,19 +49,14 @@ describe('transaction start failure', function() {
   function failBegin(isolationLevel, done) {
     const pool = db.connector.client;
     const getConnection = pool.getConnection.bind(pool);
-    let released = false;
-    // BEGIN cannot be made to fail on a healthy server, so the real
+    // BEGIN cannot be made to fail on a healthy server, so the next pooled
     // connection's beginTransaction is replaced for this one call.
-    sinon.stub(pool, 'getConnection').callsFake(function(cb) {
+    const stub = sinon.stub(pool, 'getConnection').callsFake(function(cb) {
+      stub.restore();
       getConnection(function(err, connection) {
         if (err) return cb(err);
         sinon.stub(connection, 'beginTransaction').callsFake(function(next) {
           next(new Error('BEGIN refused'));
-        });
-        const release = connection.release.bind(connection);
-        sinon.stub(connection, 'release').callsFake(function() {
-          released = true;
-          release();
         });
         cb(null, connection);
       });
@@ -70,17 +65,24 @@ describe('transaction start failure', function() {
       should.exist(err);
       err.message.should.equal('BEGIN refused');
       should.not.exist(connection);
-      released.should.equal(true);
-      done();
+      // One connection in the pool: this query only runs if the failed start
+      // gave it back.
+      db.connector.execute('SELECT 1 AS ok', [], function(err, rows) {
+        if (err) return done(err);
+        rows[0].ok.should.equal(1);
+        done();
+      });
     });
   }
 
   it('returns the connection when BEGIN fails after SET', function(done) {
+    this.timeout(10000);
     failBegin('READ COMMITTED', done);
   });
 
   it('returns the connection when BEGIN fails without an isolation level',
     function(done) {
+      this.timeout(10000);
       failBegin(undefined, done);
     });
 });
