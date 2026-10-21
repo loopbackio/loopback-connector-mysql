@@ -1,3 +1,31 @@
+2026-10-21, Version 9.0.4
+=========================
+
+ * test: assert the pool is still usable after a failed transaction start (Felipe Reis)
+
+ * fix: release the connection when a transaction fails to start (Felipe Reis)
+
+ * chore: update dependency loopback-datasource-juggler to ^7.0.4 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.24.6 (renovate[bot])
+
+ * chore: update dependency node to v24.22.0 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^21.2.4 (renovate[bot])
+
+ * chore: update dependency mysql2 to ^3.24.5 (renovate[bot])
+
+ * chore: update dependency mocha to ^12.0.3 (renovate[bot])
+
+ * chore: update actions/setup-node action to v7.1.0 (renovate[bot])
+
+ * chore: update dependency mocha to ^12.0.2 (renovate[bot])
+
+ * chore: update dependency @commitlint/config-conventional to ^21.2.3 (renovate[bot])
+
+
 2026-09-15, Version 9.0.3
 =========================
 
