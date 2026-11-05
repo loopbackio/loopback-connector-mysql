@@ -1076,6 +1076,59 @@ describe('mysql', function() {
     });
   });
 
+  context('jsonContains operator', function() {
+    let Customer;
+
+    before(function(done) {
+      // Define a test model with an array property to mimic referencesMany relation mapping.
+      Customer = db.define('CustomerWithJson', {
+        name: {type: String},
+        ids: {type: [Number]},
+      }, {
+        forceId: false,
+      });
+      db.automigrate(['CustomerWithJson'], done);
+    });
+
+    beforeEach(function(done) {
+      Customer.destroyAll(done);
+    });
+
+    after(function(done) {
+      Customer.destroyAll(done);
+    });
+
+    it('should build where with jsonContains and match records', function(done) {
+      Customer.createAll([
+        {name: 'Alice', ids: [1, 2]},
+        {name: 'Bob', ids: [3, 4]},
+      ], function(err) {
+        should.not.exist(err);
+
+        // Execute a find query leveraging the mapped jsonContains operator.
+        Customer.find({where: {ids: {jsonContains: [2]}}}, function(err, customers) {
+          should.not.exist(err);
+          customers.should.have.property('length', 1);
+          customers[0].name.should.equal('Alice');
+          done();
+        });
+      });
+    });
+
+    it('should support unit-level SQL building verification for jsonContains', function() {
+      // Verify that buildWhere constructs the exact MySQL-native JSON_CONTAINS syntax and parameter bindings.
+      const where = db.connector.buildWhere(
+        'CustomerWithJson',
+        {ids: {jsonContains: [1, 2]}},
+      );
+
+      where.toJSON().should.eql({
+        sql: 'WHERE (JSON_CONTAINS(`ids`, CAST(? as JSON)) OR JSON_CONTAINS(`ids`, CAST(? as JSON)))',
+        params: [1, 2],
+      });
+    });
+  });
+
   function deleteAllModelInstances() {
     const models = [
       Post, PostWithStringId, PostWithUniqueTitle, PostWithNumId, Student,
