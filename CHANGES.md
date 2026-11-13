@@ -1,3 +1,21 @@
+2026-11-13, Version 9.0.5
+=========================
+
+ * chore: update dependency loopback-connector to ^8.0.5 (renovate[bot])
+
+ * chore: update dependency node to v26.13.1 (renovate[bot])
+
+ * chore: update dependency node to v26 (renovate[bot])
+
+ * chore: lock file maintenance (renovate[bot])
+
+ * chore: update dependency node to v24.22.2 (renovate[bot])
+
+ * chore: update dependency node to v24.22.1 (renovate[bot])
+
+ * chore: update dependency loopback-connector to ^8.0.4 (renovate[bot])
+
+
 2026-10-21, Version 9.0.4
 =========================
 
