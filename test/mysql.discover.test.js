@@ -109,6 +109,7 @@ describe('Discover models including other users', function() {
         done(err);
       } else {
         let others = false;
+        assert(models.length > 0, 'some models returned');
         models.find(function(m) {
           assert(m.owner);
           if (m.owner !== 'STRONGLOOP') {
@@ -143,6 +144,7 @@ describe('Discover model properties', function() {
           console.error(err);
           done(err);
         } else {
+          assert(models.length > 0, 'some models returned');
           models.forEach(function(m) { productProperties.push(m.columnName); });
           productProperties.forEach((prop, index) => {
             assert(productPropertiesInOrdinalOrder[index] === prop);
@@ -159,6 +161,7 @@ describe('Discover model properties', function() {
           console.error(err);
           done(err);
         } else {
+          assert(models.length > 0, 'some models returned');
           models.forEach(function(m) {
             assert(m.tableName.toLowerCase() === 'product');
           });
@@ -176,6 +179,7 @@ describe('Discover model primary keys', function() {
         console.error(err);
         done(err);
       } else {
+        assert(models.length > 0, 'some models returned');
         models.forEach(function(m) {
           assert(m.tableName.toLowerCase() === 'product');
         });
@@ -190,6 +194,7 @@ describe('Discover model primary keys', function() {
         console.error(err);
         done(err);
       } else {
+        assert(models.length > 0, 'some models returned');
         models.forEach(function(m) {
           assert(m.tableName.toLowerCase() === 'product');
         });
@@ -206,6 +211,7 @@ describe('Discover model foreign keys', function() {
         console.error(err);
         done(err);
       } else {
+        assert(models.length > 0, 'some models returned');
         models.forEach(function(m) {
           assert(m.fkTableName === 'INVENTORY');
         });
@@ -219,6 +225,7 @@ describe('Discover model foreign keys', function() {
         console.error(err);
         done(err);
       } else {
+        assert(models.length > 0, 'some models returned');
         models.forEach(function(m) {
           assert(m.fkTableName === 'INVENTORY');
         });
@@ -232,6 +239,7 @@ describe('Discover model generated columns', function() {
   it('should return an array of columns for STRONGLOOP.PRODUCT and none of them is generated', function(done) {
     db.discoverModelProperties('product', function(err, models) {
       if (err) return done(err);
+      assert(models.length > 0, 'some models returned');
       models.forEach(function(model) {
         assert(model.tableName.toLowerCase() === 'product');
         assert(!model.generated, 'STRONGLOOP.PRODUCT table should not have generated (identity) columns');
@@ -242,6 +250,7 @@ describe('Discover model generated columns', function() {
   it('should return an array of columns for STRONGLOOP.TESTGEN and the first is generated', function(done) {
     db.discoverModelProperties('testgen', function(err, models) {
       if (err) return done(err);
+      assert(models.length > 0, 'some models returned');
       models.forEach(function(model) {
         assert(model.tableName.toLowerCase() === 'testgen');
         if (model.columnName === 'ID') {
